@@ -1,0 +1,1 @@
+Region annotation file from {{snakemake.config["region_annotation"]}}

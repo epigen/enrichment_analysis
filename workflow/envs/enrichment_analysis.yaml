@@ -1,0 +1,14 @@
+name: enrichment_analysis
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base=4.1.0
+  - bioconductor-rgreat
+  - bioconductor-lola
+  - r-enrichr
+  - r-simplecache
+  - bioconductor-enrichplot
+  - r-svglite
+

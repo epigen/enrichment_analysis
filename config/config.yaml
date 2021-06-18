@@ -1,0 +1,8 @@
+
+region_annotation: /nobackup/lab_bock/projects/cll-progression/results/atac/sorted/temporal_gradients/temporal_gradient_regions.csv
+results_dir: /nobackup/lab_bock/projects/cll-progression/results/atac/sorted/temporal_gradients/enrichment_analysis
+
+# cluster parameters
+partition: 'tinyq'
+memory: '32G'
+threads: 1

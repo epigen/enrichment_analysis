@@ -1,0 +1,86 @@
+# libraries
+import yaml
+import pandas as pd
+import os
+from snakemake.utils import validate, min_version
+import json
+import csv
+import sys
+import subprocess
+
+##### get  LOLA resources if needed #####
+LOLA_path = os.path.join("resources", "LOLA")
+if not os.path.exists(LOLA_path):
+    print("start downloading and unpacking LOLA resources")
+    os.makedirs(LOLA_path, exist_ok=True)
+    
+    LOLA_path = os.path.abspath(LOLA_path)
+    
+    URL_Core='http://big.databio.org/regiondb/LOLACoreCaches_180412.tgz'
+    URL_Ext='http://big.databio.org/regiondb/LOLAExtCaches_170206.tgz'
+    
+    # download
+    getCore_str = 'wget --directory-prefix={} {}'.format(LOLA_path, URL_Core)
+    getExt_str = 'wget --directory-prefix={} {}'.format(LOLA_path, URL_Ext)
+    
+    subprocess.run(getCore_str, shell=True)
+    subprocess.run(getExt_str, shell=True)
+    
+    # unpack
+    unpackCore_str = 'tar zxvf {} -C {}'.format(os.path.join(LOLA_path, 'LOLACoreCaches_180412.tgz'), LOLA_path)
+    unpackExt_str = 'tar zxvf {} -C {}'.format(os.path.join(LOLA_path, 'LOLAExtCaches_170206.tgz'), LOLA_path)
+    
+    subprocess.run(unpackCore_str, shell=True)
+    subprocess.run(unpackExt_str, shell=True)
+    
+    # remove
+    removeCore_str = 'rm -f {}'.format(os.path.join(LOLA_path, 'LOLACoreCaches_180412.tgz'))
+    removeExt_str = 'rm -f {}'.format(os.path.join(LOLA_path, 'LOLAExtCaches_170206.tgz'))
+    
+    subprocess.run(removeCore_str, shell=True)
+    subprocess.run(removeExt_str, shell=True)
+    
+    print("finished downloading and unpacking LOLA resources")
+
+##### set minimum snakemake version #####
+min_version("6.0.3")
+
+##### container image #####
+# containerized: "docker://sreichl/genomic_region_enrichment"
+
+##### setup report #####
+report: "report/workflow.rst"
+
+##### set & load config and sample annotation sheets #####
+configfile: os.path.join("config","config.yaml")
+
+# run configurator to get pipeline configs & sample annotations
+regions = pd.read_csv(config["region_annotation"], index_col=0)
+regions=dict(regions.T)
+
+##### set global variables
+
+# cluster parameters
+partition=config['partition']
+mem=config['memory']
+threads=config['threads']
+
+##### target rules #####
+rule all:
+    input:
+        expand(os.path.join(config['results_dir'], '{region_set}', 'LOLA'), region_set=regions.keys()),
+        expand(os.path.join(config['results_dir'], '{region_set}', 'GREAT'), region_set=regions.keys()),
+        expand(os.path.join(config['results_dir'], '{region_set}', 'Enrichr'), region_set=regions.keys()),
+        region_annotation=report(config["region_annotation"], caption="report/region_annotation.rst", category="Configuration"),
+    params:
+        # cluster parameters
+        partition=partition,
+    threads: threads
+    resources:
+        mem=mem,
+    log:
+        os.path.join("logs","rules","all.log")
+
+        
+##### load rules #####
+include: "rules/region_enrichment_analysis.smk"
