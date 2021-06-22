@@ -90,7 +90,8 @@ for (db in names(dblist)){
     # plot top 25 significant hits ordered by mean rank
 
     # select top 25 significant hits by meanRnk
-    plot_data <- locResults[locResults$qValue<0.05,][order(meanRnk, decreasing=FALSE),][1:25,]
+    plot_data <- locResults[locResults$qValue<0.05,][order(meanRnk, decreasing=FALSE),]
+    plot_data <- plot_data[1:min(25,dim(plot_data)[1]),]
     
     if (db!='LOLACore'){
         plot_data$description <- plot_data$filename
@@ -116,7 +117,7 @@ for (db in names(dblist)){
 
     if (db=='LOLACore'){
         #  plot top 100 significant hits aggregated by cellType
-        plot_data <- locResults[locResults$qValue<0.05 & complete.cases(locResults$cellType),][order(meanRnk, decreasing=FALSE),][1:100,]
+        plot_data <- locResults[locResults$qValue<0.05 & complete.cases(locResults$cellType),][order(meanRnk, decreasing=FALSE),][1:min(100,dim(plot_data)[1]),]
 
         # fix and order correctly for plotting
         plot_data$cellType <- factor(plot_data$cellType, levels = levels(factor(plot_data$cellType))[order(levels(factor(plot_data$cellType)), decreasing=TRUE)])
@@ -164,6 +165,11 @@ for (db in names(tb)){
     
     # filter for significant hits
     plot_data <- tb[[db]][tb[[db]]$Hyper_Adjp_BH<0.05,]
+    
+    if (dim(plot_data)[1]==0){
+        next
+    }
+    
     # add description column
     plot_data$description <- paste(plot_data$ID, plot_data$name, sep=' ')
     # determine ranks
