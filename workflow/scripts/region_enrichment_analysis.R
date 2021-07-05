@@ -12,7 +12,7 @@ library(svglite)
 # plot functions
 
 addline_format <- function(x,...){
-    return(gsub('(.{1,40})(\\s|$)', '\\1\n', x))
+    return(gsub('(.{1,40})(\\s|\\.|$)', '\\1\n', x))
 }
 
 do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size, path, filename){
@@ -47,7 +47,7 @@ background_regions <- snakemake@input[["background"]] #file.path('results','atac
 dir_results_LOLA <- snakemake@output[["result_LOLA"]]
 dir_results_GREAT <- snakemake@output[["result_GREAT"]]
 dir_results_Enrichr <- snakemake@output[["result_Enrichr"]]
-genome <- "hg38"
+genome <- snakemake@config[["genome"]] #"hg38"
 
 # make directories if not exist
 # dir.create(dir_results, showWarnings = FALSE, recursive = TRUE)
@@ -64,13 +64,17 @@ regionSet_background = readBed(background_regions)
 # needs resources downloaded from: http://big.databio.org/regiondb/LOLACoreCaches_180412.tgz
 # needs simpleCache package installed
 LOLACore = loadRegionDB(file.path("resources/LOLA/nm/t1/resources/regions/LOLACore",genome))
-# LOLAExt = loadRegionDB("resources/LOLAExt/hg38")
-jaspar_motifs = loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'jaspar_motifs')
-roadmap_epigenomics = loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'roadmap_epigenomics')
+
+if (genome!='mm10'){
+    jaspar_motifs = loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'jaspar_motifs')
+    roadmap_epigenomics = loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'roadmap_epigenomics')
+    dblist <- list(LOLACore=LOLACore, jaspar_motifs=jaspar_motifs,roadmap_epigenomics=roadmap_epigenomics)
+} else{
+    dblist <- list(LOLACore=LOLACore)
+}
+
 
 # run LOLA, save results and plot sign. results for every database LOLAExt=LOLAExt)#,
-dblist <- list(LOLACore=LOLACore, jaspar_motifs=jaspar_motifs,roadmap_epigenomics=roadmap_epigenomics)
-
 for (db in names(dblist)){
     # access like that: dblist[[db]]
     print(db)

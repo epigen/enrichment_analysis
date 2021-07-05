@@ -1,12 +1,12 @@
-# Genomic Region Enrichment Analysis Snakemake Workflow using LOLA, GREAT and Enrichr.
+# Genomic Region Enrichment Analysis Snakemake Workflow using LOLA, GREAT and Enrichr for hg38 & mm10.
 
-Given genomic region sets of interest and a background region set (as .bed files), the enrichment within mutliple databases is determined and results saved as .tsv files. Additionally, the top 25 statistically significant results are plotted for each database queried.
+Given **hg38 or mm10** based genomic region sets of interest and a background region set (as .bed files), the enrichment within mutliple databases is determined and results saved as .tsv files. Additionally, the top 25 statistically significant results are plotted for each database queried.
 
 # Features
 the following steps are performed for each query region set (always with default settings):
 - [LOLA](http://lolaweb.databio.org/) is run locally with LOLACore, LOLAJasper(Motifs) and LOLARoadmap(Epigenomics) (necessary cached databases are downloaded automatically)
 - [GREAT](http://great.stanford.edu/public/html/index.php) is queried remotely (all available databases) and additionally used to determine region-gene associations (gene list is also saved)
-- [Enrichr](https://maayanlab.cloud/Enrichr/) is queried remotely (all available databases) with the genes determined by GREAT
+- [Enrichr](https://maayanlab.cloud/Enrichr/) is queried remotely (all available databases) with the genes determined by GREAT **without using a background gene/region set(!)**
 - for each queried database a dotplot with the top 25 statistically significant hits is generated
     - the hits are ordered (along the y-axis) by the mean rank of p-value, odds ratio/foldchange, coverage/support with the goal to make the results more balanced and interpretable
     - p-value is presented by the dot color
@@ -30,6 +30,7 @@ All software/package dependencies are installed and managed automatically via Sn
 - general configuration (config/config.yaml):
     - region_annotation: path to the region annotation .csv file (see below)
     - results_dir: path to the directory for the enrichment results (results directory)
+    - genome: genome reference that was used ('hg38' or 'mm10')
     - parameters for cluster execution: partition, memory, threads (if in doubt try the default values)
     - an example is provided in the repository
 - region annotation: CSV file with 3 columns
