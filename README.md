@@ -2,6 +2,8 @@
 
 Given **hg38 or mm10** based genomic region sets of interest and a background region set (as .bed files), the enrichment within mutliple databases is determined and results saved as .tsv/.csv files. Additionally, the top 25 statistically significant results are plotted for each database queried.
 
+![Workflow Rulegraph](./workflow/dags/rulegraph.svg)
+
 # Features
 the following steps are performed for each query region set (always with default settings):
 - [LOLA](http://lolaweb.databio.org/) is run locally with LOLACore, LOLAJasper(Motifs) and LOLARoadmap(Epigenomics) (necessary cached databases are downloaded automatically)
