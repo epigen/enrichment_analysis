@@ -54,9 +54,15 @@ report: "report/workflow.rst"
 ##### set & load config and sample annotation sheets #####
 configfile: os.path.join("config","config.yaml")
 
-# run configurator to get pipeline configs & sample annotations
+# get sample annotations
 regions = pd.read_csv(config["region_annotation"], index_col=0)
-regions=dict(regions.T)
+background_region_df = regions.loc[:,['background_name', 'background_bed']]
+background_region_df = background_region_df.drop_duplicates()
+background_regions = dict(background_region_df.set_index('background_name').T)
+# print(background_regions) # for testing
+regions = dict(regions.T)
+
+
 
 ##### set global variables
 
@@ -71,6 +77,9 @@ rule all:
         expand(os.path.join(config['results_dir'], '{region_set}', 'LOLA'), region_set=regions.keys()),
         expand(os.path.join(config['results_dir'], '{region_set}', 'GREAT'), region_set=regions.keys()),
         expand(os.path.join(config['results_dir'], '{region_set}', 'Enrichr'), region_set=regions.keys()),
+        expand(os.path.join(config['results_dir'], '{region_set}', 'GSEApy'), region_set=regions.keys()),
+        expand(os.path.join(config['results_dir'], 'background_genes', '{background_regions}'), background_regions=background_regions.keys()),
+        enrichr_databases = os.path.join("resources", "enrichr_databases.pkl"),
         region_annotation=report(config["region_annotation"], caption="report/region_annotation.rst", category="Configuration"),
     params:
         # cluster parameters
@@ -82,5 +91,23 @@ rule all:
         os.path.join("logs","rules","all.log")
 
         
+
+# download enrichr databases to local python dictionary with GSEApy
+rule load_enrichr_databases:
+    output:
+        result_file=os.path.join("resources", "enrichr_databases.pkl"),
+    params:
+        # cluster parameters
+        partition=partition,
+    threads: threads
+    resources:
+        mem=mem,
+    conda:
+        "envs/enrichment_analysis.yaml",
+    log:
+        "logs/rules/get_Enrichr_databases.log"
+    script:
+        "scripts/get_Enrichr_databases_GSEApy.py"
+
 ##### load rules #####
 include: "rules/region_enrichment_analysis.smk"

@@ -11,4 +11,6 @@ dependencies:
   - r-simplecache
   - bioconductor-enrichplot
   - r-svglite
+  - gseapy
+  - pandas=1.1.4
 

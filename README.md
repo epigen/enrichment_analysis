@@ -1,13 +1,15 @@
 # Genomic Region Enrichment Analysis Snakemake Workflow using LOLA, GREAT and Enrichr for hg38 & mm10.
 
-Given **hg38 or mm10** based genomic region sets of interest and a background region set (as .bed files), the enrichment within mutliple databases is determined and results saved as .tsv files. Additionally, the top 25 statistically significant results are plotted for each database queried.
+Given **hg38 or mm10** based genomic region sets of interest and a background region set (as .bed files), the enrichment within mutliple databases is determined and results saved as .tsv/.csv files. Additionally, the top 25 statistically significant results are plotted for each database queried.
 
 # Features
 the following steps are performed for each query region set (always with default settings):
 - [LOLA](http://lolaweb.databio.org/) is run locally with LOLACore, LOLAJasper(Motifs) and LOLARoadmap(Epigenomics) (necessary cached databases are downloaded automatically)
 - [GREAT](http://great.stanford.edu/public/html/index.php) is queried remotely (all available databases) and additionally used to determine region-gene associations (gene list is also saved)
-- [Enrichr](https://maayanlab.cloud/Enrichr/) is queried remotely (all available databases) with the genes determined by GREAT **without using a background gene/region set(!)**
-- for each queried database a dotplot with the top 25 statistically significant hits is generated
+- [Enrichr](https://maayanlab.cloud/Enrichr/) all available databases are queried in two different ways with the genes determined by GREAT:
+    - R package [enrichR](https://cran.r-project.org/web/packages/enrichR/index.html): remotely  **without using a background gene/region set(!)**
+    - python package [GSEApy](https://gseapy.readthedocs.io/en/latest/introduction.html): locally (databases are downloaded once and saved as a dictionary pickle file) **with a background gene set** obtained by querying GREAT with the background region set
+- for each queried database a dotplot with the top 25 statistically significant hits (adjusted p-value < 0.05) is generated
     - the hits are ordered (along the y-axis) by the mean rank of p-value, odds ratio/foldchange, coverage/support with the goal to make the results more balanced and interpretable
     - p-value is presented by the dot color
     - odds ratio/foldchange is presented by the x-axis position
@@ -33,9 +35,10 @@ All software/package dependencies are installed and managed automatically via Sn
     - genome: genome reference that was used ('hg38' or 'mm10')
     - parameters for cluster execution: partition, memory, threads (if in doubt try the default values)
     - an example is provided in the repository
-- region annotation: CSV file with 3 columns
+- region annotation: CSV file with 4 columns (mandatory)
     - name: name of the query region set
     - regions_bed: path to the query region set .bed file
+    - background_name: name of the background region set
     - background_bed: path to the background/universe region set .bed file
 
 # Execution
@@ -89,7 +92,7 @@ The command creates a self contained HTML based report in a zip archive containi
 - Configuration: used general configuration (accountability)
 - Results
     - Configuration: the used region annotation configuration file
-    - a section for each query region set (row in the region annotation): each enrichment analysis method (LOLA, GREAT, Enrichr) has its own searchable sub-section within the query region set section consisting of all generated dot plots of significant hits
+    - a section for each query region set (row in the region annotation): each enrichment analysis method (LOLA, GREAT, Enrichr/GSEApy) has its own searchable sub-section within the query region set section consisting of all generated dot plots of significant hits
 
 # Results
 The results directory consists of one directory for each query region set, which contains a folder for each method:
@@ -103,7 +106,11 @@ The results directory consists of one directory for each query region set, which
         - GREAT_job_description.txt file with the GREAT job query
         - GREAT_genes.txt file containing the list of genes associated with the query region set
         - GREAT_region_gene_assciations.pdf plot describing the region-gene association mapping
-- LOLA: for each queried database (LOLACore, , LOLAJasper(Motifs) and LOLARoadmap(Epigenomics)) a folder is generated containing
+- GSEApy: for each queried database a folder is generated containing 3 files
+    - all results in a .txt file (without odds ratio)
+    - all results in a .csv file (including odds ratio)
+    - top 25 statistically significant hits as .svg bar plot file
+- LOLA: for each queried database (LOLACore, , LOLAJasper (Motifs) and LOLARoadmap (Epigenomics)) a folder is generated containing
     - all results in a .tsv file
     - top 25 statistically significant hits as .svg dot plot file
     - in case of LOLACore additional results are provided:
