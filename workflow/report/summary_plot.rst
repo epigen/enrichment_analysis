@@ -1,0 +1,1 @@
+Summary of the top Enrichment Analysis results of group {{snakemake.wildcards["group"]}} in database {{snakemake.wildcards["db"]}} using {{snakemake.wildcards["tool"]}}.

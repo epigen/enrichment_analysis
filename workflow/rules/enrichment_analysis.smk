@@ -69,7 +69,7 @@ rule plot_enrichment_result:
         enrichment_result=os.path.join(result_path,'{feature_set}','{tool}','{db}','{feature_set}_{db}.csv'),
     output:
         enrichment_plot=report(os.path.join(result_path,'{feature_set}','{tool}','{db}','{feature_set}_{db}.png'),
-                             caption="../report/{tool}.rst", 
+                             caption="../report/enrichment_plot.rst", 
                              category="{}_enrichment_analysis".format(config["project_name"]),
                              subcategory="{feature_set}"),
     params:

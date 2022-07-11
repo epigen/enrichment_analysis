@@ -25,7 +25,7 @@ rule visualize:
         oddsratios = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_or.csv'),
     output:
         summary_plot = report(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),
-                             caption="../report/{tool}.rst", 
+                             caption="../report/summary_plot.rst", 
                              category="{}_enrichment_analysis".format(config["project_name"]),
                              subcategory="{group}"),
     params:

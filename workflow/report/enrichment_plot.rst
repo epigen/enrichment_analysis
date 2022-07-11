@@ -1,0 +1,1 @@
+Top Enrichment Analysis results of feature set {{snakemake.wildcards["feature_set"]}} in database {{snakemake.wildcards["db"]}} using {{snakemake.wildcards["tool"]}}.
