@@ -5,12 +5,13 @@ channels:
   - defaults
 dependencies:
   - r-base=4.1.0
-  - bioconductor-rgreat
-  - bioconductor-lola
-  - r-enrichr
+  - bioconductor-lola=1.24
   - r-simplecache
-  - bioconductor-enrichplot
-  - r-svglite
-  - gseapy
+  - bioconductor-qvalue
+  - bioconductor-rgreat=1.26
+  - gseapy=0.10.8
   - pandas=1.1.4
+  - r-svglite
+  - r-ggplot2=3.3
+
 

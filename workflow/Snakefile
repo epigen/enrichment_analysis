@@ -8,6 +8,15 @@ import csv
 import sys
 import subprocess
 
+##### set minimum snakemake version #####
+min_version("6.0.3")
+
+SDIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
+shell.prefix(f"set -eo pipefail;")
+
+##### container image #####
+# containerized: "docker://sreichl/genomic_region_enrichment"
+
 ##### get  LOLA resources if needed #####
 LOLA_path = os.path.join("resources", "LOLA")
 if not os.path.exists(LOLA_path):
@@ -42,72 +51,90 @@ if not os.path.exists(LOLA_path):
     
     print("finished downloading and unpacking LOLA resources")
 
-##### set minimum snakemake version #####
-min_version("6.0.3")
-
-##### container image #####
-# containerized: "docker://sreichl/genomic_region_enrichment"
 
 ##### setup report #####
 report: "report/workflow.rst"
 
-##### set & load config and sample annotation sheets #####
+##### load config and annotation #####
 configfile: os.path.join("config","config.yaml")
 
-# get sample annotations
-regions = pd.read_csv(config["region_annotation"], index_col=0)
-background_region_df = regions.loc[:,['background_name', 'background_bed']]
+### get annotations 
+### for three data types: query genes, query regions and background regions (to be converted to genes)
+annot = pd.read_csv(config["annotation"], index_col='name')
+
+# genes
+genes = annot.loc[annot['features_path'].str.endswith('.txt'),:]
+genes_dict = genes.to_dict('index')
+# print(genes_dict) # for testing
+
+# regions
+regions = annot.loc[annot['features_path'].str.endswith('.bed'),:]
+regions_dict = regions.to_dict('index')
+# print(regions_dict) # for testing
+
+# background regions
+background_region_df = regions.loc[:,['background_name', 'background_path']]
 background_region_df = background_region_df.drop_duplicates()
-background_regions = dict(background_region_df.set_index('background_name').T)
-# print(background_regions) # for testing
-regions = dict(regions.T)
+background_regions_dict = background_region_df.set_index('background_name').to_dict('index')
+# print(background_regions_dict) # for testing
 
-
+# databases
+great_dbs = [db.replace(" ","_") for db in config["great_dbs"]]
 
 ##### set global variables
+result_path = os.path.join(config["result_path"],'enrichment_analysis')
 
-# cluster parameters
-partition=config['partition']
-mem=config['memory']
-threads=config['threads']
 
 ##### target rules #####
 rule all:
     input:
-        expand(os.path.join(config['results_dir'], '{region_set}', 'LOLA'), region_set=regions.keys()),
-        expand(os.path.join(config['results_dir'], '{region_set}', 'GREAT'), region_set=regions.keys()),
-        expand(os.path.join(config['results_dir'], '{region_set}', 'Enrichr'), region_set=regions.keys()),
-        expand(os.path.join(config['results_dir'], '{region_set}', 'GSEApy'), region_set=regions.keys()),
-        expand(os.path.join(config['results_dir'], 'background_genes', '{background_regions}'), background_regions=background_regions.keys()),
-        enrichr_databases = os.path.join("resources", "enrichr_databases.pkl"),
-        region_annotation=report(config["region_annotation"], caption="report/region_annotation.rst", category="Configuration"),
+        ### region enrichment analyses
+        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
+        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
+        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=great_dbs),
+        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=great_dbs),
+        expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=config["enrichr_dbs"]),
+        expand(os.path.join(result_path, '{region_set}', 'GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=config["enrichr_dbs"]),
+        # gene enrichment analyses
+        expand(os.path.join(result_path, '{gene_set}', 'GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=genes_dict.keys(), db=config["enrichr_dbs"]),
+        expand(os.path.join(result_path, '{gene_set}', 'GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=config["enrichr_dbs"]),
+        # summaries
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='GSEApy', db=config["enrichr_dbs"]),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='GREAT', db=great_dbs),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
+        # config
+        envs = expand(os.path.join(config["result_path"],'envs','enrichment_analysis','{env}.yaml'),env=['enrichment_analysis']),
+        configs = os.path.join(config["result_path"],'configs','enrichment_analysis','{}_config.yaml'.format(config["project_name"])),
+        annotations = config["annotation"],
     params:
-        # cluster parameters
-        partition=partition,
-    threads: threads
+        partition=config.get("partition"),
+    threads: config.get("threads", 1)
     resources:
-        mem=mem,
+        mem_mb=config.get("mem", "16000"),
     log:
         os.path.join("logs","rules","all.log")
-
         
-
-# download enrichr databases to local python dictionary with GSEApy
+# download enrichr databases to local json files using GSEApy
 rule load_enrichr_databases:
     output:
-        result_file=os.path.join("resources", "enrichr_databases.pkl"),
+        result_file=os.path.join("resources", "{db}.json"),
     params:
-        # cluster parameters
-        partition=partition,
-    threads: threads
+        database = lambda w: "{}".format(w.db),
+        partition=config.get("partition"),
+    threads: config.get("threads", 1)
     resources:
-        mem=mem,
+        mem_mb=config.get("mem", "16000"),
     conda:
         "envs/enrichment_analysis.yaml",
     log:
-        "logs/rules/get_Enrichr_databases.log"
+        "logs/rules/get_Enrichr_databases_{db}.log"
     script:
         "scripts/get_Enrichr_databases_GSEApy.py"
 
 ##### load rules #####
-include: "rules/region_enrichment_analysis.smk"
+include: os.path.join("rules", "common.smk")
+include: os.path.join("rules", "enrichment_analysis.smk")
+include: os.path.join("rules", "summarize.smk")
+include: os.path.join("rules", "envs_export.smk")
+

@@ -2,6 +2,7 @@ resources/*
 logs/*
 report.zip
 report/*
+test/*
 .snakemake/*
 .ipynb_checkpoints/*
 *.ipynb_checkpoints*

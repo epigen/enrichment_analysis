@@ -1,8 +1,92 @@
+# alwayse use absolute paths
 
-region_annotation: /nobackup/lab_bock/projects/cll-progression/results/atac/sorted/temporal_gradients/temporal_gradient_regions.csv
-results_dir: /nobackup/lab_bock/projects/cll-progression/results/atac/sorted/temporal_gradients/enrichment_analysis
-
-# cluster parameters
+##### RESOURCES #####
 partition: 'tinyq'
-memory: '32G'
+mem: '32000'
 threads: 1
+
+
+##### GENERAL #####
+annotation: /research/home/sreichl/projects/genomic_region_enrichment/test/test_enrichment_analysis_annotation.csv
+result_path: /research/home/sreichl/projects/genomic_region_enrichment/test
+project_name: test
+
+# genome either 'hg38' or 'mm10'
+genome: 'hg38'
+
+
+##### TOOLS #####
+
+### GSEApy - Enrichr based analysis
+
+# Databases downloaded from Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
+# enrichr_dbs: ["KEGG_2021_Mouse", "GO_Biological_Process_2021", "WikiPathways_2019_Mouse"]
+enrichr_dbs: ["KEGG_2021_Human", "GO_Biological_Process_2021", "WikiPathways_2019_Human"]
+
+# Databases as JSON/YAML files that can be loaded as dictionaries (TODO: specify format) -> TO BE IMPLEMENTED
+# local_dbs:
+#     TIDB: ""
+
+### GREAT - region-gene association based analysis
+
+# databases to be queried from GREAT (https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655440/Ontologies)
+# not all ontologies are available for all genomes and GREAT versions (here we use version 4)
+great_dbs: ['GO Molecular Function','GO Biological Process','GO Cellular Component','Mouse Phenotype','Mouse Phenotype Single KO','Human Phenotype']
+
+### LOLA - region overlap based analysis
+
+# databases to be queried by LOLA (https://databio.org/regiondb)
+# not all databases are available for all genomes (eg mm10 only supports LOLACore)
+lola_dbs: ['LOLACore','jaspar_motifs','roadmap_epigenomics']
+
+### Enrichment plot
+
+# tool specific column names for plotting & summaries
+column_names:
+    GSEApy:
+        top_n: 25
+        p_value: 'P_value'
+        adj_pvalue: 'Adjusted_P_value'
+        odds_ratio: 'Odds_Ratio'
+        overlap: 'Overlap'
+        term: 'Term'
+    GREAT:
+        top_n: 25
+        p_value: "HyperP"
+        adj_pvalue: "HyperFdrQ"
+        odds_ratio: "RegionFoldEnrich"
+        overlap: "TermCov"
+        term: "Desc"
+    LOLA:
+        top_n: 25
+        p_value: "pValue"
+        adj_pvalue: "qValue"
+        odds_ratio: "oddsRatio"
+        overlap: "support"
+        term: "description"
+
+
+
+
+# GREAT before
+#     GREAT:
+#         top_n: 25
+#         p_value: "Hyper_Raw_PValue"
+#         adj_pvalue: "Hyper_Adjp_BH"
+#         odds_ratio: "Hyper_Fold_Enrichment"
+#         overlap: "Hyper_Region_Set_Coverage"
+#         term: "name"
+
+### Summary
+
+# adjusted p-value threshold per tool
+adjp_th:
+    GSEApy: 0.05
+    GREAT: 0.01
+    LOLA: 0.01
+
+# number of top terms per feature set within each group for overview dotplot
+top_terms_n: 5
+
+# cap for adjusted p-value plotting: -log10(adjusted p-value)>adjp_cap -> adjp_cap
+adjp_cap: 4
