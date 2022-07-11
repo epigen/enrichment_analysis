@@ -7,6 +7,7 @@ import json
 import os
 import numpy as np
 import gseapy as gp
+import sys
 
 
 # utils for manual odds ratio calculation
@@ -76,9 +77,10 @@ res = gp.enrichr(gene_list=gene_list,
                  verbose=False,
                 )
 
-# # move on if result is empty
-# if res.results.shape[0]!=0:
-#     continue
+# move on if result is empty
+if res.results.shape[0]==0:
+    open(result_path, mode='a').close()
+    sys.exit(0)
 
 # annotate used gene set
 res.results['Gene_set'] = db

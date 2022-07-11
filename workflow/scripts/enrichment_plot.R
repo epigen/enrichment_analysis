@@ -23,7 +23,14 @@ overlap_col <- plot_cols[["overlap"]] #'Overlap'
 term_col <- plot_cols[["term"]] #'Term'
 
 # load enrichment result
-enrichment_result <- read.csv(enrichment_result_path, row.names = NULL, header= TRUE)
+if (file.size(enrichment_result_path) != 0L){
+    enrichment_result <- read.csv(enrichment_result_path, row.names = NULL, header= TRUE)
+}else{
+    file.create(enrichment_plot_path)
+    quit()
+}
+
+
 
 # evaluate overlap numerically if necessary
 if(class(enrichment_result[[overlap_col]])=="character"){

@@ -101,8 +101,8 @@ rule all:
         expand(os.path.join(result_path, '{gene_set}', 'GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=config["enrichr_dbs"]),
         # summaries
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='GSEApy', db=config["enrichr_dbs"]),
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='GREAT', db=great_dbs),
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=great_dbs),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
         # config
         envs = expand(os.path.join(config["result_path"],'envs','enrichment_analysis','{env}.yaml'),env=['enrichment_analysis']),
         configs = os.path.join(config["result_path"],'configs','enrichment_analysis','{}_config.yaml'.format(config["project_name"])),

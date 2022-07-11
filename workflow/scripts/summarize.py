@@ -30,7 +30,9 @@ if not os.path.exists(dir_results):
 results_dict = dict()
 for result_path in result_paths:
     tmp_name = os.path.basename(result_path).replace("_{}.csv".format(db),"")
-    results_dict[tmp_name] = pd.read_csv(result_path)
+    
+    if os.stat(result_path).st_size != 0:
+        results_dict[tmp_name] = pd.read_csv(result_path)
     
 # find union of stat. sign. terms
 sign_terms = list()
