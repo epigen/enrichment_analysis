@@ -13,6 +13,8 @@ adjp_path <- snakemake@input[["adjpvalues"]] #"/research/home/sreichl/projects/g
 or_path <- snakemake@input[["oddsratios"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_or.csv"
 
 plot_path <- snakemake@output[["summary_plot"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_summary.png"
+adjp_hm_path <- snakemake@output[["adjp_hm"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_adjp_hm.pdf"
+or_hm_path <- snakemake@output[["or_hm"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_or_hm.pdf"
 
 tool <- snakemake@wildcards[["tool"]] #"GSEApy"
 database <- snakemake@wildcards[["db"]] #"GO_Biological_Process_2021"
@@ -43,16 +45,48 @@ or_df[is.na(or_df)] <- 1
 or_df[or_df<1] <- 1
 adjp_df[is.na(adjp_df)] <- 1
 
-# plot hierarchically clustered heatmap for each
+# log2 transform odds ratios
+or_df <- log2(or_df)
 
+# log10 transform adjp: calculate & cap -log10(adjpvalue) < adjp_cap
+adjp_df <- -log10(adjp_df)
+adjp_df[adjp_df>adjp_cap] <- adjp_cap
+                                     
+# plot hierarchically clustered heatmap for adjp and or
+width_hm <- 0.5 * dim(adjp_df)[2] + 4
+height_hm <- 0.2 * dim(adjp_df)[1] + 1
 
-
+pheatmap(adjp_df,
+         main="-log10(adj. p-values)",
+         treeheight_row = 10,
+         treeheight_col = 10,
+         fontsize = 6,
+         silent=TRUE,
+        width=width_hm,
+        height=height_hm,
+       angle_col=45, 
+         cellwidth=10,
+         cellheight=10,
+         filename=adjp_hm_path)
+                                     
+pheatmap(or_df,
+         main="log2(odds ratios)",
+         treeheight_row = 10,
+         treeheight_col = 10,
+         fontsize = 6,
+         silent=TRUE,
+        width=width_hm,
+        height=height_hm,
+       angle_col=45, 
+         cellwidth=10,
+         cellheight=10,
+         filename=or_hm_path)
 
 
 # perform hierarchical clustering on the log2 odds ratios of the terms and reorder DF
-hc_rows <- hclust(dist(log2(or_df)))
+hc_rows <- hclust(dist(or_df))
 hc_row_names <- rownames(or_df)[hc_rows$order]
-hc_cols <- hclust(dist(t(log2(or_df))))
+hc_cols <- hclust(dist(t(or_df)))
 hc_col_names <- colnames(or_df)[hc_cols$order]
 or_df <- or_df[hc_rows$order, hc_cols$order]
 
@@ -68,23 +102,19 @@ plot_df <- melt(data=or_df,
 # add adjusted p-values to plot dataframe
 plot_df$adjp <- apply(plot_df, 1, function(x) adjp_df[x['terms'], x['feature_set']])
 
-# calculate & cap -log10(adjpvalue) < adjp_cap
-plot_df$adjp <- -log10(plot_df$adjp)
-plot_df$adjp[plot_df$adjp>adjp_cap] <- adjp_cap
-
-# set odds ratios <=1 to NA for plotting
-plot_df$or[plot_df$or<=1] <- NA
+# set odds ratios <=0 to NA for plotting
+plot_df$or[plot_df$or<=0] <- NA
 
 # ensure that the order of terms and feature sets is kept
 plot_df$terms <- factor(plot_df$terms,levels=rev(unique(plot_df$terms)))
 plot_df$feature_set <- factor(plot_df$feature_set, levels=rev(unique(plot_df$feature_set)))
 
 # plot
-enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=adjp, size=log2(or)))+ 
+enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=adjp, size=or))+ 
 geom_point(shape=21, stroke=0.25) +
 scale_fill_gradient(low="grey", high="red", breaks = c(1, 2, 3, 4), limits = c(0, 4), name="-log10(adjp)") +
 scale_y_discrete(label=addline_format) + 
-scale_size_continuous(range = c(0.5,5)) +
+scale_size_continuous(range = c(0.5,5), , name="log2(or)") +
 ggtitle(paste(tool, database, group, sep='\n'))+
 clean_theme()+
 theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),

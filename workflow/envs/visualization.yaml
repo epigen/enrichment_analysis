@@ -8,6 +8,6 @@ dependencies:
   - r-svglite
   - r-ggplot2=3.3
   - r-pheatmap
-  - r-reshape
+  - r-reshape2
 
 
