@@ -1,4 +1,4 @@
-name: enrichment_analysis
+name: region_enrichment_analysis
 channels:
   - conda-forge
   - bioconda
@@ -9,9 +9,5 @@ dependencies:
   - r-simplecache
   - bioconductor-qvalue
   - bioconductor-rgreat=1.26
-  - gseapy=0.10.8
-  - pandas=1.1.4
-  - r-svglite
-  - r-ggplot2=3.3
 
 

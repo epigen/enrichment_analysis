@@ -14,7 +14,7 @@ rule region_enrichment_analysis_LOLA:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/region_enrichment_analysis.yaml",
     log:
         "logs/rules/region_enrichment_analysis_LOLA_{region_set}.log"
     script:
@@ -35,7 +35,7 @@ rule region_enrichment_analysis_GREAT:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/region_enrichment_analysis.yaml",
     log:
         "logs/rules/region_enrichment_analysis_GREAT_{region_set}.log"
     script:
@@ -56,7 +56,7 @@ rule gene_enrichment_analysis_GSEApy:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/gene_enrichment_analysis.yaml",
     log:
         "logs/rules/gene_enrichment_analysis_GSEApy_{gene_set}_{db}.log"
     script:
@@ -81,7 +81,7 @@ rule plot_enrichment_result:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/visualization.yaml",
     log:
         "logs/rules/plot_enrichment_result_{tool}_{feature_set}_{db}.log"
     script:

@@ -104,7 +104,7 @@ rule all:
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=great_dbs),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
         # config
-        envs = expand(os.path.join(config["result_path"],'envs','enrichment_analysis','{env}.yaml'),env=['enrichment_analysis']),
+        envs = expand(os.path.join(config["result_path"],'envs','enrichment_analysis','{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization']),
         configs = os.path.join(config["result_path"],'configs','enrichment_analysis','{}_config.yaml'.format(config["project_name"])),
         annotations = config["annotation"],
     params:
@@ -126,7 +126,7 @@ rule load_enrichr_databases:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "envs/enrichment_analysis.yaml",
+        "envs/gene_enrichment_analysis.yaml",
     log:
         "logs/rules/get_Enrichr_databases_{db}.log"
     script:

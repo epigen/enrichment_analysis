@@ -3,6 +3,7 @@
 library(ggplot2)
 library(svglite)
 library(reshape2)
+library(pheatmap)
 
 # source utility functions
 source("workflow/scripts/utils.R")
@@ -40,10 +41,19 @@ or_df <- or_df[top_terms,]
 # fill or NA or <1 with 1 (ie neutral or negative enrichment)
 or_df[is.na(or_df)] <- 1
 or_df[or_df<1] <- 1
+adjp_df[is.na(adjp_df)] <- 1
+
+# plot hierarchically clustered heatmap for each
+
+
+
+
 
 # perform hierarchical clustering on the log2 odds ratios of the terms and reorder DF
 hc_rows <- hclust(dist(log2(or_df)))
+hc_row_names <- rownames(or_df)[hc_rows$order]
 hc_cols <- hclust(dist(t(log2(or_df))))
+hc_col_names <- colnames(or_df)[hc_cols$order]
 or_df <- or_df[hc_rows$order, hc_cols$order]
 
 # add a column for the terms

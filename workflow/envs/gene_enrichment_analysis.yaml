@@ -1,0 +1,10 @@
+name: gene_enrichment_analysis
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - gseapy=0.10.8
+  - pandas=1.1.4
+
+

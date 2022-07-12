@@ -12,7 +12,7 @@ rule summarize:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/gene_enrichment_analysis.yaml",
     log:
         "logs/rules/summarize_{group}_{tool}_{db}.log"
     script:
@@ -34,7 +34,7 @@ rule visualize:
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
-        "../envs/enrichment_analysis.yaml",
+        "../envs/visualization.yaml",
     log:
         "logs/rules/visualize_{group}_{tool}_{db}.log"
     script:
