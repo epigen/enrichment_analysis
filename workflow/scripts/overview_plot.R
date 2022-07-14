@@ -53,8 +53,8 @@ adjp_df <- -log10(adjp_df)
 adjp_df[adjp_df>adjp_cap] <- adjp_cap
                                      
 # plot hierarchically clustered heatmap for adjp and or
-width_hm <- 0.5 * dim(adjp_df)[2] + 4
-height_hm <- 0.2 * dim(adjp_df)[1] + 1
+width_hm <- 0.1 * dim(adjp_df)[2] + 5
+height_hm <- 0.1 * dim(adjp_df)[1] + 3
 
 pheatmap(adjp_df,
          main="-log10(adj. p-values)",
@@ -62,9 +62,9 @@ pheatmap(adjp_df,
          treeheight_col = 10,
          fontsize = 6,
          silent=TRUE,
-        width=width_hm,
-        height=height_hm,
-       angle_col=45, 
+         width=width_hm,
+         height=height_hm,
+         angle_col=45, 
          cellwidth=10,
          cellheight=10,
          filename=adjp_hm_path)
@@ -75,9 +75,9 @@ pheatmap(or_df,
          treeheight_col = 10,
          fontsize = 6,
          silent=TRUE,
-        width=width_hm,
-        height=height_hm,
-       angle_col=45, 
+         width=width_hm,
+         height=height_hm,
+         angle_col=45, 
          cellwidth=10,
          cellheight=10,
          filename=or_hm_path)
@@ -106,8 +106,8 @@ plot_df$adjp <- apply(plot_df, 1, function(x) adjp_df[x['terms'], x['feature_set
 plot_df$or[plot_df$or<=0] <- NA
 
 # ensure that the order of terms and feature sets is kept
-plot_df$terms <- factor(plot_df$terms,levels=rev(unique(plot_df$terms)))
-plot_df$feature_set <- factor(plot_df$feature_set, levels=rev(unique(plot_df$feature_set)))
+plot_df$terms <- factor(plot_df$terms,levels=hc_row_names)
+plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
 
 # plot
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=adjp, size=or))+ 
@@ -121,8 +121,8 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
       axis.title.x=element_blank(),
       axis.title.y=element_blank())
 
-width <- 0.5 * dim(adjp_df)[2] + 3
-height <- 0.5 * length(top_terms) + 2
+width <- 0.3 * dim(adjp_df)[2] + 3
+height <- 0.3 * length(top_terms) + 2
 # options(repr.plot.width=width, repr.plot.height=height)
 # enr_plot
                       
