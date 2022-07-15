@@ -1,0 +1,4 @@
+usage:
+  software-stack-deployment: # definition of software deployment method (at least one of conda, singularity, or singularity+conda)
+    conda: true 
+  report: true 
