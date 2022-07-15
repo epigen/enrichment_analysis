@@ -22,6 +22,9 @@ group <- snakemake@wildcards[["group"]] #"testgroup"
 
 top_n <- snakemake@config[["top_terms_n"]] #5
 adjp_cap <- snakemake@config[["adjp_cap"]] #4
+or_cap <- snakemake@config[["or_cap"]] #5
+
+adjp_th <- snakemake@config[["adjp_th"]][tool] #0.05
 
 # load summaries
 adjp_df <- read.csv(adjp_path, row.names = 1, header= TRUE)
@@ -40,21 +43,28 @@ top_terms <- unique(as.vector(sapply(adjp_df, function(x) rownames(adjp_df)[orde
 adjp_df <- adjp_df[top_terms,]
 or_df <- or_df[top_terms,]
                                     
-# fill or NA or <1 with 1 (ie neutral or negative enrichment)
+# fill or NA with 1 (ie neutral enrichment or no p value)
 or_df[is.na(or_df)] <- 1
-or_df[or_df<1] <- 1
+# or_df[or_df<1] <- 1
 adjp_df[is.na(adjp_df)] <- 1
+                                     
+# make stat. sign. annotation for OR plot, later
+adjp_annot <- adjp_df
+adjp_annot[adjp_df < adjp_th] <- "*"
+adjp_annot[adjp_df >= adjp_th] <- ""
 
-# log2 transform odds ratios
+# log2 transform odds ratios & cap abs(log2(or)) < or_cap
 or_df <- log2(or_df)
+or_df[or_df > or_cap] <- or_cap
+or_df[or_df < -or_cap] <- -or_cap    
 
-# log10 transform adjp: calculate & cap -log10(adjpvalue) < adjp_cap
+# log10 transform adjp & cap -log10(adjpvalue) < adjp_cap
 adjp_df <- -log10(adjp_df)
 adjp_df[adjp_df>adjp_cap] <- adjp_cap
                                      
 # plot hierarchically clustered heatmap for adjp and or
-width_hm <- 0.1 * dim(adjp_df)[2] + 5
-height_hm <- 0.1 * dim(adjp_df)[1] + 3
+width_hm <- 0.2 * dim(adjp_df)[2] + 5
+height_hm <- 0.2 * dim(adjp_df)[1] + 3
 
 pheatmap(adjp_df,
          main="-log10(adj. p-values)",
@@ -67,20 +77,28 @@ pheatmap(adjp_df,
          angle_col=45, 
          cellwidth=10,
          cellheight=10,
-         filename=adjp_hm_path)
-                                     
+         filename=adjp_hm_path,
+         breaks=seq(0, max(adjp_df), length.out=200),
+         color=colorRampPalette(c("white", "red"))(200)
+        )
+
 pheatmap(or_df,
+         display_numbers=adjp_annot,
          main="log2(odds ratios)",
          treeheight_row = 10,
          treeheight_col = 10,
          fontsize = 6,
+         fontsize_number = 10,
          silent=TRUE,
          width=width_hm,
          height=height_hm,
          angle_col=45, 
          cellwidth=10,
          cellheight=10,
-         filename=or_hm_path)
+         filename=or_hm_path,
+         breaks=seq(-max(abs(or_df)), max(abs(or_df)), length.out=200),
+         color=colorRampPalette(c("blue", "white", "red"))(200)
+        )
 
 
 # perform hierarchical clustering on the log2 odds ratios of the terms and reorder DF
@@ -102,7 +120,7 @@ plot_df <- melt(data=or_df,
 # add adjusted p-values to plot dataframe
 plot_df$adjp <- apply(plot_df, 1, function(x) adjp_df[x['terms'], x['feature_set']])
 
-# set odds ratios <=0 to NA for plotting
+# set odds ratios <= 0 to NA for plotting
 plot_df$or[plot_df$or<=0] <- NA
 
 # ensure that the order of terms and feature sets is kept
@@ -121,8 +139,8 @@ theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
       axis.title.x=element_blank(),
       axis.title.y=element_blank())
 
-width <- 0.3 * dim(adjp_df)[2] + 3
-height <- 0.3 * length(top_terms) + 2
+width <- 0.15 * dim(adjp_df)[2] + 3
+height <- 0.2 * dim(adjp_df)[1] + 2
 # options(repr.plot.width=width, repr.plot.height=height)
 # enr_plot
                       

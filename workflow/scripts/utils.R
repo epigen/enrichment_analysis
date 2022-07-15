@@ -59,7 +59,7 @@ clean_theme <- function(){
     
     # settings
     font <- "Arial"
-    size <- 8
+    size <- 6
     
     theme_bw(
         base_size=size,

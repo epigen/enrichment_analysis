@@ -90,3 +90,6 @@ top_terms_n: 5
 
 # cap for adjusted p-value plotting: -log10(adjusted p-value)>adjp_cap -> adjp_cap
 adjp_cap: 4
+
+# cap for odds ratio plotting: abs(log2(odds ratio)) > or_cap -> sign(log2(odds ratio)) * or_cap
+or_cap: 5
