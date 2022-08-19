@@ -46,7 +46,7 @@ rule gene_enrichment_analysis_GSEApy:
     input:
         query_genes=get_gene_path,
         background_genes=get_background_gene_path,
-        enrichr_database = os.path.join("resources", "{db}.json"),
+        enrichr_database = os.path.join("resources", config["project_name"], "{db}.json"),
     output:
         result_file = os.path.join(result_path,'{gene_set}','GSEApy','{db}','{gene_set}_{db}.csv'),
     params:

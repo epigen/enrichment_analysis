@@ -21,11 +21,11 @@ regionSet_background <- readBed(background_regions)
 
 # needs resources downloaded from: http://big.databio.org/regiondb/LOLACoreCaches_180412.tgz
 # needs simpleCache package installed
-LOLACore <- loadRegionDB(file.path("resources/LOLA/nm/t1/resources/regions/LOLACore",genome))
+LOLACore <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/nm/t1/resources/regions/LOLACore",genome))
 
 if (genome!='mm10'){
-    jaspar_motifs <- loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'jaspar_motifs')
-    roadmap_epigenomics <- loadRegionDB(file.path("resources/LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'roadmap_epigenomics')
+    jaspar_motifs <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'jaspar_motifs')
+    roadmap_epigenomics <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'roadmap_epigenomics')
     dblist <- list(LOLACore=LOLACore, jaspar_motifs=jaspar_motifs,roadmap_epigenomics=roadmap_epigenomics)
 } else{
     dblist <- list(LOLACore=LOLACore)

@@ -17,8 +17,14 @@ shell.prefix(f"set -eo pipefail;")
 ##### container image #####
 # containerized: "docker://sreichl/genomic_region_enrichment"
 
+##### setup report #####
+report: "report/workflow.rst"
+
+##### load config and annotation #####
+configfile: os.path.join("config","config.yaml")
+
 ##### get  LOLA resources if needed #####
-LOLA_path = os.path.join("resources", "LOLA")
+LOLA_path = os.path.join("resources", config["project_name"], "LOLA")
 if not os.path.exists(LOLA_path):
     print("start downloading and unpacking LOLA resources")
     os.makedirs(LOLA_path, exist_ok=True)
@@ -51,12 +57,6 @@ if not os.path.exists(LOLA_path):
     
     print("finished downloading and unpacking LOLA resources")
 
-
-##### setup report #####
-report: "report/workflow.rst"
-
-##### load config and annotation #####
-configfile: os.path.join("config","config.yaml")
 
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
@@ -118,7 +118,7 @@ rule all:
 # download enrichr databases to local json files using GSEApy
 rule load_enrichr_databases:
     output:
-        result_file=os.path.join("resources", "{db}.json"),
+        result_file=os.path.join("resources", config["project_name"],"{db}.json"),
     params:
         database = lambda w: "{}".format(w.db),
         partition=config.get("partition"),
