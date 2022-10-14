@@ -17,13 +17,13 @@ genome: 'hg38'
 
 ##### TOOLS #####
 
-### GSEApy - Enrichr based analysis
+### GSEApy - Enrichr (Fisher test) based analysis
 
 # Databases downloaded from Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
 # enrichr_dbs: ["KEGG_2021_Mouse", "GO_Biological_Process_2021", "WikiPathways_2019_Mouse"]
 enrichr_dbs: ["KEGG_2021_Human", "GO_Biological_Process_2021", "WikiPathways_2019_Human"]
 
-# Databases as JSON/YAML files that can be loaded as dictionaries (TODO: specify format) -> TO BE IMPLEMENTED
+# Databases as JSON files that can be loaded as dictionaries (TODO: specify format) -> TO BE IMPLEMENTED
 # local_dbs:
 #     TIDB: ""
 
@@ -66,8 +66,6 @@ column_names:
         term: "description"
 
 
-
-
 # GREAT before
 #     GREAT:
 #         top_n: 25
@@ -77,7 +75,7 @@ column_names:
 #         overlap: "Hyper_Region_Set_Coverage"
 #         term: "name"
 
-### Summary
+##### SUMMARY #####
 
 # adjusted p-value threshold per tool
 adjp_th:

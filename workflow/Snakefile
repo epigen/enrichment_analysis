@@ -14,9 +14,6 @@ min_version("6.0.3")
 SDIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
 shell.prefix(f"set -eo pipefail;")
 
-##### container image #####
-# containerized: "docker://sreichl/genomic_region_enrichment"
-
 ##### setup report #####
 report: "report/workflow.rst"
 
