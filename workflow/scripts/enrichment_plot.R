@@ -4,7 +4,8 @@ library(ggplot2)
 library(svglite)
 
 # source utility functions
-source("workflow/scripts/utils.R")
+# source("workflow/scripts/utils.R")
+snakemake@source("./utils.R")
 
 # configs
 enrichment_result_path <- snakemake@input[["enrichment_result"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/IRF8_down/GSEApy/KEGG_2021_Human/KEGG_2021_Human.csv"

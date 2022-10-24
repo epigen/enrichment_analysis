@@ -6,7 +6,8 @@ library(reshape2)
 library(pheatmap)
 
 # source utility functions
-source("workflow/scripts/utils.R")
+# source("workflow/scripts/utils.R")
+snakemake@source("./utils.R")
 
 # configs
 adjp_path <- snakemake@input[["adjpvalues"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_adjp.csv"
