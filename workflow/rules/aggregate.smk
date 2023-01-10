@@ -1,11 +1,11 @@
 
-# summarize all results of the same group per database
-rule summarize:
+# aggregate all results of the same group per database
+rule aggregate:
     input:
         enrichment_results = get_group_paths,
     output:
-        adjpvalues = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_adjp.csv'),
-        oddsratios = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_or.csv'),
+        results_all = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_all.csv'),
+        results_sig = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_sig.csv'),
     params:
         partition=config.get("partition"),
     threads: config.get("threads", 1)
@@ -14,15 +14,14 @@ rule summarize:
     conda:
         "../envs/gene_enrichment_analysis.yaml",
     log:
-        "logs/rules/summarize_{group}_{tool}_{db}.log"
+        "logs/rules/aggregate_{group}_{tool}_{db}.log"
     script:
-        "../scripts/summarize.py"
+        "../scripts/aggregate.py"
         
-# summarize all results of the same group per database
+# visualize all results of the same group per database
 rule visualize:
     input:
-        adjpvalues = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_adjp.csv'),
-        oddsratios = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_or.csv'),
+        results_all = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_all.csv'),
     output:
         summary_plot = report(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),
                              caption="../report/summary_plot.rst", 

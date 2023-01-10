@@ -75,15 +75,15 @@ column_names:
 #         overlap: "Hyper_Region_Set_Coverage"
 #         term: "name"
 
-##### SUMMARY #####
+##### AGGREGATE & SUMMARIZE #####
 
-# adjusted p-value threshold per tool
+# adjusted p-value threshold per tool to denote significance
 adjp_th:
     GSEApy: 0.05
     GREAT: 0.01
     LOLA: 0.01
 
-# number of top terms per feature set within each group for overview dotplot
+# number of top terms per feature set within each group for all overview plots (adjusted p-value, odds-ratio and bubble-heatmap)
 top_terms_n: 5
 
 # cap for adjusted p-value plotting: -log10(adjusted p-value)>adjp_cap -> adjp_cap

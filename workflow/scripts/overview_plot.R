@@ -10,16 +10,19 @@ library(pheatmap)
 snakemake@source("./utils.R")
 
 # configs
-adjp_path <- snakemake@input[["adjpvalues"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_adjp.csv"
-or_path <- snakemake@input[["oddsratios"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_or.csv"
+results_all_path <- snakemake@input[["results_all"]]
 
-plot_path <- snakemake@output[["summary_plot"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_summary.png"
-adjp_hm_path <- snakemake@output[["adjp_hm"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_adjp_hm.pdf"
-or_hm_path <- snakemake@output[["or_hm"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/testgroup/GSEApy/GO_Biological_Process_2021/testgroup_GO_Biological_Process_2021_or_hm.pdf"
+plot_path <- snakemake@output[["summary_plot"]]
+adjp_hm_path <- snakemake@output[["adjp_hm"]]
+or_hm_path <- snakemake@output[["or_hm"]]
 
 tool <- snakemake@wildcards[["tool"]] #"GSEApy"
 database <- snakemake@wildcards[["db"]] #"GO_Biological_Process_2021"
 group <- snakemake@wildcards[["group"]] #"testgroup"
+
+term_col <- snakemake@config[["column_names"]][[tool]][["term"]] #'Term'
+adjp_col <- snakemake@config[["column_names"]][[tool]][["adj_pvalue"]] #'Adjusted_P_value'
+or_col <- snakemake@config[["column_names"]][[tool]][["odds_ratio"]] #'Odds_Ratio'
 
 top_n <- snakemake@config[["top_terms_n"]] #5
 adjp_cap <- snakemake@config[["adjp_cap"]] #4
@@ -27,18 +30,31 @@ or_cap <- snakemake@config[["or_cap"]] #5
 
 adjp_th <- snakemake@config[["adjp_th"]][tool] #0.05
 
-# load summaries
-adjp_df <- read.csv(adjp_path, row.names = 1, header= TRUE)
-or_df <- read.csv(or_path, row.names = 1, header= TRUE)
+# load aggregated result dataframe
+results_all <- read.csv(results_all_path, header= TRUE)
 
 # stop early if results are empty
-if(dim(adjp_df)[1]<2){
+if(dim(results_all)[1]<2){
     file.create(plot_path)
     quit()
 }
 
 # determine top_n most significant terms (not necessarily statistically significant!)
-top_terms <- unique(as.vector(sapply(adjp_df, function(x) rownames(adjp_df)[order(x)][1:top_n])))
+top_terms <- c()
+for (query in unique(results_all$name)){
+    tmp_result <- results_all[results_all$name==query,]
+    tmp_terms <- tmp_result[order(tmp_result[adjp_col]), term_col][1:top_n]
+    top_terms <- unique(c(top_terms,tmp_terms))
+}
+                                     
+# make adjusted p-vale and odds-ratio dataframes
+adjp_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = adjp_col)
+rownames(adjp_df) <- adjp_df[[term_col]]
+adjp_df[[term_col]] <- NULL
+
+or_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = or_col)
+rownames(or_df) <- or_df[[term_col]]
+or_df[[term_col]] <- NULL
 
 # filter by top terms
 adjp_df <- adjp_df[top_terms,]

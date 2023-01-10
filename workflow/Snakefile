@@ -132,6 +132,6 @@ rule load_enrichr_databases:
 ##### load rules #####
 include: os.path.join("rules", "common.smk")
 include: os.path.join("rules", "enrichment_analysis.smk")
-include: os.path.join("rules", "summarize.smk")
+include: os.path.join("rules", "aggregate.smk")
 include: os.path.join("rules", "envs_export.smk")
 
