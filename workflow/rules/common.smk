@@ -1,5 +1,8 @@
 ### utility GET/INPUT functions
 
+def get_local_db_path(wildcards):
+    return local_db_dict[wildcards.db]
+
 ### for genomic region enrichment
 # region set
 def get_region_path(wildcards):

@@ -1,6 +1,6 @@
-# Gene Set & Genomic Region Set Enrichment Analysis & Visualization Snakemake Workflow for Genomes hg38 & mm10.
+# Gene Set & Genomic Region Set Enrichment Analysis & Visualization Snakemake Workflow for Human and Mouse Genomes.
 
-Given **human (hg38) or mouse (mm10)** based gene sets and/or genomic region sets (i.e., region sets) of interest and respective background gene/region sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy and results saved as CSV files. Additionally, the most significant results are plotted for each gene/region set and database queried. Finally, the results within the same "group" are aggregated per database in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results and workflow information a detailed self-contained HTML report can be generated.
+Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based gene sets and/or genomic region sets (i.e., region sets) of interest and respective background gene/region sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy and results saved as CSV files. Additionally, the most significant results are plotted for each gene/region set and database queried. Finally, the results within the same "group" are aggregated per database in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results and workflow information a detailed self-contained HTML report can be generated.
 
 **If you use this workflow in a publication, don't forget to give credits to the authors by citing the URL of this (original) repository (and its DOI, see Zenodo badge above -> coming soon).**
 
@@ -34,7 +34,7 @@ This project wouldn't be possible without the following software and their depen
 | LOLA           | https://doi.org/10.1093/bioinformatics/btv612     |
 | pandas         | https://doi.org/10.5281/zenodo.3509134            |
 | pheatmap       | https://cran.r-project.org/package=pheatmap       |
-| rGREAT         | https://github.com/jokergoo/rGREAT                |
+| rGREAT         | https://doi.org/10.1093/bioinformatics/btac745    |
 | Snakemake      | https://doi.org/10.12688/f1000research.29032.2    |
 
 # Methods
@@ -69,7 +69,7 @@ The aggregated results per analysis [group] and database combination were visual
 The three tools LOLA, GREAT and GSEApy are used for enrichment analysis. Databases to be queried can be configured (see ./config/config.yaml). All approaches statistically correct their results using the provided background region/gene sets.
 - enrichment analysis:
     - region-set
-        - [LOLA](http://lolaweb.databio.org/): Genomic Locus Overlap Enrichment Analysis is run locally. Required (cached) databases are downloaded automatically during the first run. [Supported databases](https://databio.org/regiondb) depend on the genome.
+        - [LOLA](http://lolaweb.databio.org/): Genomic Locus Overlap Enrichment Analysis is run locally. Required (cached) databases, which are downloaded automatically during the first run. [Supported databases](https://databio.org/regiondb) depend on the genome.
         - [GREAT](http://great.stanford.edu/public/html/index.php) Genomic Regions Enrichment of Annotations Tool is queried remotely (requires internet connection). [Supported databases](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655440/Ontologies) depend on the genome.
     - gene-set
         - [GSEApy](https://gseapy.readthedocs.io/en/latest/) performs Fisher’s exact test and is run locally. Required databases are downloaded automatically during the first run (and saved as JSON files). All [Enrichr databases](https://maayanlab.cloud/Enrichr/#libraries) can be queried.

@@ -34,6 +34,13 @@ for result_path in result_paths:
         tmp_res['name'] = tmp_name
         results_list.append(tmp_res)
         
+        
+# move on if results are empty
+if len(results_list)==0:
+    open(results_all_path, mode='a').close()
+    open(results_sig_path, mode='a').close()
+    sys.exit(0)
+        
 # concatenate all results into one results dataframe
 result_df = pd.concat(results_list, axis=0)
 

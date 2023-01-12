@@ -2,8 +2,10 @@
 # performs region enrichment analysis using LOLA
 rule region_enrichment_analysis_LOLA:
     input:
-        regions=get_region_path,
-        background=get_background_region_path,
+        regions = get_region_path,
+        background = get_background_region_path,
+        lola_resources = rules.load_lola_resources.output.lola_resources
+#         lola_resources = os.path.abspath(os.path.join("resources", config["project_name"], "LOLA")),
     output:
         results = expand(os.path.join(result_path,'{{region_set}}','LOLA','{db}','{{region_set}}_{db}.csv'),db=config["lola_dbs"]),
     params:

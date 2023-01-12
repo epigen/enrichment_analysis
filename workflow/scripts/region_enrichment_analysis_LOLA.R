@@ -23,7 +23,7 @@ regionSet_background <- readBed(background_regions)
 # needs simpleCache package installed
 LOLACore <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/nm/t1/resources/regions/LOLACore",genome))
 
-if (genome!='mm10'){
+if (genome=="hg19" | genome=="hg38"){
     jaspar_motifs <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'jaspar_motifs')
     roadmap_epigenomics <- loadRegionDB(file.path("resources",snakemake@config[["project_name"]],"LOLA/scratch/ns5bc/resources/regions/LOLAExt",genome), collections = 'roadmap_epigenomics')
     dblist <- list(LOLACore=LOLACore, jaspar_motifs=jaspar_motifs,roadmap_epigenomics=roadmap_epigenomics)

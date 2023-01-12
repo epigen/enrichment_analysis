@@ -23,11 +23,18 @@ def odds_ratio_calc(bg_n, gene_list_n, gene_set_n, overlap_n):
 
 
 # configs
+
+# input
 query_genes_path = snakemake.input['query_genes']
 background_genes_path = snakemake.input['background_genes']
 database_path = snakemake.input['enrichr_database']
-db = snakemake.params["database"]
+
+# outputs
 result_path = snakemake.output['result_file']
+
+# parameters
+db = snakemake.params["database"]
+
 dir_results = os.path.dirname(result_path)
 
 if not os.path.exists(dir_results):
@@ -38,6 +45,7 @@ if os.path.exists(query_genes_path):
     genes = open(query_genes_path, "r")
     gene_list = genes.read()
     gene_list = gene_list.split('\n')
+    gene_list.remove('')
     genes.close()
 else:
     with open(os.path.join(dir_results,"no_genes_found.txt"), 'w') as f:
@@ -48,7 +56,13 @@ else:
 bg_file = open(background_genes_path, "r")
 background = bg_file.read()
 background = background.split('\n')
+background.remove('')
 bg_file.close()
+
+# move on if query-genes are empty
+if len(gene_list)==0:
+    open(result_path, mode='a').close()
+    sys.exit(0)
 
 # load database .pkl file
 # with open(enrichr_databases, 'rb') as f:
@@ -60,9 +74,16 @@ with open(database_path) as json_file:
 gene_list=[str(x).upper() for x in list(gene_list)]
 background=[str(x).upper() for x in list(background)]
     
-# perform enrichment of every database with GSEApy (plots are generated automatically)
+# count number of background genes for odds-ratio calculation
 bg_n = len(background)
 
+# if background-genes are empty provide number of genes as 20,000 as heuristic
+# this excpetion only occurs if background region set exceeds 500,000 regions
+if bg_n==0:
+    bg_n = 20000
+    background = bg_n
+
+# perform enrichment of every database with GSEApy (barplots are generated automatically)
 res = dict()
 
 #for db in db_dict.keys():

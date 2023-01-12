@@ -30,14 +30,22 @@ or_cap <- snakemake@config[["or_cap"]] #5
 
 adjp_th <- snakemake@config[["adjp_th"]][tool] #0.05
 
+# stop early if results are empty
+if(file.size(results_all_path) == 0L){
+    file.create(plot_path)
+    file.create(adjp_hm_path)
+    file.create(or_hm_path)
+    quit()
+}
+
 # load aggregated result dataframe
 results_all <- read.csv(results_all_path, header= TRUE)
 
-# stop early if results are empty
-if(dim(results_all)[1]<2){
-    file.create(plot_path)
-    quit()
-}
+# # stop early if results are empty
+# if(dim(results_all)[1]<2){
+#     file.create(plot_path)
+#     quit()
+# }
 
 # determine top_n most significant terms (not necessarily statistically significant!)
 top_terms <- c()

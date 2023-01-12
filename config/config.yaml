@@ -7,11 +7,13 @@ threads: 1
 
 
 ##### GENERAL #####
-annotation: /research/home/sreichl/projects/genomic_region_enrichment/test/test_enrichment_analysis_annotation.csv
-result_path: /research/home/sreichl/projects/genomic_region_enrichment/test
+annotation: /research/home/sreichl/projects/enrichment_analysis/test/test_enrichment_analysis_annotation.csv
+result_path: /research/home/sreichl/projects/enrichment_analysis/test
 project_name: test
 
-# genome either 'hg38' or 'mm10'
+# genome
+# human 'hg19' or 'hg38' 
+# mouse 'mm9' or 'mm10'
 genome: 'hg38'
 
 
@@ -24,7 +26,7 @@ genome: 'hg38'
 enrichr_dbs: ["KEGG_2021_Human", "GO_Biological_Process_2021", "WikiPathways_2019_Human"]
 
 # Databases as JSON files that can be loaded as dictionaries (TODO: specify format) -> TO BE IMPLEMENTED
-# local_dbs:
+local_dbs:
 #     TIDB: ""
 
 ### GREAT - region-gene association based analysis
