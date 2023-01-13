@@ -10,7 +10,7 @@ import gseapy as gp
 import sys
 
 
-# utils for manual odds ratio calculation
+# utils for manual odds ratio calculation -> not used anymore
 def overlap_converter(overlap_str, bg_n, gene_list_n):
     overlap_n, gene_set_n = str(overlap_str).split('/')
     return odds_ratio_calc(bg_n, gene_list_n, int(gene_set_n), int(overlap_n))
@@ -27,9 +27,9 @@ def odds_ratio_calc(bg_n, gene_list_n, gene_set_n, overlap_n):
 # input
 query_genes_path = snakemake.input['query_genes']
 background_genes_path = snakemake.input['background_genes']
-database_path = snakemake.input['enrichr_database']
+database_path = snakemake.input['database']
 
-# outputs
+# output
 result_path = snakemake.output['result_file']
 
 # parameters
@@ -83,39 +83,35 @@ if bg_n==0:
     bg_n = 20000
     background = bg_n
 
-# perform enrichment of every database with GSEApy (barplots are generated automatically)
-res = dict()
-
-#for db in db_dict.keys():
-res = gp.enrichr(gene_list=gene_list,
-                 gene_sets=db_dict,#db_dict[db],
+# perform ORA (hypergeometric test) in database using GSEApy (barplots are generated automatically)
+res = gp.enrich(gene_list=gene_list,
+                 gene_sets=db_dict,
                  background=background,
-#                      organism='mouse',
-                 outdir=os.path.join(dir_results),
+                 outdir=None,#os.path.join(dir_results),
                  top_term=25,
                  cutoff=0.05,
                  format='png',
-                 verbose=False,
-                )
+                 verbose=True,
+                ).res2d
 
 # move on if result is empty
-if res.results.shape[0]==0:
+if res.shape[0]==0:
     open(result_path, mode='a').close()
     sys.exit(0)
 
 # annotate used gene set
-res.results['Gene_set'] = db
+res['Gene_set'] = db
 
-# odds ratio calculation 
-gene_list_n=len(gene_list)
-res.results['Odds Ratio'] = res.results['Overlap'].apply(overlap_converter, args=(bg_n, gene_list_n))
+# odds ratio calculation -> results still differ, but correlation is >0.99 and with large OR values the difference shows up at third decimal place
+# gene_list_n=len(gene_list)
+# res['Odds Ratio'] = res['Overlap'].apply(overlap_converter, args=(bg_n, gene_list_n))
 
-# make column names language agnostic (ie R compatible)
-column_names = list(res.results.columns.values)
+# make column names language agnostic (i.e., R compatible)
+column_names = list(res.columns.values)
 column_names = [col.replace(" ","_") for col in column_names]
 column_names = [col.replace("-","_") for col in column_names]
-res.results.columns = column_names
+res.columns = column_names
 
 # separate export
-res.results.to_csv(result_path)
+res.to_csv(result_path)
 

@@ -1,6 +1,6 @@
-# Gene Set & Genomic Region Set Enrichment Analysis & Visualization Snakemake Workflow for Human and Mouse Genomes.
+# Genomic Region Set & (Ranked) Gene Set Enrichment Analysis & Visualization Snakemake Workflow for Human and Mouse Genomes.
 
-Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based gene sets and/or genomic region sets (i.e., region sets) of interest and respective background gene/region sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy and results saved as CSV files. Additionally, the most significant results are plotted for each gene/region set and database queried. Finally, the results within the same "group" are aggregated per database in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results and workflow information a detailed self-contained HTML report can be generated.
+Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-represenation analysis (ORA) & preranked GSEA) and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same DEA) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble-heatmap plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
 **If you use this workflow in a publication, don't forget to give credits to the authors by citing the URL of this (original) repository (and its DOI, see Zenodo badge above -> coming soon).**
 
@@ -30,7 +30,7 @@ This project wouldn't be possible without the following software and their depen
 | ggplot2        | https://ggplot2.tidyverse.org/                    |
 | GREAT          | https://doi.org/10.1371/journal.pcbi.1010378      |
 | GSEA           | https://doi.org/10.1073/pnas.0506580102           |
-| GSEApy         | https://github.com/zqfang/GSEApy                  |
+| GSEApy         | https://doi.org/10.1093/bioinformatics/btac757    |
 | LOLA           | https://doi.org/10.1093/bioinformatics/btv612     |
 | pandas         | https://doi.org/10.5281/zenodo.3509134            |
 | pheatmap       | https://cran.r-project.org/package=pheatmap       |
@@ -62,7 +62,7 @@ For each query set and database combination an enrichment dot plot was used to v
 
 The aggregated results per analysis [group] and database combination were visualized using hierarchically clustered heatmaps and bubble plots. The union of the top [top_terms_n] most significant terms per query were determined and their effect-size and significance were visualized as hierarchically clustered heatmaps (statistical significance of adjusted p-value < 0.05 was denoted by *). Furthermore, a hierarchically clustered overview bubble plot encoding both effect-size (size) and significance (color) is provided. All summary visualizations’ values were capped by [adjp_cap/or_cap] to avoid shifts in the coloring scheme caused by outliers.
 
-**The analysis and visualizations described here were performed using a publicly available Snakemake [ver] (ref) workflow [ref - cite this workflow here].**
+**The analysis and visualizations described here were performed using a publicly available Snakemake (ver) [ref] workflow [ref - cite this workflow here].**
 
 
 # Features

@@ -31,7 +31,7 @@ rule visualize:
                              caption="../report/summary_plot.rst", 
                              category="{}_enrichment_analysis".format(config["project_name"]),
                              subcategory="{group}"),
-        or_hm = report(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_or_hm.pdf'),
+        effect_hm = report(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_effect_hm.pdf'),
                              caption="../report/summary_plot.rst", 
                              category="{}_enrichment_analysis".format(config["project_name"]),
                              subcategory="{group}"),

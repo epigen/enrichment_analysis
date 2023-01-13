@@ -1,5 +1,6 @@
 ### utility GET/INPUT functions
 
+# get user provided local database path
 def get_local_db_path(wildcards):
     return local_db_dict[wildcards.db]
 
@@ -23,7 +24,7 @@ def get_background_region_path(wildcards):
         print("Background region set not found")
 
 
-### for gene set enrichment
+### for ORA GSEA
 # gene set
 def get_gene_path(wildcards):
     if wildcards.gene_set in genes_dict.keys():
@@ -41,8 +42,11 @@ def get_background_gene_path(wildcards):
         return os.path.join(result_path, regions_dict[wildcards.gene_set]['background_name'],'GREAT','genes.txt')
     else:
         print("Background gene set not found")
-        
-        
+
+### for preranked GSEA
+def get_rnk_path(wildcards):
+    return os.path.join(rnk_dict[wildcards.gene_set]['features_path'])
+
 ### for group summary & visualization
 def get_group_paths(wildcards):
     feature_sets = list(annot.index[annot["group"]==wildcards.group])
@@ -50,6 +54,10 @@ def get_group_paths(wildcards):
     # for tool GREAT or LOLA only consider region sets
     if wildcards.tool=="GREAT" or wildcards.tool=="LOLA":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]
+    if wildcards.tool=="ORA_GSEApy":
+        feature_sets = [feature_set for feature_set in feature_sets if feature_set in genes_dict.keys()] + [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]
+    if wildcards.tool=="preranked_GSEApy":
+        feature_sets = [feature_set for feature_set in feature_sets if feature_set in rnk_dict.keys()]
     
     return expand(os.path.join(result_path,'{feature_set}','{tool}','{db}','{feature_set}_{db}.csv'),
                   feature_set=feature_sets,

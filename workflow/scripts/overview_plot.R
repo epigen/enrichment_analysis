@@ -14,88 +14,87 @@ results_all_path <- snakemake@input[["results_all"]]
 
 plot_path <- snakemake@output[["summary_plot"]]
 adjp_hm_path <- snakemake@output[["adjp_hm"]]
-or_hm_path <- snakemake@output[["or_hm"]]
+effect_hm_path <- snakemake@output[["effect_hm"]]
 
-tool <- snakemake@wildcards[["tool"]] #"GSEApy"
+tool <- snakemake@wildcards[["tool"]] #"ORA_GSEApy"
 database <- snakemake@wildcards[["db"]] #"GO_Biological_Process_2021"
 group <- snakemake@wildcards[["group"]] #"testgroup"
 
 term_col <- snakemake@config[["column_names"]][[tool]][["term"]] #'Term'
 adjp_col <- snakemake@config[["column_names"]][[tool]][["adj_pvalue"]] #'Adjusted_P_value'
-or_col <- snakemake@config[["column_names"]][[tool]][["odds_ratio"]] #'Odds_Ratio'
+effect_col <- snakemake@config[["column_names"]][[tool]][["effect_size"]] #'Odds_Ratio'
 
 top_n <- snakemake@config[["top_terms_n"]] #5
 adjp_cap <- snakemake@config[["adjp_cap"]] #4
-or_cap <- snakemake@config[["or_cap"]] #5
+effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]] #5
 
-adjp_th <- snakemake@config[["adjp_th"]][tool] #0.05
+adjp_th <- as.numeric(snakemake@config[["adjp_th"]][tool]) #0.05
 
 # stop early if results are empty
 if(file.size(results_all_path) == 0L){
     file.create(plot_path)
     file.create(adjp_hm_path)
-    file.create(or_hm_path)
+    file.create(effect_hm_path)
     quit()
 }
 
 # load aggregated result dataframe
 results_all <- read.csv(results_all_path, header= TRUE)
 
-# # stop early if results are empty
-# if(dim(results_all)[1]<2){
-#     file.create(plot_path)
-#     quit()
-# }
-
 # determine top_n most significant terms (not necessarily statistically significant!)
 top_terms <- c()
 for (query in unique(results_all$name)){
     tmp_result <- results_all[results_all$name==query,]
-    tmp_terms <- tmp_result[order(tmp_result[adjp_col]), term_col][1:top_n]
+    tmp_terms <- tmp_result[order(tmp_result[[adjp_col]]), term_col][1:top_n]
     top_terms <- unique(c(top_terms,tmp_terms))
 }
                                      
-# make adjusted p-vale and odds-ratio dataframes
+# make adjusted p-vale and effect-size (odds-ratio or normalized enrichment scores) dataframes
 adjp_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = adjp_col)
 rownames(adjp_df) <- adjp_df[[term_col]]
 adjp_df[[term_col]] <- NULL
 
-or_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = or_col)
-rownames(or_df) <- or_df[[term_col]]
-or_df[[term_col]] <- NULL
+effect_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = effect_col)
+rownames(effect_df) <- effect_df[[term_col]]
+effect_df[[term_col]] <- NULL
 
 # filter by top terms
 adjp_df <- adjp_df[top_terms,]
-or_df <- or_df[top_terms,]
+effect_df <- effect_df[top_terms,]
                                     
-# fill or NA with 1 (ie neutral enrichment or no p value)
-or_df[is.na(or_df)] <- 1
-# or_df[or_df<1] <- 1
+# fill NA for effect_df with 1 or 0 (i.e., neutral enrichment) and for adjp_df with 1 (i.e., no significance)
+effect_df[is.na(effect_df)] <- if (tool=="preranked_GSEApy") 0 else 1
 adjp_df[is.na(adjp_df)] <- 1
                                      
-# make stat. sign. annotation for OR plot, later
+# make stat. sign. annotation for effect-size plot later
 adjp_annot <- adjp_df
 adjp_annot[adjp_df < adjp_th] <- "*"
 adjp_annot[adjp_df >= adjp_th] <- ""
 
-# log2 transform odds ratios & cap abs(log2(or)) < or_cap
-or_df <- log2(or_df)
-or_df[or_df > or_cap] <- or_cap
-or_df[or_df < -or_cap] <- -or_cap    
+# log2 transform odds ratios
+if (tool!="preranked_GSEApy"){
+    effect_df <- log2(effect_df)
+}
+
+# cap effect_df for plotting depending on tool  abs(log2(or)) < or_cap OR abs(NES) < nes_cap
+effect_df[effect_df > effect_cap] <- effect_cap
+effect_df[effect_df < -effect_cap] <- -effect_cap
 
 # log10 transform adjp & cap -log10(adjpvalue) < adjp_cap
 adjp_df <- -log10(adjp_df)
-adjp_df[adjp_df>adjp_cap] <- adjp_cap
+adjp_df[adjp_df > adjp_cap] <- adjp_cap
                                      
-# plot hierarchically clustered heatmap for adjp and or
+# plot hierarchically clustered heatmap for adjp and effect
 width_hm <- 0.2 * dim(adjp_df)[2] + 5
 height_hm <- 0.2 * dim(adjp_df)[1] + 3
 
 pheatmap(adjp_df,
+         display_numbers=adjp_annot,
          main="-log10(adj. p-values)",
          treeheight_row = 10,
          treeheight_col = 10,
          fontsize = 6,
+         fontsize_number = 10,
          silent=TRUE,
          width=width_hm,
          height=height_hm,
@@ -107,9 +106,9 @@ pheatmap(adjp_df,
          color=colorRampPalette(c("white", "red"))(200)
         )
 
-pheatmap(or_df,
+pheatmap(effect_df,
          display_numbers=adjp_annot,
-         main="log2(odds ratios)",
+         main = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")"),
          treeheight_row = 10,
          treeheight_col = 10,
          fontsize = 6,
@@ -120,49 +119,57 @@ pheatmap(or_df,
          angle_col=45, 
          cellwidth=10,
          cellheight=10,
-         filename=or_hm_path,
-         breaks=seq(-max(abs(or_df)), max(abs(or_df)), length.out=200),
+         filename=effect_hm_path,
+         breaks=seq(-max(abs(effect_df)), max(abs(effect_df)), length.out=200),
          color=colorRampPalette(c("blue", "white", "red"))(200)
         )
 
 
-# perform hierarchical clustering on the log2 odds ratios of the terms and reorder DF
-hc_rows <- hclust(dist(or_df))
-hc_row_names <- rownames(or_df)[hc_rows$order]
-hc_cols <- hclust(dist(t(or_df)))
-hc_col_names <- colnames(or_df)[hc_cols$order]
-or_df <- or_df[hc_rows$order, hc_cols$order]
+# perform hierarchical clustering on the effect-sizes (NES or log2 odds ratios) of the terms and reorder dataframe
+hc_rows <- hclust(dist(effect_df))
+hc_row_names <- rownames(effect_df)[hc_rows$order]
+hc_cols <- hclust(dist(t(effect_df)))
+hc_col_names <- colnames(effect_df)[hc_cols$order]
+effect_df <- effect_df[hc_rows$order, hc_cols$order]
 
 # add a column for the terms
-or_df$terms <- rownames(or_df)
+effect_df$terms <- rownames(effect_df)
 # melt data frame for plotting
-plot_df <- melt(data=or_df,
+plot_df <- melt(data=effect_df,
                 id.vars="terms",
                 measure.vars=colnames(adjp_df),
                 variable.name = "feature_set",
-               value.name = "or")
+               value.name = "effect")
 
 # add adjusted p-values to plot dataframe
 plot_df$adjp <- apply(plot_df, 1, function(x) adjp_df[x['terms'], x['feature_set']])
 
-# set odds ratios <= 0 to NA for plotting
-plot_df$or[plot_df$or<=0] <- NA
+# set effect-size and adjusted p-value conditional to NA (odds ratios == 0 and NES == 0) for plotting
+plot_df$effect[plot_df$effect==0] <- NA
+plot_df$adjp[plot_df$adjp==0] <- NA
+# if (tool=="preranked_GSEApy"){
+#     plot_df$effect[plot_df$effect==0] <- NA
+# }else{
+#     plot_df$effect[plot_df$effect<=0] <- NA
+# }
 
 # ensure that the order of terms and feature sets is kept
 plot_df$terms <- factor(plot_df$terms,levels=hc_row_names)
 plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
 
 # plot
-enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=adjp, size=or))+ 
+enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
 geom_point(shape=21, stroke=0.25) +
-scale_fill_gradient(low="grey", high="red", breaks = c(1, 2, 3, 4), limits = c(0, 4), name="-log10(adjp)") +
+geom_point(data = plot_df[plot_df$adjp > -log10(adjp_th),], aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
+# scale_fill_gradient(low="grey", high="red", breaks = c(1, 2, 3, 4), limits = c(0, 4), name="-log10(adjp)") +
+scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")")) +
 scale_y_discrete(label=addline_format) + 
-scale_size_continuous(range = c(0.5,5), , name="log2(or)") +
-ggtitle(paste(tool, database, group, sep='\n'))+
-clean_theme()+
+scale_size_continuous(range = c(1,5), , name = "-log10(adjp)") + #not needed, because data already capped? limits = c(0, adjp_cap)
+ggtitle(paste(tool, database, group, sep='\n')) +
+clean_theme() +
 theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
       axis.title.x=element_blank(),
-      axis.title.y=element_blank())
+      axis.title.y=element_blank()) + guides(size = guide_legend(reverse=TRUE))
 
 width <- 0.15 * dim(adjp_df)[2] + 3
 height <- 0.2 * dim(adjp_df)[1] + 2

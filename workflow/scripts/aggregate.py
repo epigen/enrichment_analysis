@@ -12,12 +12,12 @@ results_all_path = snakemake.output['results_all']
 results_sig_path = snakemake.output['results_sig']
 
 group = snakemake.wildcards["group"] #"testgroup"
-tool = snakemake.wildcards["tool"] #"GSEApy"
+tool = snakemake.wildcards["tool"] #"ORA_GSEApy"
 db = snakemake.wildcards["db"] #"WikiPathways_2019_Human"
 
 term_col = snakemake.config["column_names"][tool]["term"] #'Term'
 adjp_col = snakemake.config["column_names"][tool]["adj_pvalue"] #'Adjusted_P_value'
-or_col = snakemake.config["column_names"][tool]["odds_ratio"] #'Odds_Ratio'
+# effect_col = snakemake.config["column_names"][tool]["effect_size"] #'Odds_Ratio'
 
 adjp_th = snakemake.config["adjp_th"][tool] #0.05
 

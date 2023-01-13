@@ -43,14 +43,14 @@ rule region_enrichment_analysis_GREAT:
     script:
         "../scripts/region_enrichment_analysis_GREAT.R"
                 
-# performs gene enrichment analysis and generate plots w/ GSEApy based on genes
-rule gene_enrichment_analysis_GSEApy:
+# performs gene over-represenation analysis (ORA) using GSEApy
+rule gene_ORA_GSEApy:
     input:
         query_genes=get_gene_path,
         background_genes=get_background_gene_path,
-        enrichr_database = os.path.join("resources", config["project_name"], "{db}.json"),
+        database = os.path.join("resources", config["project_name"], "{db}.json"),
     output:
-        result_file = os.path.join(result_path,'{gene_set}','GSEApy','{db}','{gene_set}_{db}.csv'),
+        result_file = os.path.join(result_path,'{gene_set}','ORA_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
         database = lambda w: "{}".format(w.db),
         partition=config.get("partition"),
@@ -60,9 +60,29 @@ rule gene_enrichment_analysis_GSEApy:
     conda:
         "../envs/gene_enrichment_analysis.yaml",
     log:
-        "logs/rules/gene_enrichment_analysis_GSEApy_{gene_set}_{db}.log"
+        "logs/rules/gene_ORA_GSEApy_{gene_set}_{db}.log"
     script:
-        "../scripts/gene_enrichment_analysis_GSEApy.py"
+        "../scripts/gene_ORA_GSEApy.py"
+        
+# performs gene preranked GSEA and generate plots using GSEApy
+rule gene_preranked_GSEApy:
+    input:
+        query_genes=get_rnk_path,
+        database = os.path.join("resources", config["project_name"], "{db}.json"),
+    output:
+        result_file = os.path.join(result_path,'{gene_set}','preranked_GSEApy','{db}','{gene_set}_{db}.csv'),
+    params:
+        database = lambda w: "{}".format(w.db),
+        partition=config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/gene_enrichment_analysis.yaml",
+    log:
+        "logs/rules/gene_preranked_GSEApy_{gene_set}_{db}.log"
+    script:
+        "../scripts/gene_preranked_GSEApy.py"
         
         
 # plot enrichment results

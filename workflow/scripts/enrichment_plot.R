@@ -8,18 +8,18 @@ library(svglite)
 snakemake@source("./utils.R")
 
 # configs
-enrichment_result_path <- snakemake@input[["enrichment_result"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/IRF8_down/GSEApy/KEGG_2021_Human/KEGG_2021_Human.csv"
-enrichment_plot_path <- snakemake@output[["enrichment_plot"]] #"/research/home/sreichl/projects/genomic_region_enrichment/test/enrichment_analysis/IRF8_down/GSEApy/KEGG_2021_Human/KEGG_2021_Human.png"
+enrichment_result_path <- snakemake@input[["enrichment_result"]]
+enrichment_plot_path <- snakemake@output[["enrichment_plot"]]
 
-tool <- snakemake@params[["tool"]] #"GSEApy"
+tool <- snakemake@params[["tool"]] #"ORA_GSEApy"
 database <- snakemake@params[["database"]] #"KEGG_2021_Human"
-feature_set <- snakemake@params[["feature_set"]] #"IRF8_down"
+feature_set <- snakemake@params[["feature_set"]] 
 plot_cols <- snakemake@config[["column_names"]][[tool]]
 
 top_n <- plot_cols[["top_n"]] #25
 pval_col <- plot_cols[["p_value"]] #'P.value'
 adjp_col <- plot_cols[["adj_pvalue"]] #'Adjusted.P.value'
-oddsratio_col <- plot_cols[["odds_ratio"]] #'Odds.Ratio'
+effect_col <- plot_cols[["effect_size"]] #'Odds.Ratio'
 overlap_col <- plot_cols[["overlap"]] #'Overlap'
 term_col <- plot_cols[["term"]] #'Term'
 
@@ -31,16 +31,22 @@ if (file.size(enrichment_result_path) != 0L){
     quit()
 }
 
-
-
 # evaluate overlap numerically if necessary
 if(class(enrichment_result[[overlap_col]])=="character"){
     enrichment_result[[overlap_col]] <- as.numeric(lapply(enrichment_result[[overlap_col]], evaltext))
 }
 
+# calculate comparable effect size either NES or odds-ratio/fold based
+if (tool!="preranked_GSEApy"){
+    # calculate log2(effect-size) and put in new column
+    effect_col_new <- paste0("log2_",effect_col)
+    enrichment_result[[effect_col_new]] <- log2(enrichment_result[[effect_col]])
+    effect_col <- effect_col_new
+}
+
 # determine ranks
 enrichment_result$PValue_Rnk <- rank(enrichment_result[[pval_col]])
-enrichment_result$Fold_Rnk <- rank(-enrichment_result[[oddsratio_col]])
+enrichment_result$Fold_Rnk <- rank(-abs(enrichment_result[[effect_col]]))
 enrichment_result$Coverage_Rnk <- rank(-enrichment_result[[overlap_col]])
 # calculate and sort by mean rank
 enrichment_result$meanRnk <- rowMeans(enrichment_result[,c('PValue_Rnk', 'Fold_Rnk','Coverage_Rnk')])
@@ -52,8 +58,8 @@ enrichment_result[[term_col]] <- factor(enrichment_result[[term_col]], levels = 
 
 # plot top_n terms by mean_rnk
 do_enrichment_plot(plot_data=enrichment_result[1:top_n,], 
-               title=paste0('Enrichment Analysis Results of \n',feature_set,' in ',database), 
-               x=oddsratio_col, 
+               title=paste0(tool, ' results of \n',feature_set,' in ',database), 
+               x=effect_col, 
                y=term_col, 
                size=overlap_col, 
                colorBy=adjp_col, 

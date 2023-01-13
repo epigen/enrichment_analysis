@@ -16,7 +16,7 @@ rule load_enrichr_databases:
     script:
         "../scripts/get_Enrichr_databases_GSEApy.py"
 
-# copy user provided databases to local resource folder
+# copy local provided databases to local resource folder
 rule copy_databases:
     input:
         get_local_db_path,
