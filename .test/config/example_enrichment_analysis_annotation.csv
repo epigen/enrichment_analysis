@@ -1,0 +1,5 @@
+name,features_path,background_name,background_path,group
+setA,.test/data/lola_vignette_data/setA_100.bed,activeDHS,.test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+setB,.test/data/lola_vignette_data/setB_100.bed,activeDHS,.test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+setC,.test/data/lola_vignette_data/setC_100.bed,activeDHS,.test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+GDS289,.test/data/GDS289_scores.csv,,,mysterySets

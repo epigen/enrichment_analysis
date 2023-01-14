@@ -1,8 +1,12 @@
 ### utility GET/INPUT functions
 
-# get user provided local database path
-def get_local_db_path(wildcards):
-    return local_db_dict[wildcards.db]
+# get user provided local JSON database path
+def get_json_db_path(wildcards):
+    return json_db_dict[wildcards.db]
+
+# get user provided local GMT database path
+def get_gmt_db_path(wildcards):
+    return gmt_db_dict[wildcards.db]
 
 ### for genomic region enrichment
 # region set

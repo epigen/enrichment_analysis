@@ -41,6 +41,14 @@ if(file.size(results_all_path) == 0L){
 # load aggregated result dataframe
 results_all <- read.csv(results_all_path, header= TRUE)
 
+# stop early if results consist of only one query
+if(length(unique(results_all$name))==1){
+    file.create(plot_path)
+    file.create(adjp_hm_path)
+    file.create(effect_hm_path)
+    quit()
+}
+
 # determine top_n most significant terms (not necessarily statistically significant!)
 top_terms <- c()
 for (query in unique(results_all$name)){

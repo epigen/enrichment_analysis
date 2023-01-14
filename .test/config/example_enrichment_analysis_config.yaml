@@ -7,32 +7,32 @@ threads: 1
 
 
 ##### GENERAL #####
-annotation: /path/to/enrichment_analysis_annotation.csv
-result_path: /path/to/results/
-project_name: MyProject
+annotation: .test/config/example_enrichment_analysis_annotation.csv
+result_path: .test/results
+project_name: example
 
 # genome
 # human 'hg19' or 'hg38' 
 # mouse 'mm9' or 'mm10'
-genome: 'hg38'
+genome: 'hg19'
 
 
 ##### TOOLS #####
 
-### GSEApy - ORA Enrichr (Fisher/hypergeometric test) and preranked GSEA based analysis
+### GSEApy - Enrichr (Fisher test) based analysis
 
 # Databases downloaded from Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
-# example: enrichr_dbs: ["KEGG_2021_Mouse", "GO_Biological_Process_2021", "WikiPathways_2019_Mouse"]
+# enrichr_dbs: ["KEGG_2021_Mouse", "GO_Biological_Process_2021", "WikiPathways_2019_Mouse"]
 enrichr_dbs: ["KEGG_2021_Human", "GO_Biological_Process_2021", "WikiPathways_2019_Human"]
 
 # Databases in GMT format containing Gene Symbols e.g, downloaded from MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 local_gmt_dbs:
-    MyMSigDB: ""
+    MSigDB_H_C2: ".test/data/c2.all.v2022.1.Hs.symbols.gmt"
 
 # path to local databases as JSON files will be loaded as dictionaries
 # example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
 local_json_dbs:
-    MyDB: ""
+    MyWiki: ".test/data/MyWikiPathways_2019_Human.json"
 
 ### GREAT - region-gene association based analysis
 
@@ -48,7 +48,7 @@ lola_dbs: ['LOLACore','jaspar_motifs','roadmap_epigenomics']
 
 ### Enrichment plot
 
-# tool specific column names for aggregation, plotting & summaries
+# tool specific column names for plotting & summaries
 column_names:
     ORA_GSEApy:
         top_n: 25

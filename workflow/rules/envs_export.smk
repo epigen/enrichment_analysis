@@ -37,7 +37,7 @@ rule config_export:
         partition=config.get("partition"),
     run:
         with open(output["configs"], 'w') as outfile:
-            yaml.dump(config, outfile)
+            yaml.dump(config, outfile,  indent=4)
 
 # export used annotation file for documentation and reproducibility         
 rule annot_export:

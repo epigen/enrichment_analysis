@@ -32,7 +32,7 @@ ggsave_new <- function(filename, results_path, plot, width=5, height=5, units="i
 
 # add new lines in text of plots
 addline_format <- function(x,...){
-    return(gsub('(.{1,40})(\\s|\\.|$)', '\\1\n', x))
+    return(gsub('(.{1,40})(\\s|\\.|$|_)', '\\1\n', x))
 }
 
 # draw enrichment plot

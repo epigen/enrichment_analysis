@@ -16,10 +16,10 @@ rule load_enrichr_databases:
     script:
         "../scripts/get_Enrichr_databases_GSEApy.py"
 
-# copy local provided databases to local resource folder
-rule copy_databases:
+# copy local provided JSON databases to local resource folder
+rule copy_json_databases:
     input:
-        get_local_db_path,
+        get_json_db_path,
     output:
         db_file = os.path.join("resources", config["project_name"],"{db}.json"),
     params:
@@ -33,6 +33,24 @@ rule copy_databases:
         """
         cp {input} {output}
         """
+# load, convert and save local provided GMT databases to local resource folder
+rule get_gmt_databases:
+    input:
+        get_gmt_db_path,
+    output:
+        result_file = os.path.join("resources", config["project_name"],"{db}.json"),
+    params:
+        database = lambda w: "{}".format(w.db),
+        partition = config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/gene_enrichment_analysis.yaml",
+    log:
+        os.path.join("logs","rules","get_gmt_databases_{db}.log"),
+    script:
+        "../scripts/get_gmt_databases_GSEApy.py"
         
 # download LOLA resources if needed
 rule load_lola_resources:

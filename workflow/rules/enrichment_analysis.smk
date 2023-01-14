@@ -92,8 +92,13 @@ rule plot_enrichment_result:
     output:
         enrichment_plot=report(os.path.join(result_path,'{feature_set}','{tool}','{db}','{feature_set}_{db}.png'),
                              caption="../report/enrichment_plot.rst", 
-                             category="{}_enrichment_analysis".format(config["project_name"]),
-                             subcategory="{feature_set}"),
+                             category="{}_{}".format(config["project_name"], module_name),
+                             subcategory="{feature_set}",
+                               labels={
+                                  "name": "{tool}",
+                                  "type": "enrichment plot",
+                                  "misc": "{db}",
+                              }),
     params:
         tool = lambda w: "{}".format(w.tool),
         feature_set = lambda w: "{}".format(w.feature_set),

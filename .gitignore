@@ -48,3 +48,5 @@ vignettes/*.pdf
 .Renviron
 
 snakejob_conductor.sh
+
+._*

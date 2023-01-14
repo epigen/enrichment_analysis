@@ -8,6 +8,9 @@ import csv
 import sys
 import subprocess
 
+##### module name #####
+module_name = "enrichment_analysis"
+
 ##### set minimum snakemake version #####
 min_version("6.0.3")
 
@@ -48,21 +51,26 @@ background_regions_dict = background_region_df.set_index('background_name').to_d
 # databases
 # GREAT database list
 great_dbs = [db.replace(" ","_") for db in config["great_dbs"]]
-# load local database dictionary and keep only non-empty
-local_db_dict = config["local_dbs"]
-local_db_dict = {k: v for k, v in local_db_dict.items() if v!=""}
+
+# load local database (JSON and GMT) dictionary and keep only non-empty
+json_db_dict = config["local_json_dbs"]
+json_db_dict = {k: v for k, v in json_db_dict.items() if v!=""}
+
+gmt_db_dict = config["local_gmt_dbs"]
+gmt_db_dict = {k: v for k, v in gmt_db_dict.items() if v!=""}
 
 # GSEApy database list
-if local_db_dict is not None:
-    gseapy_dbs = config["enrichr_dbs"] + list(local_db_dict.keys())
-else:
-    gseapy_dbs = config["enrichr_dbs"]
+gseapy_dbs = config["enrichr_dbs"]
+if json_db_dict is not None:
+    gseapy_dbs = gseapy_dbs + list(json_db_dict.keys())
+if gmt_db_dict is not None:
+    gseapy_dbs = gseapy_dbs + list(gmt_db_dict.keys())
 
 ##### set global variables
 result_path = os.path.join(config["result_path"],'enrichment_analysis')
 
-# to deal with rule ambiguity concerning database source (local vs download)
-ruleorder: copy_databases > load_enrichr_databases
+# to deal with rule ambiguity concerning database source (local JSON, local GMT, vs download)
+ruleorder: copy_json_databases > get_gmt_databases > load_enrichr_databases
 
 ##### target rules #####
 rule all:
