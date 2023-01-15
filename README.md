@@ -1,8 +1,8 @@
 # Genomic Region Set & (Ranked) Gene Set Enrichment Analysis & Visualization Snakemake Workflow for Human and Mouse Genomes.
 
-Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-represenation analysis (ORA) & preranked GSEA) and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same DEA) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
+Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA) and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same DEA) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
-This workflow adheres to the module specifications of [MR. PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and more modules check out the project's repository.
+This workflow adheres to the module specifications of [MR. PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and modules check out the project's repository.
 
 **If you use this workflow in a publication, don't forget to give credits to the authors by citing the URL of this (original) repository (and its DOI, see Zenodo badge above -> coming soon).**
 
@@ -54,7 +54,7 @@ Furthermore, genomic regions (query- and background-sets) were mapped to genes u
 
 **Gene set enrichment analyses (GSEA)**
 
-**Over-representation analysis (ORA).** Gene set ORA was performed using Enrichr [ref], which uses Fisher’s exact test (i.e., hypergeoemtric test), implemented with GSEApy's (ver) [ref] function _enrich_. The following databases were queried [enrichr_dbs][local_gmt_dbs][local_json_dbs].
+**Over-representation analysis (ORA).** Gene set ORA was performed using Enrichr [ref], which uses Fisher’s exact test (i.e., hypergeometric test), implemented with GSEApy's (ver) [ref] function _enrich_. The following databases were queried [enrichr_dbs][local_gmt_dbs][local_json_dbs].
 
 **Preranked GSEA.** Preranked GSEA was performed using GSEA [ref], implemented with GSEApy's (ver) [ref] function _prerank_. The following databases were queried [enrichr_dbs][local_gmt_dbs][local_json_dbs].
 
@@ -72,16 +72,16 @@ The aggregated results per analysis [group], method and database combination wer
 
 
 # Features
-The three tools LOLA, GREAT and GSEApy (over-represenation analysis (ORA) & preranked GSEA) are used for various enrichment analyses. Databases to be queried can be configured (see ./config/config.yaml). All approaches statistically correct their results using the provided background region/gene sets.
+The three tools LOLA, GREAT and GSEApy (over-representation analysis (ORA) & preranked GSEA) are used for various enrichment analyses. Databases to be queried can be configured (see ./config/config.yaml). All approaches statistically correct their results using the provided background region/gene sets.
 - enrichment analysis methods:
     - region-set
         - [LOLA](http://bioconductor.org/packages/release/bioc/html/LOLA.html): Genomic Locus Overlap Enrichment Analysis is run locally. Required (cached) databases, which are downloaded automatically during the first run. [Supported databases](https://databio.org/regiondb) depend on the genome (lola_dbs).
         - [GREAT](https://doi.org/10.1371/journal.pcbi.1010378) using [rGREAT](http://bioconductor.org/packages/release/bioc/html/rGREAT.html): Genomic Regions Enrichment of Annotations Tool is queried remotely (requires a working internet connection). [Supported databases](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655440/Ontologies) depend on the genome (great_dbs).
             - query region sets with >500,000 regions are [not supported](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655402/File+Size) and empty output files are generated to satisfy Snakemake
             - background region sets with >1,000,000 are [not supported](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655402/File+Size) and the whole genome is used as background
-    - gene-set over-represenation analysis (ORA_GSEApy)
+    - gene-set over-representation analysis (ORA_GSEApy)
         - [GSEApy](https://gseapy.readthedocs.io/en/latest/) enrich() function performs Fisher’s exact test (i.e., hypergeoemtric test) and is run locally.
-    - region-based gene-set over-represenation analysis (ORA_GSEApy)
+    - region-based gene-set over-representation analysis (ORA_GSEApy)
         - region-gene associations for each query and background region-set are obtained using GREAT.
         - they are used for a complementary ORA using GSEApy.
         - thereby an extended region-set enrichment perspective can be gained through association to genes by querying the same and/or more databases, that are not supported/provided by region-based tools. 
@@ -102,7 +102,7 @@ The three tools LOLA, GREAT and GSEApy (over-represenation analysis (ORA) & prer
         - effect-size is presented by the x-axis position
         - overlap is presented by the dot size
     - group summary/overview
-        - the union of the top {top_terms_n} most significant terms per query, method and databse within a group are determined. 
+        - the union of the top {top_terms_n} most significant terms per query, method, and database within a group is determined. 
         - their effect-size (effect) and statistical significance (adjp) are visualized as hierarchically clustered heatmaps, with statistical significance denoted by \* (PDF).
         - a hierarchically clustered bubble plot encoding both effect-size (color) and significance (size) is provided, with statistical significance denoted by \* (PNG and SVG).
         - all summary visualizations are configured to cap the values ({adjp_cap}/{or_cap}/{nes_cap}) to avoid shifts in the coloring scheme caused by outliers.
@@ -133,7 +133,7 @@ Detailed specifications can be found here [./config/README.md](./config/README.m
 
 # Examples
 We provide four example queries:
-- three are region-sets from a [LOLA Vignette](http://code.databio.org/LOLA/articles/usingLOLACore.html). Download the example data by following these [instructions](./test/data/example_data_download_instructions.txt).
+- three are region-sets from a [LOLA Vignette](http://code.databio.org/LOLA/articles/usingLOLACore.html). Download the example data by following these [instructions](./.test/data/example_data_download_instructions.txt).
 - one is a preranked gene-score set derived from the GDS289 [fgsea R package example data](https://github.com/ctlab/fgsea/blob/master/inst/extdata/GDS289.tsv) (score=-log10(p-value)\*sign(lfc)).
 
 We provide two local example databases
