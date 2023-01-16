@@ -90,7 +90,7 @@ rule all:
         expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=rnk_dict.keys(), db=gseapy_dbs),
         expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=rnk_dict.keys(), db=gseapy_dbs),
         # summaries
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=annot["group"].unique(), tool='ORA_GSEApy', db=gseapy_dbs),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='ORA_GSEApy', db=gseapy_dbs),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=rnk["group"].unique(), tool='preranked_GSEApy', db=gseapy_dbs),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=great_dbs),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
