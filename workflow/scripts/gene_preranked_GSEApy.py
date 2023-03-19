@@ -37,13 +37,14 @@ with open(database_path) as json_file:
     
 # convert all genes to upper case
 genes.index = [str(x).upper() for x in list(genes.index)]
+db_dict = {key: [ele.upper() for ele in db_dict[key] ] for key in db_dict}
 
 # run prerank GSEA of database with GSEApy
 res = gp.prerank(rnk=genes, 
                  gene_sets=db_dict,
                  #threads=4,
                  min_size=1, # Minimum allowed number of genes from gene set also the data set. Default: 15.
-                 max_size=10000, # Maximum allowed number of genes from gene set also the data set. Defaults: 500.
+                 max_size=100000, # Maximum allowed number of genes from gene set also the data set. Defaults: 500.
                  permutation_num=1000, # Number of permutations. Reduce number to speed up testing;  Default: 1000. Minimial possible nominal p-value is about 1/nperm.
                  outdir=os.path.join(dir_results),
                  graph_num = 25, # Plot graphs for top sets of each phenotype.

@@ -70,9 +70,10 @@ if len(gene_list)==0:
 with open(database_path) as json_file:
     db_dict = json.load(json_file)
     
-# convert gene lists to upper case
+# convert gene lists and database to upper case
 gene_list=[str(x).upper() for x in list(gene_list)]
 background=[str(x).upper() for x in list(background)]
+db_dict = {key: [ele.upper() for ele in db_dict[key] ] for key in db_dict}
     
 # count number of background genes for odds-ratio calculation
 bg_n = len(background)
