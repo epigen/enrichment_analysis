@@ -39,6 +39,12 @@ with open(database_path) as json_file:
 genes.index = [str(x).upper() for x in list(genes.index)]
 db_dict = {key: [ele.upper() for ele in db_dict[key] ] for key in db_dict}
 
+# remove duplicates: only retain largest absolute value
+# sort by absolute value of "score" column (i.e., first column)
+genes = genes.iloc[abs(genes.iloc[:, 0]).argsort()[::-1]]
+# drop duplicates based on index
+genes = genes[~genes.index.duplicated(keep='first')]
+
 # run prerank GSEA of database with GSEApy
 res = gp.prerank(rnk=genes, 
                  gene_sets=db_dict,

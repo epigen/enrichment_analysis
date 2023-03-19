@@ -51,9 +51,10 @@ job = submitGreatJob(regionSet_query, species = genome, bg=regionSet_background)
 # save job description
 capture.output(job, file=file.path(dir_result, 'job_description.txt'), append=TRUE)
 
-# plot & get gene-region association
-pdf(file=file.path(dir_result, paste0('region_gene_assciations.pdf')), width=20, height=15)
+# plot, get and save gene-region association
+pdf(file=file.path(dir_result, paste0('region_gene_associations.pdf')), width=20, height=15)
 res = plotRegionGeneAssociationGraphs(job, request_interval=600)
+write.csv(res, file.path(dir_result, 'region_gene_associations.csv'), row.names=TRUE)
 dev.off()
 
 # save unique associated genes by using mcols(), which returns a DataFrame object containing the metadata columns.
