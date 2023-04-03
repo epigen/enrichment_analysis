@@ -88,6 +88,7 @@ The three tools LOLA, GREAT and GSEApy (over-representation analysis (ORA) & pre
         - limitation: if the background region set exceeds GREAT's capacities (i.e., 1,000,000 regions), no background gene list is generated and background gene number (bg_n) of 20,000 is used in the ORA.
     - preranked gene-set enrichment analysis (preranked_GSEApy)
         - [GSEApy](https://gseapy.readthedocs.io/en/latest/) prerank() function performs [preranked GSEA](https://doi.org/10.1073/pnas.0506580102) and is run locally.
+        - no duplicates allowed: only entries with the largest absolute score are kept.
 - resources (databases) for both gene-based analyses are downloaded (Enrichr) or copied (local files) and saved as JSON files in /resources
     - all [Enrichr databases](https://maayanlab.cloud/Enrichr/#libraries) can be queried (enrichr_dbs).
     - local JSON database files can be queried (local_json_dbs).
