@@ -5,9 +5,9 @@ channels:
   - defaults
 dependencies:
   - r-base=4.1.0
-  - r-svglite
+  - r-svglite=2.1.0
   - r-ggplot2=3.3
-  - r-pheatmap
-  - r-reshape2
+  - r-pheatmap=1.0.12
+  - r-reshape2=1.4.4
 
 

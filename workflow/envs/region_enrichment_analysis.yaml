@@ -6,8 +6,8 @@ channels:
 dependencies:
   - r-base=4.1.0
   - bioconductor-lola=1.24
-  - r-simplecache
-  - bioconductor-qvalue
+  - r-simplecache=0.4.2
+  - bioconductor-qvalue=2.26.0
   - bioconductor-rgreat=1.26
 
 
