@@ -22,6 +22,7 @@ Table of contents
 
 # Authors
 - [Stephan Reichl](https://github.com/sreichl)
+- [Christoph Bock](https://github.com/chrbock)
 
 # Software
 This project wouldn't be possible without the following software and their dependencies:
