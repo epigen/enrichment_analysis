@@ -1,10 +1,15 @@
 # Genomic Region Set & (Ranked) Gene Set Enrichment Analysis & Visualization Snakemake Workflow for Human and Mouse Genomes.
+[![DOI](https://zenodo.org/badge/377527671.svg)](https://zenodo.org/badge/latestdoi/377527671)
 
 Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA) and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same DEA) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
 This workflow adheres to the module specifications of [MR. PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and modules check out the project's repository.
 
-**If you use this workflow in a publication, don't forget to give credits to the authors by citing the URL of this (original) repository (and its DOI, see Zenodo badge above -> coming soon).**
+**If you use this workflow in a publication, please don't forget to give credits to the authors by citing it using this DOI [10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621).**
+
+
+
+
 
 ![Workflow Rulegraph](./workflow/dags/rulegraph.svg)
 
@@ -69,7 +74,7 @@ For each query, method and database combination an enrichment dot plot was used 
 
 The aggregated results per analysis [group], method and database combination were visualized using hierarchically clustered heatmaps and bubble plots. The union of the top [top_terms_n] most significant terms per query were determined and their effect-size and significance were visualized as hierarchically clustered heatmaps, and statistical significance ([adj_pvalue] < [adjp_th]) was denoted by \*. Furthermore, a hierarchically clustered bubble plot encoding both effect-size (color) and statistical significance (size) is provided, with statistical significance denoted by \*. All summary visualizations’ values were capped by [adjp_cap]/[or_cap]/[nes_cap] to avoid shifts in the coloring scheme caused by outliers.
 
-**The analysis and visualizations described here were performed using a publicly available Snakemake (ver) [ref] workflow [ref - cite this workflow here].**
+**The analysis and visualizations described here were performed using a publicly available Snakemake (ver) [ref] workflow [[10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621)].**
 
 
 # Features
@@ -167,7 +172,7 @@ Follow these steps to run the complete analysis:
 # Links
 - [GitHub Repository](https://github.com/epigen/enrichment_analysis/)
 - [GitHub Page](https://epigen.github.io/enrichment_analysis/)
-- [Zenodo Repository (coming soon)]()
+- [Zenodo Repository](https://doi.org/10.5281/zenodo.7810621)
 - [Snakemake Workflow Catalog Entry](https://snakemake.github.io/snakemake-workflow-catalog?usage=epigen/enrichment_analysis)
 
 # Resources
