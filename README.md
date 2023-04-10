@@ -7,10 +7,6 @@ This workflow adheres to the module specifications of [MR. PARETO](https://gith
 
 **If you use this workflow in a publication, please don't forget to give credits to the authors by citing it using this DOI [10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621).**
 
-
-
-
-
 ![Workflow Rulegraph](./workflow/dags/rulegraph.svg)
 
 Table of contents
@@ -24,6 +20,7 @@ Table of contents
   * [Configuration](#configuration)
   * [Examples](#examples)
   * [Links](#links)
+  * [Publications](#publications)
 
 # Authors
 - [Stephan Reichl](https://github.com/sreichl)
