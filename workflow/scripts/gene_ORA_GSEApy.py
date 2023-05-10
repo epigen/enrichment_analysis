@@ -59,8 +59,8 @@ background = background.split('\n')
 background.remove('')
 bg_file.close()
 
-# move on if query-genes are one gene or empty
-if len(gene_list)<2:
+# move on if query-genes are empty
+if len(gene_list)==0:
     open(result_path, mode='a').close()
     sys.exit(0)
 
@@ -85,15 +85,19 @@ if bg_n==0:
     background = bg_n
 
 # perform ORA (hypergeometric test) in database using GSEApy (barplots are generated automatically)
-res = gp.enrich(gene_list=gene_list,
-                 gene_sets=db_dict,
-                 background=background,
-                 outdir=None,#os.path.join(dir_results),
-                 top_term=25,
-                 cutoff=0.05,
-                 format='png',
-                 verbose=True,
-                ).res2d
+try:
+    res = gp.enrich(gene_list=gene_list,
+                     gene_sets=db_dict,
+                     background=background,
+                     outdir=None,#os.path.join(dir_results),
+                     top_term=25,
+                     cutoff=0.05,
+                     format='png',
+                     verbose=True,
+                    ).res2d
+except ValueError:
+    print("Result is empty")
+    res = pd.DataFrame()
 
 # move on if result is empty
 if res.shape[0]==0:
