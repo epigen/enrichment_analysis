@@ -59,8 +59,8 @@ background = background.split('\n')
 background.remove('')
 bg_file.close()
 
-# move on if query-genes are empty
-if len(gene_list)==0:
+# move on if query-genes are one gene or empty
+if len(gene_list)<2:
     open(result_path, mode='a').close()
     sys.exit(0)
 
