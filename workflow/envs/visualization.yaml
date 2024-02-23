@@ -4,10 +4,7 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - r-base=4.1.0
   - r-svglite=2.1.0
-  - r-ggplot2=3.3
+  - r-ggplot2=3.5.0
   - r-pheatmap=1.0.12
   - r-reshape2=1.4.4
-
-
