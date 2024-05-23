@@ -3,7 +3,7 @@
 
 Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA) and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same DEA) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
-This workflow adheres to the module specifications of [MR. PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and modules check out the project's repository.
+This workflow adheres to the module specifications of [MR.PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and modules check out the project's repository. Please consider **starring** and sharing modules that are interesting or useful to you, this helps others to find and benefit from the effort and me to prioritize my efforts!
 
 **If you use this workflow in a publication, please don't forget to give credits to the authors by citing it using this DOI [10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621).**
 

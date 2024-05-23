@@ -12,10 +12,7 @@ import subprocess
 module_name = "enrichment_analysis"
 
 ##### set minimum snakemake version #####
-min_version("6.0.3")
-
-SDIR = os.path.realpath(os.path.dirname(srcdir("Snakefile")))
-shell.prefix(f"set -eo pipefail;")
+min_version("7.15.2")
 
 ##### setup report #####
 report: "report/workflow.rst"
