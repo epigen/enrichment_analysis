@@ -1,8 +1,9 @@
 
 # load libraries
-library(LOLA)
-library(GenomicRanges)
-library(rGREAT)
+library("LOLA")
+library("GenomicRanges")
+library("rGREAT")
+library("data.table")
 
 # configs
 regions_file <- snakemake@input[["regions"]]
@@ -29,7 +30,7 @@ if (length(regionSet_query)>500000){
         file.create(path)
     }
     file.create(file.path(gene_file))
-    quit()
+    quit(save = "no", status = 0)
 }
 
 # if query and background the same, do not use a background (used to map background regions to genes for downstream gene-based analyses)
@@ -54,7 +55,8 @@ capture.output(job, file=file.path(dir_result, 'job_description.txt'), append=TR
 # plot, get and save gene-region association
 pdf(file=file.path(dir_result, paste0('region_gene_associations.pdf')), width=20, height=15)
 res = plotRegionGeneAssociationGraphs(job, request_interval=600)
-write.csv(res, file.path(dir_result, 'region_gene_associations.csv'), row.names=TRUE)
+# write.csv(res, file.path(dir_result, 'region_gene_associations.csv'), row.names=TRUE)
+fwrite(as.data.frame(res), file=file.path(dir_result, 'region_gene_associations.csv'), row.names=TRUE)
 dev.off()
 
 # save unique associated genes by using mcols(), which returns a DataFrame object containing the metadata columns.
@@ -68,7 +70,8 @@ if(regions_file!=background_file){
         tb <- getEnrichmentTables(job,  ontology = db, category=NULL, download_by = 'tsv')
         tb$Desc <- paste(tb$Desc, tb$ID)
     #     write.table(tb[[db]], file.path(dir_result, db, paste0(region_set,'_',db,'.tsv')), sep='\t', row.names=FALSE)
-        write.csv(tb[[db]], file.path(dir_result, gsub(" ", "_", db), paste0(region_set,'_',gsub(" ", "_", db),'.csv')), row.names=FALSE)
+#         write.csv(tb[[db]], file.path(dir_result, gsub(" ", "_", db), paste0(region_set,'_',gsub(" ", "_", db),'.csv')), row.names=FALSE)
+        fwrite(as.data.frame(tb[[db]]), file=file.path(dir_result, gsub(" ", "_", db), paste0(region_set,'_',gsub(" ", "_", db),'.csv')), row.names=FALSE)
     }
 }else{
     for (path in result_paths){

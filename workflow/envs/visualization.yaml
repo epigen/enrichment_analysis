@@ -8,3 +8,4 @@ dependencies:
   - r-ggplot2=3.5.0
   - r-pheatmap=1.0.12
   - r-reshape2=1.4.4
+  - r-data.table

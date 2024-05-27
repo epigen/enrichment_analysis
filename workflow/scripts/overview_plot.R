@@ -1,9 +1,10 @@
 
 # load libraries
-library(ggplot2)
-library(svglite)
-library(reshape2)
-library(pheatmap)
+library("ggplot2")
+library("svglite")
+library("reshape2")
+library("pheatmap")
+library("data.table")
 
 # source utility functions
 # source("workflow/scripts/utils.R")
@@ -39,7 +40,8 @@ if(file.size(results_all_path) == 0L){
 }
 
 # load aggregated result dataframe
-results_all <- read.csv(results_all_path, header= TRUE)
+# results_all <- read.csv(results_all_path, header= TRUE)
+results_all <- data.frame(fread(file.path(results_all_path), header=TRUE))
 
 # stop early if results consist of only one query
 if(length(unique(results_all$name))==1){

@@ -1,8 +1,9 @@
 
 
 # Load the enrichment packages
-library(LOLA)
-library(GenomicRanges)
+library("LOLA")
+library("GenomicRanges")
+library("data.table")
 
 # configs
 query_regions <- snakemake@input[["regions"]]
@@ -59,7 +60,8 @@ for (db in names(dblist)){
     dir.create(file.path(dir_result, region_set, "LOLA", db), showWarnings = FALSE)
 #     writeCombinedEnrichment(locResults, outFolder= file.path(dir_result, db), includeSplits=TRUE)
     
-    write.csv(locResults, file.path(dir_result, region_set, "LOLA", db, paste0(region_set,'_',db,'.csv')), row.names=FALSE)
+#     write.csv(locResults, file.path(dir_result, region_set, "LOLA", db, paste0(region_set,'_',db,'.csv')), row.names=FALSE)
+    fwrite(as.data.frame(locResults), file=file.path(dir_result, region_set, "LOLA", db, paste0(region_set,'_',db,'.csv')), row.names=FALSE)
 }    
 
 

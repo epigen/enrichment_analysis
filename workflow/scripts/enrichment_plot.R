@@ -1,7 +1,8 @@
 
 # load libraries
-library(ggplot2)
-library(svglite)
+library("ggplot2")
+library("svglite")
+library("data.table")
 
 # source utility functions
 # source("workflow/scripts/utils.R")
@@ -25,10 +26,11 @@ term_col <- plot_cols[["term"]] #'Term'
 
 # load enrichment result
 if (file.size(enrichment_result_path) != 0L){
-    enrichment_result <- read.csv(enrichment_result_path, row.names = NULL, header= TRUE)
+#     enrichment_result <- read.csv(enrichment_result_path, row.names = NULL, header= TRUE)
+    enrichment_result <- data.frame(fread(file.path(enrichment_result_path), header=TRUE))
 }else{
     file.create(enrichment_plot_path)
-    quit()
+    quit(save = "no", status = 0)
 }
 
 # evaluate overlap numerically if necessary

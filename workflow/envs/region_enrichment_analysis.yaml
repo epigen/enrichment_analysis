@@ -9,5 +9,4 @@ dependencies:
   - r-simplecache=0.4.2
   - bioconductor-qvalue=2.26.0
   - bioconductor-rgreat=1.26
-
-
+  - r-data.table
