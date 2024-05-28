@@ -173,6 +173,14 @@ Follow these steps to run the complete analysis:
 - [Snakemake Workflow Catalog Entry](https://snakemake.github.io/snakemake-workflow-catalog?usage=epigen/enrichment_analysis)
 
 # Resources
+- Recommended compatible [MR.PARETO](https://github.com/epigen/mr.pareto) modules 
+  - for upstream analyses:
+    - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
+    - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell trascnriptome data.
+    - [Split, Filter, Normalize and Integrate Sequencing Data](https://github.com/epigen/spilterlize_integrate) to process sequencing data.
+    - [Differential Analysis with limma](https://github.com/epigen/dea_limma) to identify and visualize statistically significant features between bulk sample groups.
+    - [Differential Analysis with Seurat](https://github.com/epigen/dea_seurat) to identify and visualize statistically significant features between single-cell groups.
+- Package for [simplifying enrichment](http://www.bioconductor.org/packages/release/bioc/html/simplifyEnrichment.html) results using the [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) package.
 - Web versions of the used tools
     - [LOLA](http://lolaweb.databio.org/)
     - [GREAT](http://great.stanford.edu/public/html/index.php)
@@ -185,3 +193,4 @@ Follow these steps to run the complete analysis:
 # Publications
 The following publications successfully used this module for their analyses.
 - ...
+
