@@ -4,9 +4,10 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - r-base=4.1.0
-  - bioconductor-lola=1.24
+  - r-base=4.3.3
+  - bioconductor-lola=1.32.0
   - r-simplecache=0.4.2
-  - bioconductor-qvalue=2.26.0
-  - bioconductor-rgreat=1.26
-  - r-data.table
+  - bioconductor-qvalue=2.34.0
+  - bioconductor-rgreat=2.4.0
+  - r-data.table=1.15.2
+  - bioconductor-rtracklayer=1.62.0

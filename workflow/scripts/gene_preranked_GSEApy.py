@@ -26,14 +26,16 @@ dir_results = os.path.dirname(result_path)
 
 if not os.path.exists(dir_results):
     os.mkdir(dir_results)
-    
 
 # load gene-score file
 genes = pd.read_csv(query_genes_path, index_col=0)
 
-# load database JSON file
-with open(database_path) as json_file:
-    db_dict = json.load(json_file)
+# # load database JSON file
+# with open(database_path) as json_file:
+#     db_dict = json.load(json_file)
+
+# load database GMT file
+db_dict = gp.parser.read_gmt(database_path)
     
 # convert all genes to upper case
 genes.index = [str(x).upper() for x in list(genes.index)]

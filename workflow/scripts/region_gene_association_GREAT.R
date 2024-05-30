@@ -10,11 +10,12 @@ library("rtracklayer")
 
 #input
 regions_file <- snakemake@input[["regions"]]
-background_file <- snakemake@input[["background"]]
 database_path <- snakemake@input[["database"]]
 
 # output
-result_path <- snakemake@output[["result"]]
+gene_path <- snakemake@output[["genes"]]
+associations_table_path <- snakemake@output[["associations_table"]]
+associations_plot_path <- snakemake@output[["associations_plot"]]
 
 # parameters
 genome <- snakemake@config[["genome"]]
@@ -28,9 +29,8 @@ if (genome=="hg19" | genome=="hg38"){
     orgdb <- "org.Mm.eg.db"
 }
 
-# load query and background/universe region sets (e.g., consensus region set)
+# load query region set
 regionSet_query <- import(regions_file, format = "BED")
-regionSet_background <- import(background_file, format = "BED")
 
 # load database
 database = read_gmt(file.path(database_path), from = "SYMBOL", to = "ENTREZ", orgdb = orgdb)
@@ -48,13 +48,21 @@ res <- great(gr = regionSet_query,
       basal_downstream = great_params[["basal_downstream"]],
       extension = great_params[["extension"]],
       extended_tss = NULL,
-      background = regionSet_background, #default: NULL
+      background = NULL,
       exclude = "gap",
       cores = cores_n, #default: 1
       verbose = TRUE #default: great_opt$verbose
      )
 
-# get & save result table
-tb <- getEnrichmentTable(res, min_region_hits = 0)
-tb$description <- paste(tb$description, tb$id)
-fwrite(as.data.frame(tb), file=file.path(result_path), row.names=FALSE)
+# plot gene-region association
+pdf(file=file.path(associations_plot_path), width=12, height=4)
+plotRegionGeneAssociations(res)
+dev.off()
+
+# get and save gene-region association
+associations <- getRegionGeneAssociations(res)
+fwrite(as.data.frame(associations), file=file.path(associations_table_path), row.names=TRUE)
+
+# save unique associated genes by using mcols(), which returns a DataFrame object containing the metadata columns.
+genes <- unique(unlist(mcols(associations)$annotated_genes))
+write(genes, file.path(gene_path))

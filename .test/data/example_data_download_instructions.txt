@@ -1,6 +1,0 @@
-
-## INSTRUCTIONS for exmaple data download from LOLA vignette (http://code.databio.org/LOLA/articles/usingLOLACore.html)
-# change working directory to the worklfow/module
-cd enrichment_analysis/
-# execute the following command from to downlaod and extract the test data to the correct directory
-wget -c http://cloud.databio.org.s3.amazonaws.com/vignettes/lola_vignette_data_150505.tgz -O - | tar -xz -C .test/data/

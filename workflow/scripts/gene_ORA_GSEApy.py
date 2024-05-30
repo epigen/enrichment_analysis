@@ -9,17 +9,16 @@ import numpy as np
 import gseapy as gp
 import sys
 
+# # utils for manual odds ratio calculation -> not used anymore
+# def overlap_converter(overlap_str, bg_n, gene_list_n):
+#     overlap_n, gene_set_n = str(overlap_str).split('/')
+#     return odds_ratio_calc(bg_n, gene_list_n, int(gene_set_n), int(overlap_n))
 
-# utils for manual odds ratio calculation -> not used anymore
-def overlap_converter(overlap_str, bg_n, gene_list_n):
-    overlap_n, gene_set_n = str(overlap_str).split('/')
-    return odds_ratio_calc(bg_n, gene_list_n, int(gene_set_n), int(overlap_n))
-
-def odds_ratio_calc(bg_n, gene_list_n, gene_set_n, overlap_n): 
-    import scipy.stats as stats
-    table=np.array([[gene_set_n, bg_n-gene_set_n],[overlap_n, gene_list_n-overlap_n]])
-    oddsratio, pvalue = stats.fisher_exact(table)
-    return (1/oddsratio)
+# def odds_ratio_calc(bg_n, gene_list_n, gene_set_n, overlap_n): 
+#     import scipy.stats as stats
+#     table=np.array([[gene_set_n, bg_n-gene_set_n],[overlap_n, gene_list_n-overlap_n]])
+#     oddsratio, pvalue = stats.fisher_exact(table)
+#     return (1/oddsratio)
 
 
 # configs
@@ -67,8 +66,13 @@ if len(gene_list)==0:
 # load database .pkl file
 # with open(enrichr_databases, 'rb') as f:
 #     db_dict = pickle.load(f)
-with open(database_path) as json_file:
-    db_dict = json.load(json_file)
+# with open(database_path) as json_file:
+#     db_dict = json.load(json_file)
+
+# load database GMT file
+db_dict = gp.parser.read_gmt(database_path)
+# gp.parser.gsea_gmt_parser(database_path)
+# gp.base.parse_gmt(database_path)
     
 # convert gene lists and database to upper case
 gene_list=[str(x).upper() for x in list(gene_list)]
@@ -76,13 +80,12 @@ background=[str(x).upper() for x in list(background)]
 db_dict = {key: [ele.upper() for ele in db_dict[key] ] for key in db_dict}
     
 # count number of background genes for odds-ratio calculation
-bg_n = len(background)
+# bg_n = len(background)
 
 # if background-genes are empty provide number of genes as 20,000 as heuristic
 # this excpetion only occurs if background region set exceeds 500,000 regions
-if bg_n==0:
-    bg_n = 20000
-    background = bg_n
+if len(background)==0:
+    background = 20000
 
 # perform ORA (hypergeometric test) in database using GSEApy (barplots are generated automatically)
 try:

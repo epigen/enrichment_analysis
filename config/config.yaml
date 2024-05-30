@@ -2,7 +2,7 @@
 
 ##### RESOURCES #####
 partition: 'tinyq'
-mem: '32000'
+mem: '16000'
 threads: 1
 
 
@@ -36,9 +36,18 @@ local_json_dbs:
 
 ### GREAT - region-gene association based analysis
 
-# databases to be queried from GREAT (https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655440/Ontologies)
-# not all ontologies are available for all genomes and GREAT versions (here we use version 4)
-great_dbs: ['GO Molecular Function','GO Biological Process','GO Cellular Component','Mouse Phenotype','Mouse Phenotype Single KO','Human Phenotype']
+# GREAT paramaters
+# https://jokergoo.github.io/rGREAT/reference/great.html
+great_parameters:
+    min_gene_set_size: 0 #default: 5
+    mode: "basalPlusExt" # options: 'basalPlusExt', 'twoClosest', 'oneClosest'
+    basal_upstream: 5000 # used in 'basalPlusExt' mode
+    basal_downstream: 1000 # used in 'basalPlusExt' mode
+    extension: 1000000
+
+# databases to be queried from GREAT 
+# https://jokergoo.github.io/rGREAT/reference/great.html#genesets-1
+great_dbs: ['GO:BP']
 
 ### LOLA - region overlap based analysis
 
@@ -66,11 +75,11 @@ column_names:
         term: 'Term'
     GREAT:
         top_n: 25
-        p_value: "HyperP"
-        adj_pvalue: "HyperFdrQ"
-        effect_size: "RegionFoldEnrich"
-        overlap: "TermCov"
-        term: "Desc"
+        p_value: "p_value_hyper" # p_value
+        adj_pvalue: "p_adjust_hyper" # p_adjust
+        effect_size: "fold_enrichment_hyper" # fold_enrichment
+        overlap: "observed_region_hits" # observed_gene_hits
+        term: "description"
     LOLA:
         top_n: 25
         p_value: "pValue"

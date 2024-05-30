@@ -1,12 +1,20 @@
 ### utility GET/INPUT functions
 
-# get user provided local JSON database path
-def get_json_db_path(wildcards):
-    return json_db_dict[wildcards.db]
+# get user provided local database path
+def get_db_path(wildcards):
+    return database_dict[wildcards.database]
 
-# get user provided local GMT database path
-def get_gmt_db_path(wildcards):
-    return gmt_db_dict[wildcards.db]
+# provide the first prepared database for region-gene association
+# def get_first_database(wildcards):
+#     return os.path.join("resources", config["project_name"],"{}.gmt".format(next(iter(database_dict))))
+
+# # get user provided local JSON database path
+# def get_json_db_path(wildcards):
+#     return json_db_dict[wildcards.db]
+
+# # get user provided local GMT database path
+# def get_gmt_db_path(wildcards):
+#     return gmt_db_dict[wildcards.db]
 
 ### for genomic region enrichment
 # region set
@@ -26,7 +34,6 @@ def get_background_region_path(wildcards):
         return background_regions_dict[wildcards.region_set]['background_path']
     else:
         print("Background region set not found")
-
 
 ### for ORA GSEA
 # gene set

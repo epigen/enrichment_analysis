@@ -1,54 +1,74 @@
 
-# performs region enrichment analysis using LOLA
-rule region_enrichment_analysis_LOLA:
-    input:
-        regions = get_region_path,
-        background = get_background_region_path,
-        lola_resources = rules.load_lola_resources.output.lola_resources
-#         lola_resources = os.path.abspath(os.path.join("resources", config["project_name"], "LOLA")),
-    output:
-        results = expand(os.path.join(result_path,'{{region_set}}','LOLA','{db}','{{region_set}}_{db}.csv'),db=config["lola_dbs"]),
-    params:
-        region_set = lambda w: "{}".format(w.region_set),
-        result_path = result_path,
-        partition=config.get("partition"),
-    threads: config.get("threads", 1)
-    resources:
-        mem_mb=config.get("mem", "16000"),
-    conda:
-        "../envs/region_enrichment_analysis.yaml",
-    log:
-        "logs/rules/region_enrichment_analysis_LOLA_{region_set}.log"
-    script:
-        "../scripts/region_enrichment_analysis_LOLA.R"
+# # performs region enrichment analysis using LOLA
+# rule region_enrichment_analysis_LOLA:
+#     input:
+#         regions = get_region_path,
+#         background = get_background_region_path,
+#         lola_resources = rules.load_lola_resources.output.lola_resources
+# #         lola_resources = os.path.abspath(os.path.join("resources", config["project_name"], "LOLA")),
+#     output:
+#         results = expand(os.path.join(result_path,'{{region_set}}','LOLA','{db}','{{region_set}}_{db}.csv'),db=config["lola_dbs"]),
+#     params:
+#         region_set = lambda w: "{}".format(w.region_set),
+#         result_path = result_path,
+#         partition=config.get("partition"),
+#     threads: config.get("threads", 1)
+#     resources:
+#         mem_mb=config.get("mem", "16000"),
+#     conda:
+#         "../envs/region_enrichment_analysis.yaml",
+#     log:
+#         "logs/rules/region_enrichment_analysis_LOLA_{region_set}.log"
+#     script:
+#         "../scripts/region_enrichment_analysis_LOLA.R"
         
 # performs region enrichment analysis using GREAT
 rule region_enrichment_analysis_GREAT:
     input:
-        regions=get_region_path,
-        background=get_background_region_path,
+        regions = get_region_path,
+        background = get_background_region_path,
+        database = os.path.join("resources", config["project_name"], "{database}.gmt"),
     output:
-        results = expand(os.path.join(result_path,'{{region_set}}','GREAT','{db}','{{region_set}}_{db}.csv'),db=great_dbs),
-        genes = os.path.join(result_path,'{region_set}','GREAT','genes.txt'),
+        result = os.path.join(result_path,'{region_set}','GREAT','{database}','{region_set}_{database}.csv'),
     params:
-        region_set = lambda w: "{}".format(w.region_set),
-        partition=config.get("partition"),
+        partition = config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
     conda:
         "../envs/region_enrichment_analysis.yaml",
     log:
-        "logs/rules/region_enrichment_analysis_GREAT_{region_set}.log"
+        "logs/rules/region_enrichment_analysis_GREAT_{region_set}_{database}.log"
     script:
         "../scripts/region_enrichment_analysis_GREAT.R"
+        
+# region-gene association using GREAT for downstream gene-base analysis of genomic regions
+rule region_gene_association_GREAT:
+    input:
+        regions = get_region_path,
+        database = os.path.join("resources", config["project_name"],"{}.gmt".format(next(iter(database_dict)))), #get_first_database,
+    output:
+        genes = os.path.join(result_path,'{region_set}','GREAT','genes.txt'),
+        associations_table = os.path.join(result_path,'{region_set}','GREAT','region_gene_associations.csv'),
+        associations_plot = os.path.join(result_path,'{region_set}','GREAT','region_gene_associations.pdf'),
+    params:
+        partition = config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/region_enrichment_analysis.yaml",
+    log:
+        "logs/rules/region_gene_association_GREAT_{region_set}.log"
+    script:
+        "../scripts/region_gene_association_GREAT.R"
                 
 # performs gene over-represenation analysis (ORA) using GSEApy
 rule gene_ORA_GSEApy:
     input:
         query_genes=get_gene_path,
         background_genes=get_background_gene_path,
-        database = os.path.join("resources", config["project_name"], "{db}.json"),
+        database = os.path.join("resources", config["project_name"], "{db}.gmt"),
     output:
         result_file = os.path.join(result_path,'{gene_set}','ORA_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
@@ -68,7 +88,7 @@ rule gene_ORA_GSEApy:
 rule gene_preranked_GSEApy:
     input:
         query_genes=get_rnk_path,
-        database = os.path.join("resources", config["project_name"], "{db}.json"),
+        database = os.path.join("resources", config["project_name"], "{db}.gmt"),
     output:
         result_file = os.path.join(result_path,'{gene_set}','preranked_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:

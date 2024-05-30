@@ -46,55 +46,58 @@ background_regions_dict = background_region_df.set_index('background_name').to_d
 # print(background_regions_dict) # for testing
 
 # databases
-# GREAT database list
-great_dbs = [db.replace(" ","_") for db in config["great_dbs"]]
-
 # load local database (JSON and GMT) dictionary and keep only non-empty
-json_db_dict = config["local_json_dbs"]
-json_db_dict = {k: v for k, v in json_db_dict.items() if v!=""}
+database_dict = config["local_databases"]
+database_dict = {k: v for k, v in database_dict.items() if v!=""}
 
-gmt_db_dict = config["local_gmt_dbs"]
-gmt_db_dict = {k: v for k, v in gmt_db_dict.items() if v!=""}
+# GREAT database list
+# great_dbs = config["local_databases"] #[db.replace(":","_") for db in config["great_dbs"]]
+
+# json_db_dict = config["local_json_dbs"]
+# json_db_dict = {k: v for k, v in json_db_dict.items() if v!=""}
+
+# gmt_db_dict = config["local_gmt_dbs"]
+# gmt_db_dict = {k: v for k, v in gmt_db_dict.items() if v!=""}
 
 # GSEApy database list
-gseapy_dbs = config["enrichr_dbs"]
-if json_db_dict is not None:
-    gseapy_dbs = gseapy_dbs + list(json_db_dict.keys())
-if gmt_db_dict is not None:
-    gseapy_dbs = gseapy_dbs + list(gmt_db_dict.keys())
+# gseapy_dbs = config["enrichr_dbs"]
+# if json_db_dict is not None:
+#     gseapy_dbs = gseapy_dbs + list(json_db_dict.keys())
+# if gmt_db_dict is not None:
+#     gseapy_dbs = gseapy_dbs + list(gmt_db_dict.keys())
 
 ##### set global variables
-result_path = os.path.join(config["result_path"],'enrichment_analysis')
+result_path = os.path.join(config["result_path"], module_name)
 
 # to deal with rule ambiguity concerning database source (local JSON, local GMT, vs download)
-ruleorder: copy_json_databases > get_gmt_databases > load_enrichr_databases
+# ruleorder: copy_json_databases > get_gmt_databases > load_enrichr_databases
 
 ##### target rules #####
 rule all:
     input:
         # region enrichment analyses
-        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
-        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
-        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=great_dbs),
-        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=great_dbs),
+#         expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
+#         expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
+        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
-        expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=gseapy_dbs),
-        expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=gseapy_dbs),
+        expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
         # gene enrichment analyses - ORA
-        expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=genes_dict.keys(), db=gseapy_dbs),
-        expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=gseapy_dbs),
+        expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=genes_dict.keys(), db=database_dict.keys()),
+        expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=database_dict.keys()),
         # gene enrichment analyses - preranked
-        expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=rnk_dict.keys(), db=gseapy_dbs),
-        expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=rnk_dict.keys(), db=gseapy_dbs),
+        expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=rnk_dict.keys(), db=database_dict.keys()),
+        expand(os.path.join(result_path, '{gene_set}', 'preranked_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=rnk_dict.keys(), db=database_dict.keys()),
         # summaries
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='ORA_GSEApy', db=gseapy_dbs),
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=rnk["group"].unique(), tool='preranked_GSEApy', db=gseapy_dbs),
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=great_dbs),
-        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='ORA_GSEApy', db=database_dict.keys()),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=rnk["group"].unique(), tool='preranked_GSEApy', db=database_dict.keys()),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=database_dict.keys()),
+#         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
         # config
-        envs = expand(os.path.join(config["result_path"],'envs','enrichment_analysis','{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization']),
-        configs = os.path.join(config["result_path"],'configs','enrichment_analysis','{}_config.yaml'.format(config["project_name"])),
-        annotations = os.path.join(config["result_path"],'configs','enrichment_analysis','{}_annot.csv'.format(config["project_name"])),
+        envs = expand(os.path.join(config["result_path"],'envs',module_name,'{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization']),
+        configs = os.path.join(config["result_path"],'configs',module_name,'{}_config.yaml'.format(config["project_name"])),
+        annotations = os.path.join(config["result_path"],'configs',module_name,'{}_annot.csv'.format(config["project_name"])),
     params:
         partition=config.get("partition"),
     threads: config.get("threads", 1)
