@@ -36,7 +36,7 @@ if(file.size(results_all_path) == 0L){
     file.create(plot_path)
     file.create(adjp_hm_path)
     file.create(effect_hm_path)
-    quit()
+    quit(save = "no", status = 0)
 }
 
 # load aggregated result dataframe
@@ -48,7 +48,7 @@ if(length(unique(results_all$name))==1){
     file.create(plot_path)
     file.create(adjp_hm_path)
     file.create(effect_hm_path)
-    quit()
+    quit(save = "no", status = 0)
 }
 
 # determine top_n most significant terms (not necessarily statistically significant!)

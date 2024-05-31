@@ -17,9 +17,9 @@ db = snakemake.wildcards["database"]
 
 
 # if GMT, just copy
-if db_path.endswith('.gmt'):
+if db_path.lower().endswith('.gmt'):
     shutil.copy(db_path, results_path)
-elif db_path.endswith('.json'):
+elif db_path.lower().endswith('.json'):
     # JSON load and save as GMT
     with open(db_path, 'r') as f:
         data = json.load(f)
@@ -28,4 +28,4 @@ elif db_path.endswith('.json'):
         for key, values in data.items():
             f.write(f"{key}\t\t" + "\t".join(values) + "\n")
 else:
-    print("Error: Please provide a .gmt or .json database file.")
+    print("Error: Please provide a GMT (*.gmt) or JSON (*.json) database file.")

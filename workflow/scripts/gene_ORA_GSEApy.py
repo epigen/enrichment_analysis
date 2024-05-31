@@ -71,8 +71,6 @@ if len(gene_list)==0:
 
 # load database GMT file
 db_dict = gp.parser.read_gmt(database_path)
-# gp.parser.gsea_gmt_parser(database_path)
-# gp.base.parse_gmt(database_path)
     
 # convert gene lists and database to upper case
 gene_list=[str(x).upper() for x in list(gene_list)]

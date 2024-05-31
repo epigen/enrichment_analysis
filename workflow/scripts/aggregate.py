@@ -6,11 +6,15 @@ import os
 import numpy as np
 
 # configs
+
+# input
 result_paths = snakemake.input['enrichment_results']
 
+# output
 results_all_path = snakemake.output['results_all']
 results_sig_path = snakemake.output['results_sig']
 
+# parameters
 group = snakemake.wildcards["group"] #"testgroup"
 tool = snakemake.wildcards["tool"] #"ORA_GSEApy"
 db = snakemake.wildcards["db"] #"WikiPathways_2019_Human"
