@@ -11,12 +11,16 @@ library("data.table")
 snakemake@source("./utils.R")
 
 # configs
+
+# input
 results_all_path <- snakemake@input[["results_all"]]
 
+# output
 plot_path <- snakemake@output[["summary_plot"]]
 adjp_hm_path <- snakemake@output[["adjp_hm"]]
 effect_hm_path <- snakemake@output[["effect_hm"]]
 
+# parameters
 tool <- snakemake@wildcards[["tool"]] #"ORA_GSEApy"
 database <- snakemake@wildcards[["db"]] #"GO_Biological_Process_2021"
 group <- snakemake@wildcards[["group"]] #"testgroup"
@@ -170,11 +174,11 @@ plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
 # plot
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
 geom_point(shape=21, stroke=0.25) +
-geom_point(data = plot_df[plot_df$adjp > -log10(adjp_th),], aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
+geom_point(data = plot_df[(!is.na(plot_df$adjp)) & (plot_df$adjp >= -log10(adjp_th)),], aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
 # scale_fill_gradient(low="grey", high="red", breaks = c(1, 2, 3, 4), limits = c(0, 4), name="-log10(adjp)") +
 scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")")) +
 scale_y_discrete(label=addline_format) + 
-scale_size_continuous(range = c(1,5), , name = "-log10(adjp)") + #not needed, because data already capped? limits = c(0, adjp_cap)
+scale_size_continuous(range = c(1,5), name = "-log10(adjp)") + #not needed, because data already capped? limits = c(0, adjp_cap)
 ggtitle(paste(tool, database, group, sep='\n')) +
 clean_theme() +
 theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
@@ -187,9 +191,9 @@ height <- 0.2 * dim(adjp_df)[1] + 2
 # enr_plot
                       
 # save plot
-ggsave_new(filename=paste0(group,'_',database,'_summary'),
-               results_path=dirname(plot_path),
-               plot=enr_plot,
-               width=width,
-               height=height
+ggsave_new(filename = paste0(group,'_',database,'_summary'),
+               results_path = dirname(plot_path),
+               plot = enr_plot,
+               width = width,
+               height = height
               )
