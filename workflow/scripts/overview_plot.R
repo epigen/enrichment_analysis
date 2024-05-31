@@ -32,8 +32,8 @@ effect_col <- snakemake@config[["column_names"]][[tool]][["effect_size"]] #'Odds
 top_n <- snakemake@config[["top_terms_n"]] #5
 adjp_cap <- snakemake@config[["adjp_cap"]] #4
 effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]] #5
-
 adjp_th <- as.numeric(snakemake@config[["adjp_th"]][tool]) #0.05
+cluster_flag <- as.logical(as.numeric(snakemake@config[["cluster_summary"]]))
 
 # stop early if results are empty
 if(file.size(results_all_path) == 0L){
@@ -67,10 +67,12 @@ for (query in unique(results_all$name)){
 adjp_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = adjp_col)
 rownames(adjp_df) <- adjp_df[[term_col]]
 adjp_df[[term_col]] <- NULL
+adjp_df <- adjp_df[,unique(results_all$name)]
 
 effect_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = effect_col)
 rownames(effect_df) <- effect_df[[term_col]]
 effect_df[[term_col]] <- NULL
+effect_df <- effect_df[,unique(results_all$name)]
 
 # filter by top terms
 adjp_df <- adjp_df[top_terms,]
@@ -109,6 +111,7 @@ pheatmap(adjp_df,
          treeheight_col = 10,
          fontsize = 6,
          fontsize_number = 10,
+         cluster_cols = cluster_flag,
          silent=TRUE,
          width=width_hm,
          height=height_hm,
@@ -127,6 +130,7 @@ pheatmap(effect_df,
          treeheight_col = 10,
          fontsize = 6,
          fontsize_number = 10,
+         cluster_cols = cluster_flag,
          silent=TRUE,
          width=width_hm,
          height=height_hm,
@@ -142,9 +146,14 @@ pheatmap(effect_df,
 # perform hierarchical clustering on the effect-sizes (NES or log2 odds ratios) of the terms and reorder dataframe
 hc_rows <- hclust(dist(effect_df))
 hc_row_names <- rownames(effect_df)[hc_rows$order]
-hc_cols <- hclust(dist(t(effect_df)))
-hc_col_names <- colnames(effect_df)[hc_cols$order]
-effect_df <- effect_df[hc_rows$order, hc_cols$order]
+if (cluster_flag){
+    hc_cols <- hclust(dist(t(effect_df)))
+    hc_col_names <- colnames(effect_df)[hc_cols$order]
+    effect_df <- effect_df[hc_rows$order, hc_cols$order]
+} else{
+    effect_df <- effect_df[hc_rows$order,]
+}
+
 
 # add a column for the terms
 effect_df$terms <- rownames(effect_df)
@@ -169,7 +178,9 @@ plot_df$adjp[plot_df$adjp==0] <- NA
 
 # ensure that the order of terms and feature sets is kept
 plot_df$terms <- factor(plot_df$terms,levels=hc_row_names)
-plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
+if (cluster_flag){
+    plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
+}
 
 # plot
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
