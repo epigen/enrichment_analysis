@@ -50,6 +50,10 @@ background_regions_dict = background_region_df.set_index('background_name').to_d
 database_dict = config["local_databases"]
 database_dict = {k: v for k, v in database_dict.items() if v!=""}
 
+# load LOLA database dictionary and keep only non-empty
+lola_db_dict = config["lola_databases"]
+lola_db_dict = {k: v for k, v in lola_db_dict.items() if v!=""}
+
 # GREAT database list
 # great_dbs = config["local_databases"] #[db.replace(":","_") for db in config["great_dbs"]]
 
@@ -76,8 +80,8 @@ result_path = os.path.join(config["result_path"], module_name)
 rule all:
     input:
         # region enrichment analyses
-#         expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
-#         expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=config["lola_dbs"]),
+        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=lola_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'LOLA','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=lola_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'GREAT','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
@@ -93,7 +97,7 @@ rule all:
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='ORA_GSEApy', db=database_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=rnk["group"].unique(), tool='preranked_GSEApy', db=database_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=database_dict.keys()),
-#         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=config["lola_dbs"]),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=lola_db_dict.keys()),
         # config
         envs = expand(os.path.join(config["result_path"],'envs',module_name,'{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization']),
         configs = os.path.join(config["result_path"],'configs',module_name,'{}_config.yaml'.format(config["project_name"])),

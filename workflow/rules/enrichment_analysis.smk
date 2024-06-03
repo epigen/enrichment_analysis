@@ -1,26 +1,23 @@
 
-# # performs region enrichment analysis using LOLA
-# rule region_enrichment_analysis_LOLA:
-#     input:
-#         regions = get_region_path,
-#         background = get_background_region_path,
-#         lola_resources = rules.load_lola_resources.output.lola_resources
-# #         lola_resources = os.path.abspath(os.path.join("resources", config["project_name"], "LOLA")),
-#     output:
-#         results = expand(os.path.join(result_path,'{{region_set}}','LOLA','{db}','{{region_set}}_{db}.csv'),db=config["lola_dbs"]),
-#     params:
-#         region_set = lambda w: "{}".format(w.region_set),
-#         result_path = result_path,
-#         partition=config.get("partition"),
-#     threads: config.get("threads", 1)
-#     resources:
-#         mem_mb=config.get("mem", "16000"),
-#     conda:
-#         "../envs/region_enrichment_analysis.yaml",
-#     log:
-#         "logs/rules/region_enrichment_analysis_LOLA_{region_set}.log"
-#     script:
-#         "../scripts/region_enrichment_analysis_LOLA.R"
+# performs region enrichment analysis using LOLA
+rule region_enrichment_analysis_LOLA:
+    input:
+        regions = get_region_path,
+        background = get_background_region_path,
+        database = get_lola_db_path,
+    output:
+        result = os.path.join(result_path,'{region_set}','LOLA','{database}','{region_set}_{database}.csv'),
+    params:
+        partition=config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/region_enrichment_analysis.yaml",
+    log:
+        "logs/rules/region_enrichment_analysis_LOLA_{region_set}_{database}.log"
+    script:
+        "../scripts/region_enrichment_analysis_LOLA.R"
         
 # performs region enrichment analysis using GREAT
 rule region_enrichment_analysis_GREAT:

@@ -1,6 +1,5 @@
 
 # load libraries
-# library("LOLA")
 library("GenomicRanges")
 library("rGREAT")
 library("data.table")
