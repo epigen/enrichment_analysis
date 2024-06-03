@@ -46,6 +46,9 @@ db_dict = {key: [ele.upper() for ele in db_dict[key] ] for key in db_dict}
 genes = genes.iloc[abs(genes.iloc[:, 0]).argsort()[::-1]]
 # drop duplicates based on index
 genes = genes[~genes.index.duplicated(keep='first')]
+# replace +inf with max value and -inf with min value
+score_col = genes.columns[0]
+genes[score_col] = genes[score_col].replace([np.inf, -np.inf], [genes[score_col][genes[score_col] != np.inf].max(), genes[score_col][genes[score_col] != -np.inf].min()])
 
 # run prerank GSEA of database with GSEApy
 res = gp.prerank(rnk=genes, 
