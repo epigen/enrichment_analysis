@@ -16,23 +16,20 @@ project_name: MyProject
 # mouse 'mm9' or 'mm10'
 genome: 'hg38'
 
+##### DATABASES #####
+# path to local databases as GMT (*.gmt) or JSON (*.json) files with gene symbols!
+# GMT databases can be donwloaded from 
+#     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
+#     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
+# JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
+local_databases:
+    MSigDB_H_C2_CGP: "test/data/c2.cgp.v2023.2.Hs.symbols.gmt"
+    MSigDB_H_C2: "test/data/c2.all.v2022.1.Hs.symbols.gmt"
+    MyWiki: "test/data/MyWikiPathways_2019_Human.json"
 
 ##### TOOLS #####
 
 ### GSEApy - ORA Enrichr (Fisher/hypergeometric test) and preranked GSEA based analysis
-
-# Databases downloaded from Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
-# example: enrichr_dbs: ["KEGG_2021_Mouse", "GO_Biological_Process_2021", "WikiPathways_2019_Mouse"]
-enrichr_dbs: ["KEGG_2021_Human", "GO_Biological_Process_2021", "WikiPathways_2019_Human"]
-
-# Databases in GMT format containing Gene Symbols e.g, downloaded from MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
-local_gmt_dbs:
-    MyMSigDB: ""
-
-# path to local databases as JSON files will be loaded as dictionaries
-# example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
-local_json_dbs:
-    MyDB: ""
 
 ### GREAT - region-gene association based analysis
 
@@ -45,15 +42,15 @@ great_parameters:
     basal_downstream: 1000 # used in 'basalPlusExt' mode
     extension: 1000000
 
-# databases to be queried from GREAT 
-# https://jokergoo.github.io/rGREAT/reference/great.html#genesets-1
-great_dbs: ['GO:BP']
-
 ### LOLA - region overlap based analysis
 
-# databases to be queried by LOLA (https://databio.org/regiondb)
-# not all databases are available for all genomes (eg mm10 only supports LOLACore)
-lola_dbs: ['LOLACore','jaspar_motifs','roadmap_epigenomics']
+# LOLA compatible region set databases
+# loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
+# download from the docs or create your own: https://databio.org/regiondb
+# pre-cached .RData files are supported by simpleCache
+# provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
+lola_databases:
+    LOLACore: "resources/LOLACore/hg38"
 
 ### Enrichment plot
 
@@ -88,16 +85,6 @@ column_names:
         overlap: "support"
         term: "description"
 
-
-# GREAT before
-#     GREAT:
-#         top_n: 25
-#         p_value: "Hyper_Raw_PValue"
-#         adj_pvalue: "Hyper_Adjp_BH"
-#         effect_size: "Hyper_Fold_Enrichment"
-#         overlap: "Hyper_Region_Set_Coverage"
-#         term: "name"
-
 ##### AGGREGATE & SUMMARIZE #####
 
 # adjusted p-value threshold per tool to denote statistical significance
@@ -119,3 +106,6 @@ or_cap: 5
 # cap for  normalized enrichemnt scores (NES) abs(nes) > nes_cap -> sign(nes) * nes_cap
 # applicable only to preranked_GSEApy
 nes_cap: 5
+
+# hierarchical cluster flag for summary plots (0=no; 1=yes)
+cluster_summary: 0
