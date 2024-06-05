@@ -59,6 +59,56 @@ rule region_gene_association_GREAT:
         "logs/rules/region_gene_association_GREAT_{region_set}.log"
     script:
         "../scripts/region_gene_association_GREAT.R"
+
+# performs region enrichment analysis using pycisTarget
+rule region_enrichment_analysis_pycisTarget:
+    input:
+        regions = get_region_path,
+        ctx_db = config["pycistarget_parameters"]["ctx_db"],
+        motif2tf = config["pycistarget_parameters"]["path_to_motif_annotations"],
+    output:
+        motif_tsv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.tsv'),
+        motif_html = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.html'),
+#         motif_pickle = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.pickle'),
+    params:
+        fraction_overlap_w_cistarget_database = config["pycistarget_parameters"]["fraction_overlap_w_cistarget_database"],
+        auc_threshold = config["pycistarget_parameters"]["auc_threshold"],
+        nes_threshold = config["pycistarget_parameters"]["nes_threshold"],
+        rank_threshold =  config["pycistarget_parameters"]["rank_threshold"],
+        annotation_version = config["pycistarget_parameters"]["annotation_version"],
+        annotations_to_use = config["pycistarget_parameters"]["annotations_to_use"],
+        motif_similarity_fdr = config["pycistarget_parameters"]["motif_similarity_fdr"],
+        orthologous_identity_threshold = config["pycistarget_parameters"]["orthologous_identity_threshold"],
+        species = 'homo_sapiens' if config["genome"] in ["hg19", "hg38"] else 'mus_musculus' if config["genome"] in ["mm9", "mm11"] else None,
+        partition = config.get("partition"),
+    threads: 10 * config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/pycisTarget.yaml",
+    log:
+        "logs/rules/region_enrichment_analysis_pycisTarget_{region_set}_{database}.log"
+    shell:
+        """
+        # run cistarget
+        pycistarget cistarget \
+            --cistarget_db_fname {input.ctx_db} \
+            --bed_fname {input.regions} \
+            --output_folder $(dirname {output.motif_tsv}) \
+            --fr_overlap_w_ctx_db {params.fraction_overlap_w_cistarget_database} \
+            --auc_threshold {params.auc_threshold} \
+            --nes_threshold {params.nes_threshold} \
+            --rank_threshold {params.rank_threshold} \
+            --path_to_motif_annotations {input.motif2tf} \
+            --annotation_version {params.annotation_version} \
+            --annotations_to_use {params.annotations_to_use} \
+            --motif_similarity_fdr {params.motif_similarity_fdr} \
+            --orthologous_identity_threshold {params.orthologous_identity_threshold} \
+            --species {params.species} \
+            --name {wildcards.region_set} \
+            --output_mode 'tsv' \
+            --write_html
+        """
                 
 # performs gene over-represenation analysis (ORA) using GSEApy
 rule gene_ORA_GSEApy:

@@ -18,6 +18,7 @@ genome: 'hg38'
 
 ##### DATABASES #####
 # path to local databases as GMT (*.gmt) or JSON (*.json) files with gene symbols!
+# will be used by rGREAT for genomic regions and GSEApy for genes
 # GMT databases can be donwloaded from 
 #     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 #     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
@@ -51,6 +52,22 @@ great_parameters:
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
 lola_databases:
     LOLACore: "resources/LOLACore/hg38"
+    
+### pycisTarget - region based Transcription Factor Binding Site (TFBS) motif enrichment analysis
+# https://pycistarget.readthedocs.io/en/latest/index.html
+# resources: https://resources.aertslab.org/cistarget/
+pycistarget_parameters:
+    ctx_db: "resources/pycistarget/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather" #hg19-regions-9species.all_regions.mc9nr.regions_vs_motifs.rankings.feather" # "path/to/ctxdb"
+    path_to_motif_annotations: "resources/pycistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl" # "path/to/motif2tf_file"
+    temp_dir: "/nobackup/lab_bock/users/sreichl/tmp" #"path/to/tmp_dir" # should have space available
+    fraction_overlap_w_cistarget_database: 0.4 # default 0.4
+    auc_threshold: 0.005 # default 0.005
+    nes_threshold: 3 # default 3
+    rank_threshold: 0.05 # default 0.05
+    annotation_version: "v10nr_clust"
+    annotations_to_use: ["Direct_annot", "Motif_similarity_annot", "Orthology_annot", "Motif_similarity_and_Orthology_annot"]
+    motif_similarity_fdr: 0.001 # default 0.001
+    orthologous_identity_threshold: 0 # default 0
 
 ### Enrichment plot
 

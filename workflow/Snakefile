@@ -87,6 +87,8 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
+        # pycisTarget TEST
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','motif_enrichment_cistarget_{region_set}.tsv'), region_set=regions_dict.keys(), db=["test"]),
         # gene enrichment analyses - ORA
         expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=genes_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=database_dict.keys()),

@@ -1,0 +1,11 @@
+name: pycisTarget
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - attrs=23.2.0
+  - pip
+  - pip:
+      - 'git+https://github.com/aertslab/pycistarget/'
