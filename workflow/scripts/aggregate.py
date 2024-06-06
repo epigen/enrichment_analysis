@@ -15,15 +15,14 @@ results_all_path = snakemake.output['results_all']
 results_sig_path = snakemake.output['results_sig']
 
 # parameters
-group = snakemake.wildcards["group"] #"testgroup"
-tool = snakemake.wildcards["tool"] #"ORA_GSEApy"
-db = snakemake.wildcards["db"] #"WikiPathways_2019_Human"
+group = snakemake.wildcards["group"]
+tool = snakemake.wildcards["tool"]
+db = snakemake.wildcards["db"]
 
-term_col = snakemake.config["column_names"][tool]["term"] #'Term'
-adjp_col = snakemake.config["column_names"][tool]["adj_pvalue"] #'Adjusted_P_value'
-# effect_col = snakemake.config["column_names"][tool]["effect_size"] #'Odds_Ratio'
+term_col = snakemake.config["column_names"][tool]["term"]
+adjp_col = snakemake.config["column_names"][tool]["adj_pvalue"]
 
-adjp_th = snakemake.config["adjp_th"][tool] #0.05
+adjp_th = snakemake.config["adjp_th"][tool]
 
 dir_results = os.path.dirname(results_all_path)
 if not os.path.exists(dir_results):
@@ -52,7 +51,10 @@ result_df = pd.concat(results_list, axis=0)
 result_df.to_csv(results_all_path)
 
 # find union of statistically significant terms
-sig_terms = result_df.loc[result_df[adjp_col]<adjp_th, term_col].unique()
+if tool!="pycisTarget":
+    sig_terms = result_df.loc[result_df[adjp_col]<adjp_th, term_col].unique()
+else:
+    sig_terms = result_df.loc[result_df[adjp_col]>adjp_th, term_col].unique()
 
 # filter by significant terms
 result_sig_df = result_df.loc[result_df[term_col].isin(sig_terms), :]

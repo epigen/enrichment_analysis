@@ -27,12 +27,10 @@ annot = pd.read_csv(config["annotation"], index_col='name')
 # genes
 genes = annot.loc[annot['features_path'].str.endswith('.txt'),:]
 genes_dict = genes.to_dict('index')
-# print(genes_dict) # for testing
 
 # ranked genes
 rnk = annot.loc[annot['features_path'].str.endswith('.csv'),:]
 rnk_dict = rnk.to_dict('index')
-# print(rnk_dict) # for testing
 
 # regions
 regions = annot.loc[annot['features_path'].str.endswith('.bed'),:]
@@ -70,7 +68,6 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
-        # pycisTarget
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         # gene enrichment analyses - ORA
@@ -84,6 +81,7 @@ rule all:
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=rnk["group"].unique(), tool='preranked_GSEApy', db=database_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=database_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=lola_db_dict.keys()),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='pycisTarget', db=pycistarget_db_dict.keys()),
         # config
         envs = expand(os.path.join(config["result_path"],'envs',module_name,'{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization']),
         configs = os.path.join(config["result_path"],'configs',module_name,'{}_config.yaml'.format(config["project_name"])),

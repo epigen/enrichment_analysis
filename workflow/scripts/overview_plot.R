@@ -21,18 +21,18 @@ adjp_hm_path <- snakemake@output[["adjp_hm"]]
 effect_hm_path <- snakemake@output[["effect_hm"]]
 
 # parameters
-tool <- snakemake@wildcards[["tool"]] #"ORA_GSEApy"
-database <- snakemake@wildcards[["db"]] #"GO_Biological_Process_2021"
-group <- snakemake@wildcards[["group"]] #"testgroup"
+tool <- snakemake@wildcards[["tool"]]
+database <- snakemake@wildcards[["db"]]
+group <- snakemake@wildcards[["group"]]
 
-term_col <- snakemake@config[["column_names"]][[tool]][["term"]] #'Term'
-adjp_col <- snakemake@config[["column_names"]][[tool]][["adj_pvalue"]] #'Adjusted_P_value'
-effect_col <- snakemake@config[["column_names"]][[tool]][["effect_size"]] #'Odds_Ratio'
+term_col <- snakemake@config[["column_names"]][[tool]][["term"]]
+adjp_col <- snakemake@config[["column_names"]][[tool]][["adj_pvalue"]]
+effect_col <- snakemake@config[["column_names"]][[tool]][["effect_size"]]
 
-top_n <- snakemake@config[["top_terms_n"]] #5
-adjp_cap <- snakemake@config[["adjp_cap"]] #4
-effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]] #5
-adjp_th <- as.numeric(snakemake@config[["adjp_th"]][tool]) #0.05
+top_n <- snakemake@config[["top_terms_n"]]
+adjp_cap <- snakemake@config[["adjp_cap"]]
+effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]]
+adjp_th <- as.numeric(snakemake@config[["adjp_th"]][tool])
 cluster_flag <- as.logical(as.numeric(snakemake@config[["cluster_summary"]]))
 
 # stop early if results are empty
@@ -44,7 +44,6 @@ if(file.size(results_all_path) == 0L){
 }
 
 # load aggregated result dataframe
-# results_all <- read.csv(results_all_path, header= TRUE)
 results_all <- data.frame(fread(file.path(results_all_path), header=TRUE))
 
 # stop early if results consist of only one query
@@ -59,10 +58,16 @@ if(length(unique(results_all$name))==1){
 top_terms <- c()
 for (query in unique(results_all$name)){
     tmp_result <- results_all[results_all$name==query,]
-    tmp_terms <- tmp_result[order(tmp_result[[adjp_col]]), term_col][1:top_n]
+    
+    if(tool=="pycisTarget"){
+        tmp_terms <- tmp_result[order(-tmp_result[[adjp_col]]), term_col][1:top_n]
+    }else{
+        tmp_terms <- tmp_result[order(tmp_result[[adjp_col]]), term_col][1:top_n]
+    }
+    
     top_terms <- unique(c(top_terms,tmp_terms))
 }
-                                     
+
 # make adjusted p-vale and effect-size (odds-ratio or normalized enrichment scores) dataframes
 adjp_df <- dcast(results_all, as.formula(paste(term_col, "~ name")), value.var = adjp_col)
 rownames(adjp_df) <- adjp_df[[term_col]]
@@ -186,7 +191,6 @@ if (cluster_flag){
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
 geom_point(shape=21, stroke=0.25) +
 geom_point(data = plot_df[(!is.na(plot_df$adjp)) & (plot_df$adjp >= -log10(adjp_th)),], aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
-# scale_fill_gradient(low="grey", high="red", breaks = c(1, 2, 3, 4), limits = c(0, 4), name="-log10(adjp)") +
 scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")")) +
 scale_y_discrete(label=addline_format) + 
 scale_size_continuous(range = c(1,5), name = "-log10(adjp)") + #not needed, because data already capped? limits = c(0, adjp_cap)

@@ -64,7 +64,7 @@ rule region_gene_association_GREAT:
 rule region_enrichment_analysis_pycisTarget:
     input:
         regions = get_region_path,
-        ctx_db = get_pycistarget_db_path, #config["pycistarget_parameters"]["ctx_db"],
+        ctx_db = get_pycistarget_db_path,
         motif2tf = config["pycistarget_parameters"]["path_to_motif_annotations"],
     output:
         motif_hdf5 = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.hdf5'),
@@ -89,7 +89,6 @@ rule region_enrichment_analysis_pycisTarget:
         "logs/rules/region_enrichment_analysis_pycisTarget_{region_set}_{database}.log"
     shell:
         """
-        # run cistarget
         pycistarget cistarget \
             --cistarget_db_fname {input.ctx_db} \
             --bed_fname {input.regions} \

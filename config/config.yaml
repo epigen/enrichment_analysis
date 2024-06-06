@@ -118,6 +118,7 @@ adjp_th:
     preranked_GSEApy: 0.05
     GREAT: 0.01
     LOLA: 0.01
+    pycisTarget: 3 # keep results greater(!) than provided threshold
 
 # number of top terms per feature set within each group for all overview plots (adjusted p-value, effect-size and bubble-heatmap)
 top_terms_n: 5
