@@ -9,24 +9,28 @@ library("data.table")
 snakemake@source("./utils.R")
 
 # configs
+
+# input
 enrichment_result_path <- snakemake@input[["enrichment_result"]]
+
+# output
 enrichment_plot_path <- snakemake@output[["enrichment_plot"]]
 
-tool <- snakemake@params[["tool"]] #"ORA_GSEApy"
-database <- snakemake@params[["database"]] #"KEGG_2021_Human"
-feature_set <- snakemake@params[["feature_set"]] 
+# parameters
+tool <- snakemake@wildcards[["tool"]]
+database <- snakemake@wildcards[["db"]]
+feature_set <- snakemake@wildcards[["feature_set"]] 
 plot_cols <- snakemake@config[["column_names"]][[tool]]
 
-top_n <- plot_cols[["top_n"]] #25
-pval_col <- plot_cols[["p_value"]] #'P.value'
-adjp_col <- plot_cols[["adj_pvalue"]] #'Adjusted.P.value'
-effect_col <- plot_cols[["effect_size"]] #'Odds.Ratio'
-overlap_col <- plot_cols[["overlap"]] #'Overlap'
-term_col <- plot_cols[["term"]] #'Term'
+top_n <- plot_cols[["top_n"]]
+pval_col <- plot_cols[["p_value"]]
+adjp_col <- plot_cols[["adj_pvalue"]]
+effect_col <- plot_cols[["effect_size"]]
+overlap_col <- plot_cols[["overlap"]]
+term_col <- plot_cols[["term"]]
 
 # load enrichment result
 if (file.size(enrichment_result_path) != 0L){
-#     enrichment_result <- read.csv(enrichment_result_path, row.names = NULL, header= TRUE)
     enrichment_result <- data.frame(fread(file.path(enrichment_result_path), header=TRUE))
 }else{
     file.create(enrichment_plot_path)
@@ -39,7 +43,7 @@ if(class(enrichment_result[[overlap_col]])=="character"){
 }
 
 # calculate comparable effect size either NES or odds-ratio/fold based
-if (tool!="preranked_GSEApy"){
+if (tool!="preranked_GSEApy" & tool!="pycisTarget"){
     # calculate log2(effect-size) and put in new column
     effect_col_new <- paste0("log2_",effect_col)
     enrichment_result[[effect_col_new]] <- log2(enrichment_result[[effect_col]])
@@ -47,7 +51,7 @@ if (tool!="preranked_GSEApy"){
 }
 
 # determine ranks
-enrichment_result$PValue_Rnk <- rank(enrichment_result[[pval_col]])
+enrichment_result$PValue_Rnk <- if (tool!="pycisTarget") rank(enrichment_result[[pval_col]]) else rank(-enrichment_result[[pval_col]])
 enrichment_result$Fold_Rnk <- rank(-abs(enrichment_result[[effect_col]]))
 enrichment_result$Coverage_Rnk <- rank(-enrichment_result[[overlap_col]])
 # calculate and sort by mean rank

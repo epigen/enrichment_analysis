@@ -4,8 +4,10 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.11
-  - attrs=23.2.0
+  - python
+  - attrs
+  - pytables
   - pip
   - pip:
-      - 'git+https://github.com/aertslab/pycistarget/'
+      - tables
+      - 'git+https://github.com/aertslab/pycistarget.git@8cd78f110f4eeeb38d8f7006a1100a13d636d984'

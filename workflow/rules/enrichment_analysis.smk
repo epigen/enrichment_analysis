@@ -64,12 +64,11 @@ rule region_gene_association_GREAT:
 rule region_enrichment_analysis_pycisTarget:
     input:
         regions = get_region_path,
-        ctx_db = config["pycistarget_parameters"]["ctx_db"],
+        ctx_db = get_pycistarget_db_path, #config["pycistarget_parameters"]["ctx_db"],
         motif2tf = config["pycistarget_parameters"]["path_to_motif_annotations"],
     output:
-        motif_tsv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.tsv'),
+        motif_hdf5 = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.hdf5'),
         motif_html = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.html'),
-#         motif_pickle = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.pickle'),
     params:
         fraction_overlap_w_cistarget_database = config["pycistarget_parameters"]["fraction_overlap_w_cistarget_database"],
         auc_threshold = config["pycistarget_parameters"]["auc_threshold"],
@@ -94,7 +93,7 @@ rule region_enrichment_analysis_pycisTarget:
         pycistarget cistarget \
             --cistarget_db_fname {input.ctx_db} \
             --bed_fname {input.regions} \
-            --output_folder $(dirname {output.motif_tsv}) \
+            --output_folder $(dirname {output.motif_hdf5}) \
             --fr_overlap_w_ctx_db {params.fraction_overlap_w_cistarget_database} \
             --auc_threshold {params.auc_threshold} \
             --nes_threshold {params.nes_threshold} \
@@ -106,9 +105,27 @@ rule region_enrichment_analysis_pycisTarget:
             --orthologous_identity_threshold {params.orthologous_identity_threshold} \
             --species {params.species} \
             --name {wildcards.region_set} \
-            --output_mode 'tsv' \
+            --output_mode 'hdf5' \
             --write_html
         """
+
+# postprocess results from pycisTarget
+rule process_results_pycisTarget:
+    input:
+        motif_hdf5 = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.hdf5'),
+    output:
+        motif_csv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.csv'),
+    params:
+        partition = config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/pycisTarget.yaml",
+    log:
+        "logs/rules/process_results_pycisTarget_{region_set}_{database}.log"
+    script:
+        "../scripts/process_results_pycisTarget.py"
                 
 # performs gene over-represenation analysis (ORA) using GSEApy
 rule gene_ORA_GSEApy:
@@ -150,8 +167,7 @@ rule gene_preranked_GSEApy:
         "logs/rules/gene_preranked_GSEApy_{gene_set}_{db}.log"
     script:
         "../scripts/gene_preranked_GSEApy.py"
-        
-        
+
 # plot enrichment results
 rule plot_enrichment_result:
     input:
@@ -167,9 +183,6 @@ rule plot_enrichment_result:
                                   "misc": "{db}",
                               }),
     params:
-        tool = lambda w: "{}".format(w.tool),
-        feature_set = lambda w: "{}".format(w.feature_set),
-        database = lambda w: "{}".format(w.db),
         partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:

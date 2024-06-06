@@ -4,21 +4,13 @@
 def get_db_path(wildcards):
     return database_dict[wildcards.database]
 
-# get user provided lola database path
+# get user provided LOLA database path
 def get_lola_db_path(wildcards):
     return lola_db_dict[wildcards.database]
 
-# provide the first prepared database for region-gene association
-# def get_first_database(wildcards):
-#     return os.path.join("resources", config["project_name"],"{}.gmt".format(next(iter(database_dict))))
-
-# # get user provided local JSON database path
-# def get_json_db_path(wildcards):
-#     return json_db_dict[wildcards.db]
-
-# # get user provided local GMT database path
-# def get_gmt_db_path(wildcards):
-#     return gmt_db_dict[wildcards.db]
+# get user provided pycisTarget database path
+def get_pycistarget_db_path(wildcards):
+    return pycistarget_db_dict[wildcards.database]
 
 ### for genomic region enrichment
 # region set

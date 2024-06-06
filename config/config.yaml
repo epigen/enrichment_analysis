@@ -57,7 +57,8 @@ lola_databases:
 # https://pycistarget.readthedocs.io/en/latest/index.html
 # resources: https://resources.aertslab.org/cistarget/
 pycistarget_parameters:
-    ctx_db: "resources/pycistarget/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather" #hg19-regions-9species.all_regions.mc9nr.regions_vs_motifs.rankings.feather" # "path/to/ctxdb"
+    databases:
+        hg38_screen_v10clust: "resources/pycistarget/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
     path_to_motif_annotations: "resources/pycistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl" # "path/to/motif2tf_file"
     temp_dir: "/nobackup/lab_bock/users/sreichl/tmp" #"path/to/tmp_dir" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
@@ -101,6 +102,13 @@ column_names:
         effect_size: "oddsRatio"
         overlap: "support"
         term: "description"
+    pycisTarget:
+        top_n: 25
+        p_value: "NES"
+        adj_pvalue: "NES"
+        effect_size: "AUC"
+        overlap: "Motif_hits"
+        term: "Direct_annot" # must be one of "annotations_to_use" from above
 
 ##### AGGREGATE & SUMMARIZE #####
 

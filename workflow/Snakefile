@@ -37,13 +37,11 @@ rnk_dict = rnk.to_dict('index')
 # regions
 regions = annot.loc[annot['features_path'].str.endswith('.bed'),:]
 regions_dict = regions.to_dict('index')
-# print(regions_dict) # for testing
 
 # background regions
 background_region_df = regions.loc[:,['background_name', 'background_path']]
 background_region_df = background_region_df.drop_duplicates()
 background_regions_dict = background_region_df.set_index('background_name').to_dict('index')
-# print(background_regions_dict) # for testing
 
 # databases
 # load local database (JSON and GMT) dictionary and keep only non-empty
@@ -54,27 +52,12 @@ database_dict = {k: v for k, v in database_dict.items() if v!=""}
 lola_db_dict = config["lola_databases"]
 lola_db_dict = {k: v for k, v in lola_db_dict.items() if v!=""}
 
-# GREAT database list
-# great_dbs = config["local_databases"] #[db.replace(":","_") for db in config["great_dbs"]]
-
-# json_db_dict = config["local_json_dbs"]
-# json_db_dict = {k: v for k, v in json_db_dict.items() if v!=""}
-
-# gmt_db_dict = config["local_gmt_dbs"]
-# gmt_db_dict = {k: v for k, v in gmt_db_dict.items() if v!=""}
-
-# GSEApy database list
-# gseapy_dbs = config["enrichr_dbs"]
-# if json_db_dict is not None:
-#     gseapy_dbs = gseapy_dbs + list(json_db_dict.keys())
-# if gmt_db_dict is not None:
-#     gseapy_dbs = gseapy_dbs + list(gmt_db_dict.keys())
+# load pycisTarget databases dictionary and keep only non-empty
+pycistarget_db_dict = config["pycistarget_parameters"]["databases"]
+pycistarget_db_dict = {k: v for k, v in pycistarget_db_dict.items() if v!=""}
 
 ##### set global variables
 result_path = os.path.join(config["result_path"], module_name)
-
-# to deal with rule ambiguity concerning database source (local JSON, local GMT, vs download)
-# ruleorder: copy_json_databases > get_gmt_databases > load_enrichr_databases
 
 ##### target rules #####
 rule all:
@@ -87,8 +70,9 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
-        # pycisTarget TEST
-        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','motif_enrichment_cistarget_{region_set}.tsv'), region_set=regions_dict.keys(), db=["test"]),
+        # pycisTarget
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         # gene enrichment analyses - ORA
         expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.csv'), gene_set=genes_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{gene_set}', 'ORA_GSEApy','{db}','{gene_set}_{db}.png'), gene_set=genes_dict.keys(), db=database_dict.keys()),
