@@ -1,0 +1,9 @@
+name: RcisTarget
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bioconductor-rcistarget
+  - r-data.table
+

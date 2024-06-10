@@ -12,7 +12,7 @@ ggsave_new <- function(filename, results_path, plot, width=5, height=5, units="i
         dir.create(results_path, recursive = TRUE)
     }
     
-    for (format in c('png','svg')){
+    for (format in c('png')){
         ggsave(
           paste0(filename,'.',format),
           plot = plot,

@@ -66,7 +66,7 @@ pycistarget_parameters:
     nes_threshold: 3 # default 3
     rank_threshold: 0.05 # default 0.05
     annotation_version: "v10nr_clust"
-    annotations_to_use: ["Direct_annot", "Motif_similarity_annot", "Orthology_annot", "Motif_similarity_and_Orthology_annot"]
+    annotations_to_use: ["Direct_annot", "Motif_similarity_annot", "Orthology_annot", "Motif_similarity_and_Orthology_annot"] # the first entry of the list is used downstream for annotation
     motif_similarity_fdr: 0.001 # default 0.001
     orthologous_identity_threshold: 0 # default 0
 
@@ -104,11 +104,11 @@ column_names:
         term: "description"
     pycisTarget:
         top_n: 25
-        p_value: "NES"
+        p_value: "AUC"
         adj_pvalue: "NES"
-        effect_size: "AUC"
+        effect_size: "NES" # NES combines statistical significance and effect size
         overlap: "Motif_hits"
-        term: "Direct_annot" # must be one of "annotations_to_use" from above
+        term: "description" # a combination of the motif name and the first entry of aboves "annotations_to_use" lsit
 
 ##### AGGREGATE & SUMMARIZE #####
 
@@ -118,7 +118,7 @@ adjp_th:
     preranked_GSEApy: 0.05
     GREAT: 0.01
     LOLA: 0.01
-    pycisTarget: 3 # keep results greater(!) than provided threshold
+    pycisTarget: 5 # keep results greater(!) than provided threshold
 
 # number of top terms per feature set within each group for all overview plots (adjusted p-value, effect-size and bubble-heatmap)
 top_terms_n: 5
@@ -134,4 +134,4 @@ or_cap: 5
 nes_cap: 5
 
 # hierarchical cluster flag for summary plots (0=no; 1=yes)
-cluster_summary: 0
+cluster_summary: 1

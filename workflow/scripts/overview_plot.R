@@ -32,7 +32,7 @@ effect_col <- snakemake@config[["column_names"]][[tool]][["effect_size"]]
 top_n <- snakemake@config[["top_terms_n"]]
 adjp_cap <- snakemake@config[["adjp_cap"]]
 effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]]
-adjp_th <- as.numeric(snakemake@config[["adjp_th"]][tool])
+adjp_th <- as.numeric(snakemake@config[["adjp_th"]][[tool]])
 cluster_flag <- as.logical(as.numeric(snakemake@config[["cluster_summary"]]))
 
 # stop early if results are empty
@@ -46,13 +46,16 @@ if(file.size(results_all_path) == 0L){
 # load aggregated result dataframe
 results_all <- data.frame(fread(file.path(results_all_path), header=TRUE))
 
-# stop early if results consist of only one query
+# stop early if results consist of only one query -> TODO: consider plotting one column of top 5 hits
 if(length(unique(results_all$name))==1){
     file.create(plot_path)
     file.create(adjp_hm_path)
     file.create(effect_hm_path)
     quit(save = "no", status = 0)
 }
+
+# remove empty terms
+results_all <- results_all[results_all[[term_col]]!="",]
 
 # determine top_n most significant terms (not necessarily statistically significant!)
 top_terms <- c()
@@ -84,26 +87,34 @@ adjp_df <- adjp_df[top_terms,]
 effect_df <- effect_df[top_terms,]
                                     
 # fill NA for effect_df with 1 or 0 (i.e., neutral enrichment) and for adjp_df with 1 (i.e., no significance)
-effect_df[is.na(effect_df)] <- if (tool=="preranked_GSEApy") 0 else 1
-adjp_df[is.na(adjp_df)] <- 1
+effect_df[is.na(effect_df)] <- if (tool=="preranked_GSEApy" | tool=="pycisTarget") 0 else 1
+adjp_df[is.na(adjp_df)] <- if (tool=="pycisTarget") 0 else 1
                                      
 # make stat. sign. annotation for effect-size plot later
 adjp_annot <- adjp_df
-adjp_annot[adjp_df < adjp_th] <- "*"
-adjp_annot[adjp_df >= adjp_th] <- ""
+if(tool=="pycisTarget"){
+    adjp_annot[adjp_df >= adjp_th] <- "*"
+    adjp_annot[adjp_df < adjp_th] <- ""
+}else{
+    adjp_annot[adjp_df <= adjp_th] <- "*"
+    adjp_annot[adjp_df > adjp_th] <- ""
+}
 
 # log2 transform odds ratios
-if (tool!="preranked_GSEApy"){
+if (tool!="preranked_GSEApy" & tool!="pycisTarget"){
     effect_df <- log2(effect_df)
 }
 
-# cap effect_df for plotting depending on tool  abs(log2(or)) < or_cap OR abs(NES) < nes_cap
-effect_df[effect_df > effect_cap] <- effect_cap
-effect_df[effect_df < -effect_cap] <- -effect_cap
+# transform and cap adjp and effect size
+if(tool!="pycisTarget"){
+    # cap effect_df for plotting depending on tool  abs(log2(or)) < or_cap OR abs(NES) < nes_cap
+    effect_df[effect_df > effect_cap] <- effect_cap
+    effect_df[effect_df < -effect_cap] <- -effect_cap
 
-# log10 transform adjp & cap -log10(adjpvalue) < adjp_cap
-adjp_df <- -log10(adjp_df)
-adjp_df[adjp_df > adjp_cap] <- adjp_cap
+    # log10 transform adjp & cap -log10(adjpvalue) < adjp_cap
+    adjp_df <- -log10(adjp_df)
+    adjp_df[adjp_df > adjp_cap] <- adjp_cap
+}
                                      
 # plot hierarchically clustered heatmap for adjp and effect
 width_hm <- 0.2 * dim(adjp_df)[2] + 5
@@ -111,7 +122,7 @@ height_hm <- 0.2 * dim(adjp_df)[1] + 3
 
 pheatmap(adjp_df,
          display_numbers=adjp_annot,
-         main="-log10(adj. p-values)",
+         main= if (tool=="pycisTarget") adjp_col else"-log10(adj. p-values)",
          treeheight_row = 10,
          treeheight_col = 10,
          fontsize = 6,
@@ -130,7 +141,7 @@ pheatmap(adjp_df,
 
 pheatmap(effect_df,
          display_numbers=adjp_annot,
-         main = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")"),
+         main = if (tool=="preranked_GSEApy" | tool=="pycisTarget") effect_col else paste0("log2(",effect_col,")"),
          treeheight_row = 10,
          treeheight_col = 10,
          fontsize = 6,
@@ -147,7 +158,6 @@ pheatmap(effect_df,
          color=colorRampPalette(c("blue", "white", "red"))(200)
         )
 
-
 # perform hierarchical clustering on the effect-sizes (NES or log2 odds ratios) of the terms and reorder dataframe
 hc_rows <- hclust(dist(effect_df))
 hc_row_names <- rownames(effect_df)[hc_rows$order]
@@ -158,7 +168,6 @@ if (cluster_flag){
 } else{
     effect_df <- effect_df[hc_rows$order,]
 }
-
 
 # add a column for the terms
 effect_df$terms <- rownames(effect_df)
@@ -175,11 +184,6 @@ plot_df$adjp <- apply(plot_df, 1, function(x) adjp_df[x['terms'], x['feature_set
 # set effect-size and adjusted p-value conditional to NA (odds ratios == 0 and NES == 0) for plotting
 plot_df$effect[plot_df$effect==0] <- NA
 plot_df$adjp[plot_df$adjp==0] <- NA
-# if (tool=="preranked_GSEApy"){
-#     plot_df$effect[plot_df$effect==0] <- NA
-# }else{
-#     plot_df$effect[plot_df$effect<=0] <- NA
-# }
 
 # ensure that the order of terms and feature sets is kept
 plot_df$terms <- factor(plot_df$terms,levels=hc_row_names)
@@ -187,13 +191,20 @@ if (cluster_flag){
     plot_df$feature_set <- factor(plot_df$feature_set, levels=hc_col_names)
 }
 
+# stat. significance star df
+if(tool=="pycisTarget"){
+    adjp_star_df <- plot_df[(!is.na(plot_df$adjp)) & (plot_df$adjp >= adjp_th),]
+}else{
+    adjp_star_df <- plot_df[(!is.na(plot_df$adjp)) & (plot_df$adjp >= -log10(adjp_th)),]
+}
+
 # plot
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
 geom_point(shape=21, stroke=0.25) +
-geom_point(data = plot_df[(!is.na(plot_df$adjp)) & (plot_df$adjp >= -log10(adjp_th)),], aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
-scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy") effect_col else paste0("log2(",effect_col,")")) +
+geom_point(data = adjp_star_df, aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
+scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy" | tool=="pycisTarget") effect_col else paste0("log2(",effect_col,")")) +
 scale_y_discrete(label=addline_format) + 
-scale_size_continuous(range = c(1,5), name = "-log10(adjp)") + #not needed, because data already capped? limits = c(0, adjp_cap)
+scale_size_continuous(range = c(1,5), name = if (tool=="pycisTarget") adjp_col else paste("-log10(",adjp_col,")")) +
 ggtitle(paste(tool, database, group, sep='\n')) +
 clean_theme() +
 theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
