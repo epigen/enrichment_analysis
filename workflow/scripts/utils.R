@@ -32,26 +32,7 @@ ggsave_new <- function(filename, results_path, plot, width=5, height=5, units="i
 
 # add new lines in text of plots
 addline_format <- function(x,...){
-    return(gsub('(.{1,30})(\\s|\\.|$|_)', '\\1\n', x))
-}
-
-# draw enrichment plot
-do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size, path, filename, top_n){
-    enr_p <- ggplot(plot_data, aes_string(x=x, y=y, size=size, color=colorBy))  +
-        geom_point() +
-        scale_color_continuous(low="red", high="blue", name = colorBy, guide=guide_colorbar(reverse=TRUE)) +
-        ggtitle(title) + 
-#         theme_dose(font.size) +
-        scale_size(range=c(3, 8)) +
-        scale_y_discrete(label=addline_format, limits=rev) +
-        theme(axis.text.y=element_text(vjust=0.6))
-    
-    ggsave_new(filename = filename, 
-           results_path=path, 
-           plot=enr_p, 
-           width=200, 
-           height=10*top_n,
-              units = "mm")
+    return(gsub('(.{1,40})(\\s|\\.|$|_)', '\\1\n', x))
 }
 
 # default plotting theme

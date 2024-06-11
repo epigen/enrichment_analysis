@@ -8,6 +8,25 @@ library("data.table")
 # source("workflow/scripts/utils.R")
 snakemake@source("./utils.R")
 
+# draw enrichment plot
+do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size, path, filename, top_n){
+    enr_p <- ggplot(plot_data, aes_string(x=x, y=y, size=size, color=colorBy))  +
+        geom_point() +
+        scale_color_continuous(low="red", high="blue", name = colorBy, guide=guide_colorbar(reverse=TRUE)) +
+        ggtitle(title) + 
+#         theme_dose(font.size) +
+        scale_size(range=c(3, 8)) +
+        scale_y_discrete(label=addline_format, limits=rev) +
+        theme(axis.text.y=element_text(vjust=0.6))
+    
+    ggsave_new(filename = filename, 
+           results_path=path, 
+           plot=enr_p, 
+           width=200, 
+           height=10*top_n,
+              units = "mm")
+}
+
 # configs
 
 # input
@@ -37,6 +56,8 @@ if (file.size(enrichment_result_path) != 0L){
     quit(save = "no", status = 0)
 }
 
+top_n <- min(top_n, nrow(enrichment_result))
+
 # evaluate overlap numerically if necessary
 if(class(enrichment_result[[overlap_col]])=="character"){
     enrichment_result[[overlap_col]] <- as.numeric(lapply(enrichment_result[[overlap_col]], evaltext))
@@ -59,12 +80,12 @@ enrichment_result$meanRnk <- rowMeans(enrichment_result[,c('PValue_Rnk', 'Fold_R
 enrichment_result <- enrichment_result[order(enrichment_result$meanRnk, decreasing=FALSE),]
 
 # format term column that order is kept and values are unique
-enrichment_result[[term_col]] <- make.names(enrichment_result[[term_col]], unique=TRUE)
+enrichment_result[[term_col]] <- make.unique(as.character(enrichment_result[[term_col]]), sep = "_") #make.names(enrichment_result[[term_col]], unique=TRUE)
 enrichment_result[[term_col]] <- factor(enrichment_result[[term_col]], levels = enrichment_result[[term_col]])
 
 # plot top_n terms by mean_rnk
 do_enrichment_plot(plot_data=enrichment_result[1:top_n,], 
-               title=paste0(tool, ' results of \n',feature_set,' in ',database), 
+               title=paste0(tool, ' results of ',feature_set,'\nin ',database), 
                x=effect_col, 
                y=term_col, 
                size=overlap_col, 

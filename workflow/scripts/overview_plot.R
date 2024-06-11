@@ -61,11 +61,12 @@ results_all <- results_all[results_all[[term_col]]!="",]
 top_terms <- c()
 for (query in unique(results_all$name)){
     tmp_result <- results_all[results_all$name==query,]
+    top_n_tmp <- min(top_n, nrow(tmp_result))
     
     if(tool=="pycisTarget" | tool=="RcisTarget"){
-        tmp_terms <- tmp_result[order(-tmp_result[[adjp_col]]), term_col][1:top_n]
+        tmp_terms <- tmp_result[order(-tmp_result[[adjp_col]]), term_col][1:top_n_tmp]
     }else{
-        tmp_terms <- tmp_result[order(tmp_result[[adjp_col]]), term_col][1:top_n]
+        tmp_terms <- tmp_result[order(tmp_result[[adjp_col]]), term_col][1:top_n_tmp]
     }
     
     top_terms <- unique(c(top_terms,tmp_terms))
