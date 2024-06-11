@@ -1,10 +1,8 @@
-# alwayse use absolute paths
 
 ##### RESOURCES #####
 partition: 'tinyq'
 mem: '16000'
 threads: 1
-
 
 ##### GENERAL #####
 annotation: /path/to/enrichment_analysis_annotation.csv
