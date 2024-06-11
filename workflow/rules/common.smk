@@ -12,6 +12,10 @@ def get_lola_db_path(wildcards):
 def get_pycistarget_db_path(wildcards):
     return pycistarget_db_dict[wildcards.database]
 
+# get user provided RcisTarget database path
+def get_rcistarget_db_path(wildcards):
+    return rcistarget_db_dict[wildcards.database]
+
 ### for genomic region enrichment
 # region set
 def get_region_path(wildcards):
@@ -58,10 +62,10 @@ def get_rnk_path(wildcards):
 def get_group_paths(wildcards):
     feature_sets = list(annot.index[annot["group"]==wildcards.group])
     
-    # for tool GREAT or LOLA only consider region sets
+    # for tool GREAT, LOLA or pycisTarget only consider region sets
     if wildcards.tool=="GREAT" or wildcards.tool=="LOLA" or wildcards.tool=="pycisTarget":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]
-    if wildcards.tool=="ORA_GSEApy":
+    if wildcards.tool=="ORA_GSEApy"or wildcards.tool=="RcisTarget":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in genes_dict.keys()] + [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]
     if wildcards.tool=="preranked_GSEApy":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in rnk_dict.keys()]

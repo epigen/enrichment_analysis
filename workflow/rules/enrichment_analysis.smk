@@ -60,8 +60,8 @@ rule region_gene_association_GREAT:
     script:
         "../scripts/region_gene_association_GREAT.R"
 
-# performs region enrichment analysis using pycisTarget
-rule region_enrichment_analysis_pycisTarget:
+# performs region TFBS motif enrichment analysis using pycisTarget
+rule region_motif_enrichment_analysis_pycisTarget:
     input:
         regions = get_region_path,
         ctx_db = get_pycistarget_db_path,
@@ -166,6 +166,27 @@ rule gene_preranked_GSEApy:
         "logs/rules/gene_preranked_GSEApy_{gene_set}_{db}.log"
     script:
         "../scripts/gene_preranked_GSEApy.py"
+
+# performs TFBS motif enrichment analysis on genes using RcisTarget
+rule gene_motif_enrichment_analysis_RcisTarget:
+    input:
+        genes=get_gene_path,
+        background_genes=get_background_gene_path,
+        database = get_rcistarget_db_path,
+        motif2tf = config["rcistarget_parameters"]["motifAnnot"],
+    output:
+        result = os.path.join(result_path,'{gene_set}','RcisTarget','{database}','{gene_set}_{database}.csv'),
+    params:
+        partition=config.get("partition"),
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/RcisTarget.yaml",
+    log:
+        "logs/rules/gene_motif_enrichment_analysis_RcisTarget_{gene_set}_{database}.log"
+    script:
+        "../scripts/gene_enrichment_analysis_RcisTarget.R"
 
 # plot enrichment results
 rule plot_enrichment_result:

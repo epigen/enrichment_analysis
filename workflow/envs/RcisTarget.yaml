@@ -5,5 +5,8 @@ channels:
   - defaults
 dependencies:
   - bioconductor-rcistarget
+  - r-zoo
+  - r-domc
+  - r-dorng
   - r-data.table
 

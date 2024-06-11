@@ -51,7 +51,7 @@ result_df = pd.concat(results_list, axis=0)
 result_df.to_csv(results_all_path)
 
 # find union of statistically significant terms
-if tool=="pycisTarget":
+if tool=="pycisTarget" or tool=="RcisTarget":
     sig_terms = result_df.loc[result_df[adjp_col] >= adjp_th, term_col].unique()
 else:
     sig_terms = result_df.loc[result_df[adjp_col] <= adjp_th, term_col].unique()

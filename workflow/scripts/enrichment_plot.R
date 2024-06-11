@@ -43,7 +43,7 @@ if(class(enrichment_result[[overlap_col]])=="character"){
 }
 
 # calculate comparable effect size either NES or odds-ratio/fold based
-if (tool!="preranked_GSEApy" & tool!="pycisTarget"){
+if (tool!="preranked_GSEApy" & tool!="pycisTarget" & tool!="RcisTarget"){
     # calculate log2(effect-size) and put in new column
     effect_col_new <- paste0("log2_",effect_col)
     enrichment_result[[effect_col_new]] <- log2(enrichment_result[[effect_col]])
@@ -51,7 +51,7 @@ if (tool!="preranked_GSEApy" & tool!="pycisTarget"){
 }
 
 # determine ranks
-enrichment_result$PValue_Rnk <- if (tool!="pycisTarget") rank(enrichment_result[[pval_col]]) else rank(-enrichment_result[[pval_col]])
+enrichment_result$PValue_Rnk <- if (tool!="pycisTarget" & tool!="RcisTarget") rank(enrichment_result[[pval_col]]) else rank(-enrichment_result[[pval_col]])
 enrichment_result$Fold_Rnk <- rank(-abs(enrichment_result[[effect_col]]))
 enrichment_result$Coverage_Rnk <- rank(-enrichment_result[[overlap_col]])
 # calculate and sort by mean rank
