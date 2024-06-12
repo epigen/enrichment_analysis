@@ -165,7 +165,7 @@ We provide four example queries across all tools with four different databases:
 
 Follow these steps to run the complete analysis:
 1. Download all necessary data (query and resources)
-```console
+```sh
     # change working directory to the cloned worklfow/module enrichment_analysis
     cd enrichment_analysis
 
@@ -195,7 +195,7 @@ Follow these steps to run the complete analysis:
     cd ../
 ```
 2. activate your conda Snakemake environment, run a dry-run (-n flag), run the workflow and generate the report using the provided configuration
-    ```console
+    ```sh
     conda activate snakemake
     # dry-run
     snakemake -p --use-conda --configfile test/config/example_enrichment_analysis_config.yaml -n

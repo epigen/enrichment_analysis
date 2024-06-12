@@ -1,0 +1,8 @@
+name,features_path,background_name,background_path,group
+setCComplete,test/data/lola_vignette_data/setC_complete.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySetsComplete
+setA,test/data/lola_vignette_data/setA_100.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+setB,test/data/lola_vignette_data/setB_100.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+setC,test/data/lola_vignette_data/setC_100.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySets
+setAComplete,test/data/lola_vignette_data/setA_complete.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySetsComplete
+setBComplete,test/data/lola_vignette_data/setB_complete.bed,activeDHS,test/data/lola_vignette_data/activeDHS_universe.bed,mysterySetsComplete
+GDS289,test/data/GDS289_scores.csv,,,mysterySets
