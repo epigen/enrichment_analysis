@@ -14,6 +14,10 @@ authors:
     family-names: Reichl
     orcid: 'https://orcid.org/0000-0001-8555-7198'
     affiliation: CeMM Research Center for Molecular Medicine
+  - given-names: Daria
+    family-names: Romanovskaia
+    orcid: 'https://orcid.org/0000-0003-2831-0919'
+    affiliation: CeMM Research Center for Molecular Medicine
   - given-names: Christoph
     family-names: Bock
     orcid: 'https://orcid.org/0000-0001-6091-3088'
@@ -33,7 +37,8 @@ abstract: >-
   region/gene sets, the enrichment of terms within the
   configured databases is determined using LOLA, GREAT,
   GSEApy (over-representation analysis (ORA) & preranked
-  GSEA), aggregated and visualized.
+  GSEA), pycisTarget, RcisTarget, before aggregation and
+  visualization.
 keywords:
   - Bioinformatics
   - Workflow

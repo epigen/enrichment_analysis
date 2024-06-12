@@ -15,24 +15,30 @@ project_name: MyProject
 genome: 'hg38'
 
 ##### DATABASES #####
-# path to local databases as GMT (*.gmt) or JSON (*.json) files with gene symbols!
-# will be used by rGREAT for genomic regions and GSEApy for genes
+## local databases as GMT (*.gmt) or JSON (*.json) files with gene symbols!
+# will be used by rGREAT for genomic regions and GSEApy (both ORA and preranked) for genes
 # GMT databases can be donwloaded from 
 #     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 #     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
 local_databases:
-    MSigDB_H_C2_CGP: "test/data/c2.cgp.v2023.2.Hs.symbols.gmt"
-    MSigDB_H_C2: "test/data/c2.all.v2022.1.Hs.symbols.gmt"
-    MyWiki: "test/data/MyWikiPathways_2019_Human.json"
+    My_GMT_db: "path/to/My_GMT_db.gmt"
+
+## LOLA compatible region set databases
+# loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
+# download from the docs or create your own: https://databio.org/regiondb
+# pre-cached .RData files are supported by simpleCache
+# provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
+lola_databases:
+    LOLACore: "path/to/LOLACore/hg38"
 
 ##### TOOLS #####
 
 ### GSEApy - ORA Enrichr (Fisher/hypergeometric test) and preranked GSEA based analysis
 
-### GREAT - region-gene association based analysis
+### LOLA - region overlap based analysis
 
-# GREAT paramaters
+### GREAT - region-gene association based analysis
 # https://jokergoo.github.io/rGREAT/reference/great.html
 great_parameters:
     min_gene_set_size: 0 #default: 5
@@ -41,25 +47,15 @@ great_parameters:
     basal_downstream: 1000 # used in 'basalPlusExt' mode
     extension: 1000000
 
-### LOLA - region overlap based analysis
-
-# LOLA compatible region set databases
-# loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
-# download from the docs or create your own: https://databio.org/regiondb
-# pre-cached .RData files are supported by simpleCache
-# provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
-lola_databases:
-    LOLACore: "resources/LOLACore/hg38"
-    
 ### pycisTarget - region based Transcription Factor Binding Site (TFBS) motif enrichment analysis
 # https://pycistarget.readthedocs.io/en/latest/index.html
 # resources: https://resources.aertslab.org/cistarget/
-# for custom cisTarget databases usin your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
+# instructions for custom cisTarget databases using your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
 pycistarget_parameters:
     databases:
-        hg38_screen_v10clust: "resources/cistarget/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
-    path_to_motif_annotations: "resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl" # "path/to/motif2tf_file"
-    temp_dir: "/nobackup/lab_bock/users/sreichl/tmp" #"path/to/tmp_dir" # should have space available
+        hg38_screen_v10clust: "path/to/database.regions_vs_motifs.rankings.feather"
+    path_to_motif_annotations: "path/to/motif2tf_file.tbl"
+    temp_dir: "path/to/tmp_dir" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
     auc_threshold: 0.005 # default 0.005
     nes_threshold: 3 # default 3
@@ -74,8 +70,8 @@ pycistarget_parameters:
 # resources: https://resources.aertslab.org/cistarget/
 rcistarget_parameters:
     databases:
-        hg38_500bp_up_100bp_down_v10clust: "resources/cistarget/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather"
-    motifAnnot: "resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl" # "path/to/motif2tf_file"
+        hg38_500bp_up_100bp_down_v10clust: "path/to/database.genes_vs_motifs.rankings.feather"
+    motifAnnot: "path/to/motif2tf_file.tbl"
     motifAnnot_highConfCat: ["directAnnotation", "inferredBy_Orthology"]
     motifAnnot_lowConfCat: ["inferredBy_MotifSimilarity", "inferredBy_MotifSimilarity_n_Orthology"]
     nesThreshold: 3
@@ -103,10 +99,10 @@ column_names:
         term: 'Term'
     GREAT:
         top_n: 25
-        p_value: "p_value_hyper" # p_value
-        adj_pvalue: "p_adjust_hyper" # p_adjust
-        effect_size: "fold_enrichment_hyper" # fold_enrichment
-        overlap: "observed_region_hits" # observed_gene_hits
+        p_value: "p_value_hyper" # or binomial test result: p_value
+        adj_pvalue: "p_adjust_hyper" # or binomial test result: p_adjust
+        effect_size: "fold_enrichment_hyper" # or binomial test result: fold_enrichment
+        overlap: "observed_region_hits" # or binomial test result: observed_gene_hits
         term: "description"
     LOLA:
         top_n: 25
@@ -147,11 +143,11 @@ top_terms_n: 5
 # cap for adjusted p-value plotting: -log10(adjusted p-value) > adjp_cap -> adjp_cap
 adjp_cap: 4
 
-# cap for odds ratio plotting: abs(log2(odds ratio)) > or_cap -> sign(log2(odds ratio)) * or_cap
+# cap for log2 odds ratio plotting: abs(log2(odds ratio)) > or_cap -> sign(log2(odds ratio)) * or_cap
 or_cap: 5
 
 # cap for  normalized enrichemnt scores (NES) abs(nes) > nes_cap -> sign(nes) * nes_cap
-# applicable only to preranked_GSEApy
+# applied only to preranked_GSEApy
 nes_cap: 5
 
 # hierarchical cluster flag for summary plots (0=no; 1=yes)

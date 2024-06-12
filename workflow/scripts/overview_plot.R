@@ -201,16 +201,16 @@ if(tool=="pycisTarget" | tool=="RcisTarget"){
 
 # plot
 enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
-geom_point(shape=21, stroke=0.25) +
-geom_point(data = adjp_star_df, aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
-scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy" | tool=="pycisTarget" | tool=="RcisTarget") effect_col else paste0("log2(",effect_col,")")) +
-scale_y_discrete(label=addline_format) + 
-scale_size_continuous(range = c(1,5), name = if (tool=="pycisTarget" | tool=="RcisTarget") adjp_col else paste("-log10(",adjp_col,")")) +
-ggtitle(paste(tool, database, group, sep='\n')) +
-clean_theme() +
-theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
-      axis.title.x=element_blank(),
-      axis.title.y=element_blank()) + guides(size = guide_legend(reverse=TRUE))
+        geom_point(shape=21, stroke=0.25) +
+        geom_point(data = adjp_star_df, aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) + # stars for statistical significance
+        scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy" | tool=="pycisTarget" | tool=="RcisTarget") effect_col else paste0("log2(",effect_col,")")) +
+        scale_y_discrete(label=addline_format) + 
+        scale_size_continuous(range = c(1,5), name = if (tool=="pycisTarget" | tool=="RcisTarget") adjp_col else paste("-log10(",adjp_col,")")) +
+        ggtitle(paste(tool, database, group, sep='\n')) +
+        clean_theme() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
+              axis.title.x=element_blank(),
+              axis.title.y=element_blank()) + guides(size = guide_legend(reverse=TRUE))
 
 width <- 0.15 * dim(adjp_df)[2] + 3
 height <- 0.2 * dim(adjp_df)[1] + 2
