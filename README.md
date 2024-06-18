@@ -173,8 +173,8 @@ Follow these steps to run the complete analysis:
     wget -c http://cloud.databio.org.s3.amazonaws.com/vignettes/lola_vignette_data_150505.tgz -O - | tar -xz -C test/data/
 
     # create and enter resources folder
-    mkdir ../resources
-    cd ../resources
+    mkdir resources
+    cd resources
 
     # download LOLACore databases and move to the correct location
     wget http://big.databio.org/regiondb/LOLACoreCaches_180412.tgz
@@ -187,12 +187,13 @@ Follow these steps to run the complete analysis:
 
     # download cisTarget resources
     mkdir cistarget
+    cd cistarget
     wget https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/refseq_r80/mc_v10_clust/gene_based/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather
     wget https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
     wget https://resources.aertslab.org/cistarget/motif2tf/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
 
     # change your working directory back to the root of the module
-    cd ../
+    cd ../../
     ```
 2. activate your conda Snakemake environment, run a dry-run (-n flag), run the workflow and generate the report using the provided configuration
     ```sh
