@@ -51,31 +51,46 @@ ranking_df <- getRanking(motifRankings)
 # subset gene list for supported genes
 geneSets[[gene_set_name]] <- intersect(colnames(ranking_df), geneSets[[gene_set_name]])
 
+# quit early if there is no overlap
+if (length(geneSets[[gene_set_name]])==0){
+    print("No overlap between ranking database and query genes.")
+    file.create(result_path)
+    quit(save = "no", status = 0)
+}
+
 # load the motif to TF annotation
 motifAnnot <- importAnnotations(motif2tf_path, motifsInRanking = ranking_df$features)
 
 ###### RcisTarget
 
-# run RcisTarget
-motifEnrichmentTable_wGenes <- cisTarget(geneSets = geneSets,
-                                         motifRankings = motifRankings,
-                                         motifAnnot = motifAnnot,
-                                         motifAnnot_highConfCat = c(rcistarget_params[["motifAnnot_highConfCat"]]),
-                                         motifAnnot_lowConfCat = c(rcistarget_params[["motifAnnot_lowConfCat"]]),
-                                         highlightTFs = NULL,
-                                         nesThreshold = rcistarget_params[["nesThreshold"]],
-                                         aucMaxRank = rcistarget_params[["aucMaxRank_factor"]] * ncol(motifRankings),
-                                         geneErnMethod = rcistarget_params[["geneErnMethod"]], 
-                                         geneErnMaxRank = rcistarget_params[["geneErnMaxRank"]],
-                                         nCores = cores_n,
-                                         verbose = TRUE
-                                        )
+# run RcisTarget with try/catch exception handling
+tryCatch({
+    motifEnrichmentTable_wGenes <- cisTarget(geneSets = geneSets,
+                                             motifRankings = motifRankings,
+                                             motifAnnot = motifAnnot,
+                                             motifAnnot_highConfCat = c(rcistarget_params[["motifAnnot_highConfCat"]]),
+                                             motifAnnot_lowConfCat = c(rcistarget_params[["motifAnnot_lowConfCat"]]),
+                                             highlightTFs = NULL,
+                                             nesThreshold = rcistarget_params[["nesThreshold"]],
+                                             aucMaxRank = rcistarget_params[["aucMaxRank_factor"]] * ncol(motifRankings),
+                                             geneErnMethod = rcistarget_params[["geneErnMethod"]], 
+                                             geneErnMaxRank = rcistarget_params[["geneErnMaxRank"]],
+                                             nCores = cores_n,
+                                             verbose = TRUE
+                                            )
 
-# format result table
-motifEnrichmentTable_wGenes$description <- sapply(motifEnrichmentTable_wGenes$TF_highConf, process_genes)
-motifEnrichmentTable_wGenes$description <- paste0(motifEnrichmentTable_wGenes$motif, " (",motifEnrichmentTable_wGenes$description,")")
-# motifEnrichmentTable_wGenes$description <- paste0(motifEnrichmentTable_wGenes$motif, " (",motifEnrichmentTable_wGenes$TF_highConf,")")
-motifEnrichmentTable_wGenes$name <- gene_set_name
+    # format result table
+    motifEnrichmentTable_wGenes$description <- sapply(motifEnrichmentTable_wGenes$TF_highConf, process_genes)
+    motifEnrichmentTable_wGenes$description <- paste0(motifEnrichmentTable_wGenes$motif, " (",motifEnrichmentTable_wGenes$description,")")
+    motifEnrichmentTable_wGenes$name <- gene_set_name
 
-# save result table
-fwrite(as.data.frame(motifEnrichmentTable_wGenes), file=file.path(result_path), row.names=FALSE) #quote=FALSE
+    # save result table
+    fwrite(as.data.frame(motifEnrichmentTable_wGenes), file=file.path(result_path), row.names=FALSE) #quote=FALSE
+}, error = function(e) {
+    print("An error occurred during the cisTarget analysis.")
+    overlap_percentage <- round(length(intersect(geneSets[[gene_set_name]], background)) / length(background) * 100, 2)
+    print(paste("Overlap between query and background gene set might be too high with ", overlap_percentage,"%."))
+    print(e)
+    file.create(result_path)
+    quit(save = "no", status = 0)
+})

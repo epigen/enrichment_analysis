@@ -89,23 +89,27 @@ rule region_motif_enrichment_analysis_pycisTarget:
         "logs/rules/region_enrichment_analysis_pycisTarget_{region_set}_{database}.log"
     shell:
         """
-        pycistarget cistarget \
-            --cistarget_db_fname {input.ctx_db} \
-            --bed_fname {input.regions} \
-            --output_folder $(dirname {output.motif_hdf5}) \
-            --fr_overlap_w_ctx_db {params.fraction_overlap_w_cistarget_database} \
-            --auc_threshold {params.auc_threshold} \
-            --nes_threshold {params.nes_threshold} \
-            --rank_threshold {params.rank_threshold} \
-            --path_to_motif_annotations {input.motif2tf} \
-            --annotation_version {params.annotation_version} \
-            --annotations_to_use {params.annotations_to_use} \
-            --motif_similarity_fdr {params.motif_similarity_fdr} \
-            --orthologous_identity_threshold {params.orthologous_identity_threshold} \
-            --species {params.species} \
-            --name {wildcards.region_set} \
-            --output_mode 'hdf5' \
-            --write_html
+        {{
+            pycistarget cistarget \
+                --cistarget_db_fname {input.ctx_db} \
+                --bed_fname {input.regions} \
+                --output_folder $(dirname {output.motif_hdf5}) \
+                --fr_overlap_w_ctx_db {params.fraction_overlap_w_cistarget_database} \
+                --auc_threshold {params.auc_threshold} \
+                --nes_threshold {params.nes_threshold} \
+                --rank_threshold {params.rank_threshold} \
+                --path_to_motif_annotations {input.motif2tf} \
+                --annotation_version {params.annotation_version} \
+                --annotations_to_use {params.annotations_to_use} \
+                --motif_similarity_fdr {params.motif_similarity_fdr} \
+                --orthologous_identity_threshold {params.orthologous_identity_threshold} \
+                --species {params.species} \
+                --name {wildcards.region_set} \
+                --output_mode 'hdf5' \
+                --write_html
+        }} || {{ 
+            echo "An error occurred during the region TFBS motif enrichment analysis using pycisTarget"; touch {output.motif_hdf5} {output.motif_html}; exit 0;
+        }}
         """
 
 # postprocess results from pycisTarget

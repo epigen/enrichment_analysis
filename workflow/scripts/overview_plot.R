@@ -136,7 +136,7 @@ pheatmap(adjp_df,
          cellwidth=10,
          cellheight=10,
          filename=adjp_hm_path,
-         breaks=seq(0, max(adjp_df), length.out=200),
+         breaks= if (max(adjp_df)==0) seq(0, 1, length.out=200) else seq(0, max(adjp_df), length.out=200),
          color=colorRampPalette(c("white", "red"))(200)
         )
 

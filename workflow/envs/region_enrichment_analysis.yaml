@@ -11,3 +11,9 @@ dependencies:
   - bioconductor-rgreat=2.4.0
   - r-data.table=1.15.2
   - bioconductor-rtracklayer=1.62.0
+  - bioconductor-org.mm.eg.db=3.18.0
+  - bioconductor-org.hs.eg.db=3.18.0
+  - bioconductor-txdb.mmusculus.ucsc.mm10.knowngene=3.10.0
+  - bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2
+  - bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.18.0
+  - bioconductor-txdb.mmusculus.ucsc.mm9.knowngene=3.2.2
