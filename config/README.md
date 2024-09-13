@@ -10,3 +10,5 @@ You need one configuration file and one annotation file to run the complete work
     - background_name: name of the background gene/region set (only required for region- and gene-sets, leave empty for gene-score tables)
     - background_path: path to the background/universe gene/region-set as .txt/.bed file (only required for region- and gene-sets, leave empty for gene-score tables)
     - group: enrichment results are aggregated and visualized per analysis and database based on this group variable (e.g., gene/region-sets resulting from the same analysis)
+
+Set workflow-specific `resources` or command line arguments (CLI) in the workflow profile `workflow/profiles/default.config.yaml`, which supersedes global Snakemake profiles.

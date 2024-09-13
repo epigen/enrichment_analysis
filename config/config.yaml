@@ -1,6 +1,5 @@
 
 ##### RESOURCES #####
-partition: 'tinyq'
 mem: '16000'
 threads: 1
 

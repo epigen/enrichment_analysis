@@ -7,8 +7,6 @@ rule region_enrichment_analysis_LOLA:
         database = get_lola_db_path,
     output:
         result = os.path.join(result_path,'{region_set}','LOLA','{database}','{region_set}_{database}.csv'),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -27,8 +25,6 @@ rule region_enrichment_analysis_GREAT:
         database = os.path.join("resources", config["project_name"], "{database}.gmt"),
     output:
         result = os.path.join(result_path,'{region_set}','GREAT','{database}','{region_set}_{database}.csv'),
-    params:
-        partition = config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -48,8 +44,6 @@ rule region_gene_association_GREAT:
         genes = os.path.join(result_path,'{region_set}','GREAT','genes.txt'),
         associations_table = os.path.join(result_path,'{region_set}','GREAT','region_gene_associations.csv'),
         associations_plot = os.path.join(result_path,'{region_set}','GREAT','region_gene_associations.pdf'),
-    params:
-        partition = config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -79,7 +73,6 @@ rule region_motif_enrichment_analysis_pycisTarget:
         motif_similarity_fdr = config["pycistarget_parameters"]["motif_similarity_fdr"],
         orthologous_identity_threshold = config["pycistarget_parameters"]["orthologous_identity_threshold"],
         species = 'homo_sapiens' if config["genome"] in ["hg19", "hg38"] else 'mus_musculus' if config["genome"] in ["mm9", "mm11"] else None,
-        partition = config.get("partition"),
     threads: 10 * config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -118,8 +111,6 @@ rule process_results_pycisTarget:
         motif_hdf5 = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.hdf5'),
     output:
         motif_csv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.csv'),
-    params:
-        partition = config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -140,7 +131,6 @@ rule gene_ORA_GSEApy:
         result_file = os.path.join(result_path,'{gene_set}','ORA_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
         database = lambda w: "{}".format(w.db),
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -160,7 +150,6 @@ rule gene_preranked_GSEApy:
         result_file = os.path.join(result_path,'{gene_set}','preranked_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
         database = lambda w: "{}".format(w.db),
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -180,8 +169,6 @@ rule gene_motif_enrichment_analysis_RcisTarget:
         motif2tf = config["rcistarget_parameters"]["motifAnnot"],
     output:
         result = os.path.join(result_path,'{gene_set}','RcisTarget','{database}','{gene_set}_{database}.csv'),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -206,8 +193,6 @@ rule plot_enrichment_result:
                                   "type": "enrichment plot",
                                   "misc": "{db}",
                               }),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),

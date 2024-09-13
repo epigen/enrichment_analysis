@@ -1,0 +1,3 @@
+default-resources:
+    slurm_partition: tinyq
+    slurm_extra: "'--qos=tinyq'"

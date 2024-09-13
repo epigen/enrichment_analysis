@@ -5,8 +5,6 @@ rule prepare_databases:
         get_db_path,
     output:
         db_file = os.path.join("resources", config["project_name"],"{database}.gmt"),
-    params:
-        partition = config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -23,7 +21,6 @@ rule prepare_databases:
 #         result_file = os.path.join("resources", config["project_name"],"{db}.json"),
 #     params:
 #         database = lambda w: "{}".format(w.db),
-#         partition=config.get("partition"),
 #     threads: config.get("threads", 1)
 #     resources:
 #         mem_mb=config.get("mem", "16000"),
@@ -40,8 +37,6 @@ rule prepare_databases:
 #         get_json_db_path,
 #     output:
 #         db_file = os.path.join("resources", config["project_name"],"{db}.json"),
-#     params:
-#         partition=config.get("partition"),
 #     threads: config.get("threads", 1)
 #     resources:
 #         mem_mb=1000, #config.get("mem", "16000"),
@@ -59,7 +54,6 @@ rule prepare_databases:
 #         result_file = os.path.join("resources", config["project_name"],"{db}.json"),
 #     params:
 #         database = lambda w: "{}".format(w.db),
-#         partition = config.get("partition"),
 #     threads: config.get("threads", 1)
 #     resources:
 #         mem_mb=config.get("mem", "16000"),
@@ -74,8 +68,6 @@ rule prepare_databases:
 # rule load_lola_resources:
 #     output:
 #         lola_resources = directory(os.path.abspath(os.path.join("resources", config["project_name"], "LOLA"))),
-#     params:
-#         partition=config.get("partition"),
 #     threads: config.get("threads", 1)
 #     resources:
 #         mem_mb=config.get("mem", "16000"),

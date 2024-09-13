@@ -6,8 +6,6 @@ rule aggregate:
     output:
         results_all = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_all.csv'),
         results_sig = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_sig.csv'),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -52,8 +50,6 @@ rule visualize:
 #                                   "type": "effect heatmap",
 #                                   "misc": "{db}",
 #                               }),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),

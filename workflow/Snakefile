@@ -1,3 +1,7 @@
+
+##### global workflow dependencies #####
+conda: "envs/global.yaml"
+
 # libraries
 import yaml
 import pandas as pd
@@ -12,7 +16,7 @@ import subprocess
 module_name = "enrichment_analysis"
 
 ##### set minimum snakemake version #####
-min_version("7.15.2")
+min_version("8.20.1")
 
 ##### setup report #####
 report: "report/workflow.rst"
@@ -98,8 +102,6 @@ rule all:
         envs = expand(os.path.join(config["result_path"],'envs',module_name,'{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization','pycisTarget','RcisTarget']),
         configs = os.path.join(config["result_path"],'configs',module_name,'{}_config.yaml'.format(config["project_name"])),
         annotations = os.path.join(config["result_path"],'configs',module_name,'{}_annot.csv'.format(config["project_name"])),
-    params:
-        partition=config.get("partition"),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
