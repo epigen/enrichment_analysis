@@ -1,35 +1,31 @@
-# Genomic Region Set & Gene Set Enrichment Analysis & Visualization Workflow for Human and Mouse Genomes.
+[![MR.PARETO](https://img.shields.io/badge/MR.PARETO-red)](https://github.com/epigen/mr.pareto/)
 [![DOI](https://zenodo.org/badge/377527671.svg)](https://zenodo.org/badge/latestdoi/377527671)
+[![](https://tokei.rs/b1/github/epigen/enrichment_analysis?category=code)]() 
+[![](https://tokei.rs/b1/github/epigen/enrichment_analysis?category=files)]()
+[![GitHub license](https://img.shields.io/github/license/epigen/enrichment_analysis)](https://github.com/epigen/enrichment_analysis/blob/master/LICENSE)
+![GitHub Release](https://img.shields.io/github/v/release/epigen/enrichment_analysis)
+[![Snakemake](https://img.shields.io/badge/Snakemake->=8.20.1-green)](https://snakemake.readthedocs.io/en/stable/)
 
-A [Snakemake 8](https://snakemake.readthedocs.io/en/stable/) workflow
+# Genomic Region & Gene Set Enrichment Analysis & Visualization Workflow for Human and Mouse Genomes.
 
-Given **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets (i.e., region sets) and/or (ranked) gene sets of interest and respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA), pycisTarget, RcisTarget and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same analysis) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
+A [Snakemake 8](https://snakemake.readthedocs.io/en/stable/) workflow for enrichment analysis and visualization of **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets and (ranked) gene sets. Together with the respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA), pycisTarget, RcisTarget and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same analysis) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
-This workflow adheres to the module specifications of [MR.PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details and modules check out the project's repository. Please consider **starring** and sharing modules that are interesting or useful to you, this helps others to find and benefit from the effort and me to prioritize my efforts!
+> [!NOTE]  
+> This workflow adheres to the module specifications of [MR.PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details, instructions, and modules check out the project's repository.
+>
+> ⭐️ **Star and share modules you find valuable** 📤 - help others discover them, and guide our focus for future work!
 
-**If you use this workflow in a publication, please don't forget to give credits to the authors by citing it using this DOI [10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621).**
+> [!IMPORTANT]  
+> **If you use this workflow in a publication, please don't forget to give credit to the authors by citing it using this DOI [10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621).**
 
 ![Workflow Rulegraph](./workflow/dags/rulegraph.svg)
 
-Table of contents
-----------------
-  * [Authors](#authors)
-  * [Software](#software)
-  * [Methods](#methods)
-  * [Features](#features)
-  * [Usage](#usage)
-  * [Configuration](#configuration)
-  * [Examples](#examples)
-  * [Links](#links)
-  * [Resources](#resources)
-  * [Publications](#publications)
-
-# Authors
+# 🖋️ Authors
 - [Stephan Reichl](https://github.com/sreichl)
 - [Daria Romanovskaia](https://github.com/dariarom94)
 - [Christoph Bock](https://github.com/chrbock)
 
-# Software
+# 💿 Software
 This project wouldn't be possible without the following software and their dependencies:
 
 | Software       | Reference (DOI)                                   |
@@ -47,8 +43,8 @@ This project wouldn't be possible without the following software and their depen
 | rGREAT         | https://doi.org/10.1093/bioinformatics/btac745    |
 | Snakemake      | https://doi.org/10.12688/f1000research.29032.2    |
 
-# Methods
-This is a template for the Methods section of a scientific publication and is intended to serve as a starting point. Only retain paragraphs relevant to your analysis. References `[ref]` to the respective publications are curated in the software table above. Versions `(ver)` have to be read out from the respective conda environment specifications (`workflow/envs/\*.yaml` files) or post execution (`{results_dir}/envs/enrichment_analysis/\*.yaml` files). Parameters that have to be adapted depending on the data or workflow configurations are denoted in squared brackets e.g. `[X]`.
+# 🔬 Methods
+This is a template for the Methods section of a scientific publication and is intended to serve as a starting point. Only retain paragraphs relevant to your analysis. References [ref] to the respective publications are curated in the software table above. Versions (ver) have to be read out from the respective conda environment specifications (`workflow/envs/*.yaml file`) or post-execution in the result directory (`enrichment_analysis/envs/*.yaml`). Parameters that have to be adapted depending on the data or workflow configurations are denoted in squared brackets e.g., [X].
 
 The outlined analyses were performed using the programming languages R (ver) [ref] and Python (ver) [ref] unless stated otherwise. All approaches statistically correct their results using expressed/accessible background genomic region/gene sets from the respective analyses that yielded the query region/gene sets.
 
@@ -83,7 +79,7 @@ The aggregated results per analysis [group], method and database combination wer
 **The analysis and visualizations described here were performed using a publicly available Snakemake (ver) [ref] workflow [[10.5281/zenodo.7810621](https://doi.org/10.5281/zenodo.7810621)].**
 
 
-# Features
+# 🚀 Features
 The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representation analysis (ORA) & preranked GSEA) are used for various enrichment analyses. Databases to be queried can be configured (see `./config/config.yaml`). All approaches statistically correct their results using the provided background region/gene sets.
 - enrichment analysis methods
     - **region set** (`\*.bed`)
@@ -140,10 +136,10 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
 
 Note:
 - Despite usage of the correct parameter, **rGREAT** was not using the provided cores during testing. Nevertheless, it is still provided as parameter.
-- **(r)GREAT** performs [two statistical test](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655456/Statistics) (binomial and hypergeometric), results of both are reported and should be considered. Which results are used for the visualization can be configured `column_names:GREAT`.
-- **pycisTarget** for region set enrichment does not use the provided background regions. In case this is desired (e.g., conensus regions or TF ChIP-seq data) follow the [instructions for custom cisTarget databases](https://github.com/aertslab/create_cisTarget_databases) using your own regions and use them as database
+- **(r)GREAT** performs [two statistical test](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655456/Statistics) (binomial and hypergeometric), results of both are reported and should be considered. Which results are used for the visualization can be configured in `column_names:GREAT`.
+- **pycisTarget** for region set enrichment does not use the provided background regions. In case this is desired (e.g., conensus regions or TF ChIP-seq data) follow the [instructions for custom cisTarget databases](https://github.com/aertslab/create_cisTarget_databases) using your own regions and use them as database.
 
-# Usage
+# 🛠️ Usage
 Here are some tips for the usage of this workflow:
 1. Download all relevant databases (see [Resources](#resources)).
 2. Configure the analysis using the configuration YAML and an annotation file (see [Configuration](#configuration))
@@ -155,10 +151,10 @@ Here are some tips for the usage of this workflow:
     - enrichment plots for the individual query sets
 7. investigate interesting hits further by looking into the individual query result tables.
 
-# Configuration
+# ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
-# Examples
+# 📖 Examples
 We provide four example queries across all tools with four different databases:
 - three are region sets from a [LOLA Vignette](http://code.databio.org/LOLA/articles/usingLOLACore.html). Download the example data by following the instructions below.
 - one is a preranked gene-score set derived from the GDS289 [fgsea R package example data](https://github.com/ctlab/fgsea/blob/master/inst/extdata/GDS289.tsv) (`score=-log10(p-value) * sign(LFC)`).
@@ -208,20 +204,19 @@ Follow these steps to run the complete analysis:
     snakemake --report test/report.html --configfile test/config/example_enrichment_analysis_config.yaml
     ```
 
-# Links
+# 🔗 Links
 - [GitHub Repository](https://github.com/epigen/enrichment_analysis/)
 - [GitHub Page](https://epigen.github.io/enrichment_analysis/)
 - [Zenodo Repository](https://doi.org/10.5281/zenodo.7810621)
 - [Snakemake Workflow Catalog Entry](https://snakemake.github.io/snakemake-workflow-catalog?usage=epigen/enrichment_analysis)
 
-# Resources
-- Recommended compatible [MR.PARETO](https://github.com/epigen/mr.pareto) modules 
-  - for upstream processing and analyses:
+# 📚 Resources
+- Recommended compatible [MR.PARETO](https://github.com/epigen/mr.pareto) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
-    - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell trascnriptome data.
-    - [Split, Filter, Normalize and Integrate Sequencing Data](https://github.com/epigen/spilterlize_integrate) to process sequencing data.
-    - [Differential Analysis with limma](https://github.com/epigen/dea_limma) to identify and visualize statistically significant features between bulk sample groups.
-    - [Differential Analysis with Seurat](https://github.com/epigen/dea_seurat) to identify and visualize statistically significant features between single-cell groups.
+    - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
+    - [<ins>Sp</ins>lit, F<ins>ilter</ins>, Norma<ins>lize</ins> and <ins>Integrate</ins> Sequencing Data](https://github.com/epigen/spilterlize_integrate/) after count quantification.
+    - [Differential Analysis with limma](https://github.com/epigen/dea_limma) to identify and visualize statistically significantly different features (e.g., genes or genomic regions) between sample groups.
+    - [Differential Analysis using Seurat](https://github.com/epigen/dea_seurat) to identify and visualize statistically significantly different features (e.g., genes or proteins) between groups.
 - Package for [simplifying enrichment](http://www.bioconductor.org/packages/release/bioc/html/simplifyEnrichment.html) results using the [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) package.
 - Web versions of some of the used tools
     - [LOLA](http://lolaweb.databio.org/)
@@ -235,7 +230,11 @@ Follow these steps to run the complete analysis:
     - [Enrichr gene set databases](https://maayanlab.cloud/Enrichr/#libraries)
     - [The Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/)
 
-# Publications
+# 📑 Publications
 The following publications successfully used this module for their analyses.
+- [FirstAuthors et al. (202X) Journal Name - Paper Title.](https://doi.org/10.XXX/XXXX)
 - ...
 
+# ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=epigen/enrichment_analysis&type=Date)](https://star-history.com/#epigen/enrichment_analysis&Date)
