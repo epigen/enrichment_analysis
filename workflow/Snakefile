@@ -99,9 +99,9 @@ rule all:
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='pycisTarget', db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='RcisTarget', db=rcistarget_db_dict.keys()),
         # config
-        envs = expand(os.path.join(config["result_path"],'envs',module_name,'{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization','pycisTarget','RcisTarget']),
-        configs = os.path.join(config["result_path"],'configs',module_name,'{}_config.yaml'.format(config["project_name"])),
-        annotations = os.path.join(config["result_path"],'configs',module_name,'{}_annot.csv'.format(config["project_name"])),
+        envs = expand(os.path.join(result_path,'envs','{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization','pycisTarget','RcisTarget']),
+        configs = os.path.join(result_path,'configs','{}_config.yaml'.format(config["project_name"])),
+        annotations = os.path.join(result_path,'configs','{}_annot.csv'.format(config["project_name"])),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
