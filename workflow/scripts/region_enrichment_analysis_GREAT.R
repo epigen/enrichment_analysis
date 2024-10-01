@@ -27,6 +27,17 @@ if (genome=="hg19" | genome=="hg38"){
     orgdb <- "org.Mm.eg.db"
 }
 
+
+# Handle if file is empty
+if (file.info(regions_file)$size < 1){
+    # create empty file to keep track of output
+    f <- file(result_path, open = "a")
+    close(f)
+
+    # quit R session
+    quit(status = 0, save = "no")
+}
+
 # load query and background/universe region sets (e.g., consensus region set)
 regionSet_query <- import(regions_file, format = "BED")
 regionSet_background <- import(background_file, format = "BED")

@@ -21,6 +21,16 @@ region_set <- snakemake@wildcards[["region_set"]]
 
 ### load data
 
+# Handle if file is empty
+if (file.info(query_regions)$size < 1){
+    # create empty file to keep track of output
+    f <- file(result_path, open = "a")
+    close(f)
+
+    # quit R session
+    quit(status = 0, save = "no")
+}
+
 # load query region sets
 regionSet_query <- readBed(query_regions)
 

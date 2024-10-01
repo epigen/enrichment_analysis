@@ -29,6 +29,24 @@ if (genome=="hg19" | genome=="hg38"){
     orgdb <- "org.Mm.eg.db"
 }
 
+# Handle if file is empty
+if (file.info(regions_file)$size < 1){
+    # create empty file to keep track of output
+    f <- file(gene_path, open = "a")
+    close(f)
+
+    # create empty file to keep track of output
+    f <- file(associations_plot_path, open = "a")
+    close(f)
+
+    # create empty file to keep track of output
+    f <- file(associations_table_path, open = "a")
+    close(f)
+
+    # quit R session
+    quit(status = 0, save = "no")
+}
+
 # load query region set
 regionSet_query <- import(regions_file, format = "BED")
 
