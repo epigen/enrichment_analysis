@@ -1,4 +1,4 @@
-[![MR.PARETO](https://img.shields.io/badge/MR.PARETO-red)](https://github.com/epigen/mr.pareto/)
+[![MrBiomics](https://img.shields.io/badge/MrBiomics-red)](https://github.com/epigen/MrBiomics/)
 [![DOI](https://zenodo.org/badge/377527671.svg)](https://zenodo.org/badge/latestdoi/377527671)
 [![](https://tokei.rs/b1/github/epigen/enrichment_analysis?category=code)]() 
 [![](https://tokei.rs/b1/github/epigen/enrichment_analysis?category=files)]()
@@ -11,7 +11,7 @@
 A [Snakemake 8](https://snakemake.readthedocs.io/en/stable/) workflow for enrichment analysis and visualization of **human (hg19 or hg38) or mouse (mm9 or mm10)** based genomic region sets and (ranked) gene sets. Together with the respective background region/gene sets, the enrichment within the configured databases is determined using LOLA, GREAT, GSEApy (over-representation analysis (ORA) & preranked GSEA), pycisTarget, RcisTarget and results saved as CSV files. Additionally, the most significant results are plotted for each region/gene set, database queried, and analysis performed. Finally, the results within the same "group" (e.g.,  stemming from the same analysis) are aggregated per database and analysis in summary CSV files and visualized using hierarchically clustered heatmaps and bubble plots. For collaboration, communication and documentation of results, methods and workflow information a detailed self-contained HTML report can be generated.
 
 > [!NOTE]  
-> This workflow adheres to the module specifications of [MR.PARETO](https://github.com/epigen/mr.pareto), an effort to augment research by modularizing (biomedical) data science. For more details, instructions, and modules check out the project's repository.
+> This workflow adheres to the module specifications of [MrBiomics](https://github.com/epigen/MrBiomics), an effort to augment research by modularizing (biomedical) data science. For more details, instructions, and modules check out the project's repository.
 >
 > ⭐️ **Star and share modules you find valuable** 📤 - help others discover them, and guide our focus for future work!
 
@@ -211,7 +211,7 @@ Follow these steps to run the complete analysis:
 - [Snakemake Workflow Catalog Entry](https://snakemake.github.io/snakemake-workflow-catalog?usage=epigen/enrichment_analysis)
 
 # 📚 Resources
-- Recommended compatible [MR.PARETO](https://github.com/epigen/mr.pareto) modules for upstream processing and analyses:
+- Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
     - [<ins>Sp</ins>lit, F<ins>ilter</ins>, Norma<ins>lize</ins> and <ins>Integrate</ins> Sequencing Data](https://github.com/epigen/spilterlize_integrate/) after count quantification.
