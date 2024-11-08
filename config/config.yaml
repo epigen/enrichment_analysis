@@ -50,6 +50,7 @@ great_parameters:
 # https://pycistarget.readthedocs.io/en/latest/index.html
 # resources: https://resources.aertslab.org/cistarget/
 # instructions for custom cisTarget databases using your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
+# instructions for hg19 database here: https://github.com/aertslab/pycistarget/issues/37
 pycistarget_parameters:
     databases:
         hg38_screen_v10clust: "path/to/database.regions_vs_motifs.rankings.feather"
