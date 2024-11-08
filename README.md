@@ -159,7 +159,7 @@ We provide four example queries across all tools with four different databases:
 - three are region sets from a [LOLA Vignette](http://code.databio.org/LOLA/articles/usingLOLACore.html). Download the example data by following the instructions below.
 - one is a preranked gene-score set derived from the GDS289 [fgsea R package example data](https://github.com/ctlab/fgsea/blob/master/inst/extdata/GDS289.tsv) (`score=-log10(p-value) * sign(LFC)`).
 - the total runtime was ~23 minutes on an HPC with 1 core and 32GB RAM per job.
-- note: we are using a hg38 database for pycistarget, because the respective hg19 database is not compatible with the current pycisTarget version.
+- note: we are using a hg38 database for pycistarget, because the respective hg19 database is not compatible with the current pycisTarget version (https://github.com/aertslab/pycistarget/issues/37).
 
 Follow these steps to run the complete analysis:
 1. Download all necessary data (query and resources)
