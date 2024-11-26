@@ -212,6 +212,9 @@ Follow these steps to run the complete analysis:
 - [Snakemake Workflow Catalog Entry](https://snakemake.github.io/snakemake-workflow-catalog?usage=epigen/enrichment_analysis)
 
 # 📚 Resources
+- Helper scripts
+  - [Combine all text files within a specified folder into one JSON to be used as database.](./helpers/txts_to_json_database.py)
+  - [Generate a file listing CSV of the current folder as basis for the annotation file.](./helpers/feature_list_to_csv.sh)
 - Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
