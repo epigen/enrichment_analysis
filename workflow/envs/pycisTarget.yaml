@@ -2,7 +2,7 @@ name: pycisTarget
 channels:
   - bioconda
   - conda-forge
-  - defaults
+  - nodefaults
 dependencies:
   - python=3.9.19
   - attrs=23.2.0

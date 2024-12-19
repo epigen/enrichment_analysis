@@ -2,7 +2,7 @@ name: region_enrichment_analysis
 channels:
   - conda-forge
   - bioconda
-  - defaults
+  - nodefaults
 dependencies:
   - r-base=4.3.3
   - bioconductor-lola=1.32.0

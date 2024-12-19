@@ -2,7 +2,7 @@ name: visualization
 channels:
   - conda-forge
   - bioconda
-  - defaults
+  - nodefaults
 dependencies:
   - r-svglite=2.1.0
   - r-ggplot2=3.5.0

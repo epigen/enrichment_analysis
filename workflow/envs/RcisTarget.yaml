@@ -2,7 +2,7 @@ name: RcisTarget
 channels:
   - conda-forge
   - bioconda
-  - defaults
+  - nodefaults
 dependencies:
   - bioconductor-rcistarget=1.20.0
   - r-zoo=1.8_12
