@@ -193,6 +193,8 @@ rule plot_enrichment_result:
                                   "type": "enrichment plot",
                                   "misc": "{db}",
                               }),
+    params:
+        utils_path=workflow.source_path("/scripts/utils.R")
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),

@@ -6,7 +6,8 @@ library("data.table")
 
 # source utility functions
 # source("workflow/scripts/utils.R")
-snakemake@source("./utils.R")
+# snakemake@source("./utils.R")
+source(snakemake@params[["utils_path"]])
 
 # draw enrichment plot
 do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size, path, filename, top_n){
