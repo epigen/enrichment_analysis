@@ -5,6 +5,56 @@ library("rGREAT")
 library("data.table")
 library("rtracklayer")
 
+
+# functions
+annot_terms_with_features <- function(res, df) {
+  # Create empty vectors to store results
+  regions <- vector("character", nrow(df))
+  genes <- vector("character", nrow(df))
+  
+  # Process each row
+  for (i in 1:nrow(df)) {
+    # Get term_id
+    term <- df$id[i]
+
+    # Check p-value thresholds
+    if (sum(("p_adjust" %in% names(df) && df$p_adjust[i] > 0.1),
+         ("p_adjust_hyper" %in% names(df) && df$p_adjust_hyper[i] > 0.1)) > 1) {
+      regions[i] <- ""
+      genes[i] <- ""
+    } else {
+        # Apply the provided function to get GRanges object
+        gr <- getRegionGeneAssociations(res, term_id = term)
+
+        
+        # Format regions as chr:start-end
+        regions[i] <- paste(
+          paste0(
+            seqnames(gr),
+            ":",
+            start(gr),
+            "-",
+            end(gr)
+          ),
+          collapse = ","
+        )
+        
+        # Get unique genes and collapse with comma
+        genes[i] <- paste(
+          unique(unlist(gr$annotated_genes)),
+          collapse = ","
+        )
+    }
+  }
+  
+  # Add new columns to original dataframe
+  df$regions <- regions
+  df$annotated_genes <- genes
+  
+  return(df)
+}
+
+
 # configs
 
 #input
@@ -67,4 +117,7 @@ res <- great(gr = regionSet_query,
 # get & save result table
 tb <- getEnrichmentTable(res, min_region_hits = 0)
 tb$description <- paste(tb$description, tb$id)
+# annotate (near) significant enrichments with features
+tb <- annot_terms_with_features(res, tb)
+# Save
 fwrite(as.data.frame(tb), file=file.path(result_path), row.names=FALSE)
