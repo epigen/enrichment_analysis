@@ -62,6 +62,11 @@ pycistarget_db_dict = {k: v for k, v in pycistarget_db_dict.items() if v!=""}
 rcistarget_db_dict = config["rcistarget_parameters"]["databases"]
 rcistarget_db_dict = {k: v for k, v in rcistarget_db_dict.items() if v!=""}
 
+# load MEME-ame databases dictionary and keep only non-empty
+meme_ame_db_dict = config["meme_parameters"]["databases"]
+meme_ame_db_dict = {k: v for k, v in meme_ame_db_dict.items() if v!=""}
+
+
 ##### set global variables
 result_path = os.path.join(config["result_path"], module_name)
 
@@ -76,6 +81,9 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','ame.tsv'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
+        # expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
+        
         # gene enrichment analyses for mapped region - ORA_GSEApy
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),

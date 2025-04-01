@@ -120,7 +120,160 @@ rule process_results_pycisTarget:
         "logs/rules/process_results_pycisTarget_{region_set}_{database}.log"
     script:
         "../scripts/process_results_pycisTarget.py"
+
+# Testing begins for meme-ame
+# preprocess regions BED file into FASTA file
+rule regions_bed_to_fasta:
+    input:
+        bed = get_region_path,
+        genome = config["meme_parameters"]["genome_fasta"]  # Path to the genome FASTA file
+    output:
+        fasta = os.path.join(result_path, '{region_set}', 'MEME_AME', 'regions.fasta')
+    params:
+        bedtools_exec = "bedtools"  # Path to bedtools if not in PATH
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "4000"),
+    conda:
+        "../envs/bedtools.yaml"
+    log:
+        "logs/rules/regions_bed_to_fasta_{region_set}.log"
+    shell:
+        """
+        {{
+            {params.bedtools_exec} getfasta \
+                -fi {input.genome} \
+                -bed {input.bed} \
+                -fo {output.fasta}
+        }} || {{
+            echo "An error occurred during BED to FASTA conversion for regions"; touch {output.fasta}; exit 1;
+        }}
+        """
+# preprocess background BED file into FASTA file with length matching (conditional)
+rule background_bed_to_fasta:
+    input:
+        bed = get_background_region_path,
+        genome = config["meme_parameters"]["genome_fasta"],  # Path to the genome FASTA file
+        regions_bed = get_region_path  # Input regions BED file for length distribution
+    output:
+        fasta = os.path.join(result_path, '{region_set}', 'MEME_AME', 'background.fasta'),
+        # region_length = os.path.join(result_path, '{region_set}', 'MEME_AME', 'region_lengths.txt'),
+    params:
+        output_dir = os.path.join(result_path, '{region_set}', 'MEME_AME'),
+        bedtools_exec = "bedtools",  # Path to bedtools if not in PATH
+        awk_exec = "awk",  # Path to awk if not in PATH
+        use_length_matching = config["meme_parameters"]["use_length_matched_background"]  # Conditional flag
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "4000"),
+    conda:
+        "../envs/bedtools.yaml"
+    log:
+        "logs/rules/background_bed_to_fasta_{region_set}.log"
+    shell:
+        """
+        {{
+            if [ "{params.use_length_matching}" = "True" ]; then
+
+                # Extract lengths of input regions
+                {params.awk_exec} '{{print $3 - $2}}' {input.regions_bed} > {params.output_dir}/region_lengths.txt
+
+                # Generate background regions with matching lengths
+                {params.awk_exec} 'BEGIN {{
+                srand(42);  # Set random seed for reproducibility
+                lengthfile = "{params.output_dir}/region_lengths.txt";
+                num_lengths = 0;
+                while ((getline len < lengthfile) > 0) {{
+                    lengths[num_lengths++] = len;  # Store all lengths in an array
+                }}
+                close(lengthfile);
+                }} {{
+                # Pick a random length from the array
+                random_idx = int(rand() * num_lengths);
+                region_length = lengths[random_idx];
                 
+                # Calculate new region based on midpoint and random length
+                midpoint = int(($2 + $3) / 2);
+                start = midpoint - int(region_length / 2);
+                end = start + region_length;
+                print $1"\t"start"\t"end;
+                }}' {input.bed} > $(dirname {output.fasta})/{wildcards.region_set}_matched_background.bed
+
+
+                # Convert matched background BED to FASTA
+                {params.bedtools_exec} getfasta \
+                    -fi {input.genome} \
+                    -bed $(dirname {output.fasta})/{wildcards.region_set}_matched_background.bed \
+                    -fo {output.fasta}
+
+
+            else
+                # Skip background FASTA generation (use dinucleotide shuffle in MEME-AME)
+                touch {output.fasta}
+            fi
+        }} || {{
+            echo "An error occurred during BED to FASTA conversion for background"; touch {output.fasta}; exit 1;
+        }}
+        """
+
+
+
+
+# perform motif enrichment analysis using MEME-AME
+rule region_motif_enrichment_analysis_MEME_AME:
+    input:
+        regions_fasta = os.path.join(result_path, '{region_set}', 'MEME_AME','regions.fasta'),
+        background_fasta = os.path.join(result_path, '{region_set}', 'MEME_AME','background.fasta'),
+        database = lambda wildcards: meme_ame_db_dict[wildcards.db],
+    output:
+        ame_results = os.path.join(result_path, '{region_set}', 'MEME_AME', '{db}', 'ame.tsv'),
+        ame_html = os.path.join(result_path, '{region_set}', 'MEME_AME', '{db}', 'ame.html'),
+    params:
+        ame_exec = "ame",  # Path to the AME executable if not in PATH
+        ame_method = config["meme_parameters"]["ame_params"]["method"],  # AME method
+        ame_scoring = config["meme_parameters"]["ame_params"]["scoring"],  # AME scoring method
+        ame_options = config["meme_parameters"]["ame_params"]["additional_options"],  # Additional AME options
+        use_length_matching = config["meme_parameters"]["use_length_matched_background"]  # Conditional flag
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "16000"),
+    conda:
+        "../envs/meme.yaml",
+    log:
+        "logs/rules/region_motif_enrichment_analysis_MEME_AME_{region_set}_{db}.log"
+    shell:
+        """
+        {{
+            if [ "{params.use_length_matching}" = "True" ]; then
+                # Use the generated background FASTA
+                {params.ame_exec} \
+                    --oc $(dirname {output.ame_results}) \
+                    --control {input.background_fasta} \
+                    --method {params.ame_method} \
+                    --scoring {params.ame_scoring} \
+                    {params.ame_options} \
+                    {input.regions_fasta} \
+                    {input.database} \
+                    # > {output.ame_results} \
+                    # && mv $(dirname {output.ame_results})/ame.html {output.ame_html}
+            else
+                # Use dinucleotide shuffle (default behavior of AME)
+                {params.ame_exec} \
+                    --oc $(dirname {output.ame_results}) \
+                    --control --shuffle-- \
+                    --method {params.ame_method} \
+                    --scoring {params.ame_scoring} \
+                    {params.ame_options} \
+                    {input.regions_fasta} \
+                    {input.database} \
+                    # > {output.ame_results} \
+                    # && mv $(dirname {output.ame_results})/ame.html {output.ame_html}
+            fi
+        }} || {{
+            echo "An error occurred during the MEME-AME analysis"; touch {output.ame_results} {output.ame_html}; exit 0;
+        }}
+        """
+
 # performs gene over-represenation analysis (ORA) using GSEApy
 rule gene_ORA_GSEApy:
     input:

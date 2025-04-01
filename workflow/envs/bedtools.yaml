@@ -1,0 +1,7 @@
+name: bedtools
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - bedtools
+  - python=3.9
