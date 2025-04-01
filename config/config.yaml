@@ -78,6 +78,19 @@ rcistarget_parameters:
     geneErnMethod: "aprox" # alternatively, exact but more computationally intense: "icistarget"
     geneErnMaxRank: 5000
 
+### MEME-AME - region-based motif enrichment analysis
+# https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html
+# resources: https://resources.aertslab.org/cistarget/
+meme_parameters:
+    genome_fasta: "resources/atacseq_pipeline/hg38/hg38.fa"
+    databases:
+        hocomocov13: "resources/db_meme/H13CORE_meme_format.meme"  # get from https://hocomoco13.autosome.org/downloads_v13; TOOD: get via zenodo
+    use_length_matched_background: True  # Set to True to use length-matched background, otherwise dinucleotide shuffled background will be used
+    ame_params:
+        method: fisher
+        scoring: avg
+        additional_options: "-evalue-report-threshold 0.05"
+
 ### Enrichment plot
 
 # tool specific column names for aggregation, plotting & summaries
