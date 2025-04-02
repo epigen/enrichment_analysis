@@ -137,6 +137,13 @@ column_names:
         effect_size: "NES" # NES combines statistical significance and effect size
         overlap: "nEnrGenes"
         term: "description" # a combination of the motif name and the motifAnnot_highConfCat entries
+    MEME_AME:
+        top_n: 25
+        p_value: "p_value"
+        adj_pvalue: "adj_p_value"
+        effect_size: "FoldEnrich"
+        overlap: "TP"
+        term: "motif_ID"
 
 ##### AGGREGATE & SUMMARIZE #####
 
@@ -148,6 +155,7 @@ adjp_th:
     LOLA: 0.01
     pycisTarget: 5 # keep results greater(!) than provided threshold
     RcisTarget: 5 # keep results greater(!) than provided threshold
+    MEME_AME: 0.05
 
 # number of top terms per feature set within each group for all overview plots (adjusted p-value, effect-size and bubble-heatmap)
 top_terms_n: 5

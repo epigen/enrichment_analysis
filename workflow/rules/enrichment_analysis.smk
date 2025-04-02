@@ -216,18 +216,15 @@ rule background_bed_to_fasta:
         }}
         """
 
-
-
-
 # perform motif enrichment analysis using MEME-AME
 rule region_motif_enrichment_analysis_MEME_AME:
     input:
         regions_fasta = os.path.join(result_path, '{region_set}', 'MEME_AME','regions.fasta'),
         background_fasta = os.path.join(result_path, '{region_set}', 'MEME_AME','background.fasta'),
-        database = lambda wildcards: meme_ame_db_dict[wildcards.db],
+        database = lambda wildcards: meme_ame_db_dict[wildcards.database],
     output:
-        ame_results = os.path.join(result_path, '{region_set}', 'MEME_AME', '{db}', 'ame.tsv'),
-        ame_html = os.path.join(result_path, '{region_set}', 'MEME_AME', '{db}', 'ame.html'),
+        ame_results = os.path.join(result_path, '{region_set}', 'MEME_AME', '{database}', 'ame.tsv'),
+        ame_html = os.path.join(result_path, '{region_set}', 'MEME_AME', '{database}', 'ame.html'),
     params:
         ame_exec = "ame",  # Path to the AME executable if not in PATH
         ame_method = config["meme_parameters"]["ame_params"]["method"],  # AME method
@@ -240,7 +237,7 @@ rule region_motif_enrichment_analysis_MEME_AME:
     conda:
         "../envs/meme.yaml",
     log:
-        "logs/rules/region_motif_enrichment_analysis_MEME_AME_{region_set}_{db}.log"
+        "logs/rules/region_motif_enrichment_analysis_MEME_AME_{region_set}_{database}.log"
     shell:
         """
         {{
@@ -273,6 +270,22 @@ rule region_motif_enrichment_analysis_MEME_AME:
             echo "An error occurred during the MEME-AME analysis"; touch {output.ame_results} {output.ame_html}; exit 0;
         }}
         """
+
+rule postprocess_meme_ame_results:
+    input:
+        ame_results = os.path.join(result_path, '{region_set}', 'MEME_AME', '{database}', 'ame.tsv')
+    output:
+        aggregated_results = os.path.join(result_path, '{region_set}', 'MEME_AME', '{database}', '{region_set}_{database}.csv')
+    threads: config.get("threads", 1)
+    resources:
+        mem_mb=config.get("mem", "4000"),
+    # conda:
+    #     "../envs/python.yaml"
+    log:
+        "logs/rules/postprocess_meme_ame_results_{region_set}_{database}.log"
+    script:
+        "../scripts/postprocess_meme_ame_results.py"
+
 
 # performs gene over-represenation analysis (ORA) using GSEApy
 rule gene_ORA_GSEApy:
