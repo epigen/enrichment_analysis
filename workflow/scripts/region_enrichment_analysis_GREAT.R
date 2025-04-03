@@ -18,8 +18,8 @@ annot_terms_with_features <- function(res, df) {
     term <- df$id[i]
 
     # Check p-value thresholds
-    if (sum(("p_adjust" %in% names(df) && df$p_adjust[i] > 0.1),
-         ("p_adjust_hyper" %in% names(df) && df$p_adjust_hyper[i] > 0.1)) > 1) {
+    if (sum(("p_adjust" %in% names(df) && df$p_adjust[i] > 0.2),
+         ("p_adjust_hyper" %in% names(df) && df$p_adjust_hyper[i] > 0.2)) > 1) {
       regions[i] <- ""
       genes[i] <- ""
     } else {
