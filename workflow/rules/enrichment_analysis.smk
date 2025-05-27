@@ -22,7 +22,7 @@ rule region_enrichment_analysis_GREAT:
     input:
         regions = get_region_path,
         background = get_background_region_path,
-        database = os.path.join("resources", config["project_name"], "{database}.gmt"),
+        database = os.path.join("resources", config["project_name"], module_name, "{database}.gmt"),
     output:
         result = os.path.join(result_path,'{region_set}','GREAT','{database}','{region_set}_{database}.csv'),
     threads: config.get("threads", 1)
@@ -35,11 +35,11 @@ rule region_enrichment_analysis_GREAT:
     script:
         "../scripts/region_enrichment_analysis_GREAT.R"
         
-# region-gene association using GREAT for downstream gene-base analysis of genomic regions
+# region-gene association using GREAT for downstream gene-bases analysis of genomic regions
 rule region_gene_association_GREAT:
     input:
         regions = get_region_path,
-        database = os.path.join("resources", config["project_name"],"{}.gmt".format(next(iter(database_dict)))), #get_first_database,
+        database = os.path.join("resources", config["project_name"],module_name,"{}.gmt".format(next(iter(database_dict)))), #get_first_database,
     output:
         genes = os.path.join(result_path,'{region_set}','GREAT','genes.txt'),
         associations_table = os.path.join(result_path,'{region_set}','GREAT','region_gene_associations.csv'),
@@ -126,7 +126,7 @@ rule gene_ORA_GSEApy:
     input:
         query_genes=get_gene_path,
         background_genes=get_background_gene_path,
-        database = os.path.join("resources", config["project_name"], "{db}.gmt"),
+        database = os.path.join("resources", config["project_name"], module_name, "{db}.gmt"),
     output:
         result_file = os.path.join(result_path,'{gene_set}','ORA_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
@@ -145,7 +145,7 @@ rule gene_ORA_GSEApy:
 rule gene_preranked_GSEApy:
     input:
         query_genes=get_rnk_path,
-        database = os.path.join("resources", config["project_name"], "{db}.gmt"),
+        database = os.path.join("resources", config["project_name"], module_name, "{db}.gmt"),
     output:
         result_file = os.path.join(result_path,'{gene_set}','preranked_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:

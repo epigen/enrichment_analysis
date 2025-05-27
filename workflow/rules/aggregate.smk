@@ -33,7 +33,7 @@ rule visualize:
         adjp_hm = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_adjp_heatmap.pdf'),
         effect_hm = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_effect_heatmap.pdf'),
     params:
-        utils_path=workflow.source_path("../scripts/utils.R")
+        utils_path = workflow.source_path("../scripts/utils.R")
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
