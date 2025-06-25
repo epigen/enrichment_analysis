@@ -129,7 +129,8 @@ pheatmap(adjp_df,
          treeheight_col = 10,
          fontsize = 6,
          fontsize_number = 10,
-         cluster_cols = cluster_flag,
+         cluster_rows = ifelse(nrow(adjp_df)>1, TRUE, FALSE),
+         cluster_cols = ifelse(ncol(adjp_df)>1, cluster_flag, FALSE),
          silent=TRUE,
          width=width_hm,
          height=height_hm,
@@ -148,7 +149,8 @@ pheatmap(effect_df,
          treeheight_col = 10,
          fontsize = 6,
          fontsize_number = 10,
-         cluster_cols = cluster_flag,
+         cluster_rows = ifelse(nrow(effect_df)>1, TRUE, FALSE),
+         cluster_cols = ifelse(ncol(effect_df)>1, cluster_flag, FALSE),
          silent=TRUE,
          width=width_hm,
          height=height_hm,
@@ -161,14 +163,20 @@ pheatmap(effect_df,
         )
 
 # perform hierarchical clustering on the effect-sizes (NES or log2 odds ratios) of the terms and reorder dataframe
-hc_rows <- hclust(dist(effect_df))
-hc_row_names <- rownames(effect_df)[hc_rows$order]
-if (cluster_flag){
+if (nrow(effect_df)>1){
+    hc_rows <- hclust(dist(effect_df))
+    hc_row_names <- rownames(effect_df)[hc_rows$order]
+    effect_df <- effect_df[hc_rows$order,]
+}else{
+    hc_row_names <- rownames(effect_df)
+}
+
+if (ncol(effect_df)>1 & cluster_flag){
     hc_cols <- hclust(dist(t(effect_df)))
     hc_col_names <- colnames(effect_df)[hc_cols$order]
-    effect_df <- effect_df[hc_rows$order, hc_cols$order]
+    effect_df <- effect_df[, hc_cols$order]
 } else{
-    effect_df <- effect_df[hc_rows$order,]
+    hc_col_names <- colnames(effect_df)
 }
 
 # add a column for the terms
