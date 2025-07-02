@@ -155,6 +155,39 @@ Here are some tips for the usage of this workflow:
 # ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
+# 🧬 How to convert feature lists to BED files for genomic region enrichment analysis
+This enrichment analysis workflow requires genomic regions to be in the standard **`BED`** format (`chromosome`, `start`, `end`, `name`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
+
+We provide a Python helper script, [`features_to_bed.py`](.helpers/features_to_bed.py), and a Snakemake rule to automate this crucial step. Simply adapt them to your setup. Both take two files as input:
+1.  Your list of significant feature IDs (e.g., `features.txt`).
+2.  An annotation file that contains the genomic coordinates for *all* features in your experiment (e.g., `consensus_annotation.csv`).
+
+Both implementations merge these files, finds the coordinates for your significant features, and saves them in the required `BED` format. In the Snakemake rule `input` and `output` paths can be replaced with wildcards to fit your analysis.
+
+```python
+rule convert_features2bed:
+    input:
+        consensus_annotation = "path/to/consensus_annotation.csv",
+        features_txt = "path/to/dea_limma/features.txt",
+    output:
+        features_bed = "path/to/features.bed",
+    params:
+        region_col = "peak_id",
+        chr_col = "gencode_chr",
+        start_col = "gencode_start",
+        end_col = "gencode_end",
+    run:
+        # load files as pandas df
+        consensus_df = pd.read_csv(input.consensus_annotation)
+        features_df = pd.read_csv(input.features_txt, header=None, names=[params.region_col])
+        # map using params
+        merged_df = pd.merge(features_df, consensus_df, on=params.region_col, how="inner")
+        # Select and order the columns required for the BED file format.
+        bed_df = merged_df[[params.chr_col, params.start_col, params.end_col, params.region_col]]
+        # save in BED format
+        bed_df.to_csv(output.features_bed, sep="\t", header=False, index=False)
+```
+
 # 📖 Examples
 Explore detailed examples showcasing module usage in our comprehensive end-to-end [MrBiomics Recipes](https://github.com/epigen/MrBiomics?tab=readme-ov-file#-recipes), including data, configuration, annotation and results:
 - [ATAC-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/ATAC%E2%80%90seq-Analysis-Recipe)
@@ -222,6 +255,7 @@ Follow these steps to run the complete analysis:
 - Helper scripts
   - [Combine all text files within a specified folder into one JSON to be used as database.](./helpers/txts_to_json_database.py)
   - [Generate a file listing CSV of the current folder as basis for the annotation file.](./helpers/feature_list_to_csv.sh)
+  - [Convert feature lists to BED files for genomic region enrichment analysis.](./helpers/features_to_bed.py)
 - Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
