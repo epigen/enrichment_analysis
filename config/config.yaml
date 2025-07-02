@@ -20,6 +20,7 @@ genome: 'hg38'
 #     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 #     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 local_databases:
     MSigDB_H_C2_CGP: "path/to/a/GMT_db.gmt"
 
@@ -28,6 +29,7 @@ local_databases:
 # download from the docs or create your own: https://databio.org/regiondb
 # pre-cached .RData files are supported by simpleCache
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 lola_databases:
     LOLACore: "path/to/LOLACore/hg38"
 
@@ -51,6 +53,7 @@ great_parameters:
 # resources: https://resources.aertslab.org/cistarget/
 # instructions for custom cisTarget databases using your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
 # instructions for hg19 database here: https://github.com/aertslab/pycistarget/issues/37
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 pycistarget_parameters:
     databases:
         hg38_screen_v10clust: "path/to/database.regions_vs_motifs.rankings.feather"
@@ -68,6 +71,7 @@ pycistarget_parameters:
 ### RcisTarget - gene based Transcription Factor Binding Site (TFBS) motif enrichment analysis
 # https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html
 # resources: https://resources.aertslab.org/cistarget/
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 rcistarget_parameters:
     databases:
         hg38_500bp_up_100bp_down_v10clust: "path/to/database.genes_vs_motifs.rankings.feather"
