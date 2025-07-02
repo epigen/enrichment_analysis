@@ -155,10 +155,10 @@ Here are some tips for the usage of this workflow:
 # ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
-# 🧬 How to convert feature lists to BED files for genomic region enrichment analysis
-This enrichment analysis workflow requires genomic regions to be in the standard **`BED`** format (`chromosome`, `start`, `end`, `name`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
+# 🧬 How to convert feature lists to BED files
+This enrichment analysis workflow requires **genomic regions** to be in the standard **`BED`** format (`chromosome`, `start`, `end`, `name`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
 
-We provide a Python helper script, [`features_to_bed.py`](.helpers/features_to_bed.py), and a Snakemake rule to automate this crucial step. Simply adapt them to your setup. Both take two files as input:
+We provide a Python helper script, [`features_to_bed.py`](./helpers/features_to_bed.py), and a Snakemake rule to automate this crucial step. Simply adapt them to your setup. Both take two files as input:
 1.  Your list of significant feature IDs (e.g., `features.txt`).
 2.  An annotation file that contains the genomic coordinates for *all* features in your experiment (e.g., `consensus_annotation.csv`).
 
