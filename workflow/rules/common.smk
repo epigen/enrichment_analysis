@@ -63,7 +63,7 @@ def get_group_paths(wildcards):
     feature_sets = list(annot.index[annot["group"]==wildcards.group])
     
     # for tool GREAT, LOLA or pycisTarget only consider region sets
-    if wildcards.tool=="GREAT" or wildcards.tool=="LOLA" or wildcards.tool=="pycisTarget":
+    if wildcards.tool=="GREAT" or wildcards.tool=="LOLA" or wildcards.tool=="pycisTarget" or wildcards.tool=="MEME_AME":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]
     if wildcards.tool=="ORA_GSEApy"or wildcards.tool=="RcisTarget":
         feature_sets = [feature_set for feature_set in feature_sets if feature_set in genes_dict.keys()] + [feature_set for feature_set in feature_sets if feature_set in regions_dict.keys()]

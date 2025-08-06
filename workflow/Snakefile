@@ -3,6 +3,7 @@
 conda: "envs/global.yaml"
 
 # libraries
+import pdb
 import yaml
 import pandas as pd
 import os
@@ -62,6 +63,11 @@ pycistarget_db_dict = {k: v for k, v in pycistarget_db_dict.items() if v!=""}
 rcistarget_db_dict = config["rcistarget_parameters"]["databases"]
 rcistarget_db_dict = {k: v for k, v in rcistarget_db_dict.items() if v!=""}
 
+# load MEME-ame databases dictionary and keep only non-empty
+meme_ame_db_dict = config["meme_parameters"]["databases"]
+meme_ame_db_dict = {k: v for k, v in meme_ame_db_dict.items() if v!=""}
+
+
 ##### set global variables
 result_path = os.path.join(config["result_path"], module_name)
 
@@ -76,6 +82,13 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        # custom additions to get extra results from pycistarget
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.motif_hits.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.cistromes.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'MEME_AME', 'regions.fasta'), region_set=regions_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
+        
         # gene enrichment analyses for mapped region - ORA_GSEApy
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),
@@ -97,6 +110,7 @@ rule all:
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='GREAT', db=database_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='LOLA', db=lola_db_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='pycisTarget', db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=regions["group"].unique(), tool='MEME_AME', db=meme_ame_db_dict.keys()),
         expand(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),group=list(set(genes["group"].tolist()+regions["group"].tolist())), tool='RcisTarget', db=rcistarget_db_dict.keys()),
         # config
         envs = expand(os.path.join(result_path,'envs','{env}.yaml'),env=['region_enrichment_analysis','gene_enrichment_analysis','visualization','pycisTarget','RcisTarget']),
