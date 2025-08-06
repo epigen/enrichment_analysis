@@ -82,6 +82,9 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        # custom additions to get extra results from pycistarget
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.motif_hits.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.cistromes.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'MEME_AME', 'regions.fasta'), region_set=regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'MEME_AME','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=meme_ame_db_dict.keys()),
