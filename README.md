@@ -277,8 +277,8 @@ Follow these steps to run the complete analysis:
 
 # 📑 Publications
 The following publications successfully used this module for their analyses.
+- [Datlinger, Pankevich, Arnold et al. (2025) Nature - Systematic discovery of CRISPR-boosted CAR T cell immunotherapies](https://www.nature.com/articles/s41586-025-09507-9)
 - [Traxler, Reichl et al. (2025) Cell Systems - Integrated time-series analysis and high-content CRISPR screening delineate the dynamics of macrophage immune regulation](https://doi.org/10.1016/j.cels.2025.101346)
-- ...
 
 # ⭐ Star History
 
