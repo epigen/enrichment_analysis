@@ -12,7 +12,6 @@ result_paths = snakemake.input['enrichment_results']
 
 # output
 results_all_path = snakemake.output['results_all']
-results_sig_path = snakemake.output['results_sig']
 
 # parameters
 group = snakemake.wildcards["group"]
@@ -41,7 +40,6 @@ for result_path in result_paths:
 # move on if results are empty
 if len(results_list)==0:
     open(results_all_path, mode='a').close()
-    open(results_sig_path, mode='a').close()
     sys.exit(0)
         
 # concatenate all results into one results dataframe
@@ -49,15 +47,3 @@ result_df = pd.concat(results_list, axis=0)
 
 # save all enirchment results
 result_df.to_csv(results_all_path)
-
-# find union of statistically significant terms
-if tool=="pycisTarget" or tool=="RcisTarget":
-    sig_terms = result_df.loc[result_df[adjp_col] >= adjp_th, term_col].unique()
-else:
-    sig_terms = result_df.loc[result_df[adjp_col] <= adjp_th, term_col].unique()
-
-# filter by significant terms
-result_sig_df = result_df.loc[result_df[term_col].isin(sig_terms), :]
-
-# save filtered enirchment results by significance
-result_sig_df.to_csv(results_sig_path)
