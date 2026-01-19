@@ -75,7 +75,7 @@ rule region_motif_enrichment_analysis_pycisTarget:
         species = 'homo_sapiens' if config["genome"] in ["hg19", "hg38"] else 'mus_musculus' if config["genome"] in ["mm9", "mm11"] else None,
     threads: 10 * config.get("threads", 1)
     resources:
-        mem_mb=config.get("mem", "16000"),
+        mem_mb=config.get("mem", "24000"),
     conda:
         "../envs/pycisTarget.yaml",
     log:
