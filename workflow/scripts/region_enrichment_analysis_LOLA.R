@@ -19,6 +19,12 @@ database_name <- snakemake@wildcards[["database"]]
 genome <- snakemake@config[["genome"]] #"hg38" "mm10"
 region_set <- snakemake@wildcards[["region_set"]]
 
+# stop early for empty query or background input
+if (file.size(query_regions) == 0L || file.size(background_regions) == 0L) {
+    file.create(result_path)
+    quit(save = "no", status = 0)
+}
+
 ### load data
 
 # load query region sets

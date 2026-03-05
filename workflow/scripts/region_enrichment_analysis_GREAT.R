@@ -27,6 +27,12 @@ if (genome=="hg19" | genome=="hg38"){
     orgdb <- "org.Mm.eg.db"
 }
 
+# stop early for empty query or background input
+if (file.size(regions_file) == 0L || file.size(background_file) == 0L){
+    file.create(result_path)
+    quit(save = "no", status = 0)
+}
+
 # load query and background/universe region sets (e.g., consensus region set)
 regionSet_query <- import(regions_file, format = "BED")
 regionSet_background <- import(background_file, format = "BED")
