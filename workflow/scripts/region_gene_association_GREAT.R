@@ -69,7 +69,10 @@ dev.off()
 
 # get and save gene-region association
 associations <- getRegionGeneAssociations(res)
-fwrite(as.data.frame(associations), file=file.path(associations_table_path), row.names=TRUE)
+associations_df <- as.data.frame(associations)
+# BED uses 0-based starts; export start in BED-style coordinates for direct comparability to input BED.
+associations_df$start <- associations_df$start - 1
+fwrite(associations_df, file=file.path(associations_table_path), row.names=TRUE)
 
 # save unique associated genes by using mcols(), which returns a DataFrame object containing the metadata columns.
 genes <- unique(unlist(mcols(associations)$annotated_genes))

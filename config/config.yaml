@@ -4,9 +4,9 @@ mem: '16000'
 threads: 1
 
 ##### GENERAL #####
-annotation: /home/stoll/work/enrichment_analysis/test/config/example_enrichment_analysis_annotation.csv
-result_path: /home/stoll/work/enrichment_analysis/test/results/
-project_name: TestEnrich
+annotation: /path/to/enrichment_analysis_annotation.csv
+result_path: /path/to/results/
+project_name: MyProject
 
 # genome
 # human 'hg19' or 'hg38' 
@@ -22,7 +22,7 @@ genome: 'hg38'
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 local_databases:
-    MSigDB_H_C2_CGP: "/home/stoll/work/enrichment_analysis/resources/example/enrichment_analysis/MSigDB_H_C2_CGP.gmt"
+    MSigDB_H_C2_CGP: "path/to/a/GMT_db.gmt"
 
 ## LOLA compatible region set databases
 # loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
@@ -31,7 +31,7 @@ local_databases:
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 lola_databases:
-    LOLACore: "/home/stoll/work/enrichment_analysis/resources/LOLACore/hg38"
+    LOLACore: "path/to/LOLACore/hg38"
 
 ##### TOOLS #####
 
@@ -56,9 +56,9 @@ great_parameters:
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 pycistarget_parameters:
     databases:
-        hg38_screen_v10clust: "/home/stoll/work/enrichment_analysis/resources/cistarget/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
-    path_to_motif_annotations: "/home/stoll/work/enrichment_analysis/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
-    temp_dir: "/home/work/temp/" # should have space available
+        hg38_screen_v10clust: "path/to/database.regions_vs_motifs.rankings.feather"
+    path_to_motif_annotations: "path/to/motif2tf_file.tbl"
+    temp_dir: "path/to/tmp_dir" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
     auc_threshold: 0.005 # default 0.005
     nes_threshold: 3 # default 3
@@ -74,8 +74,8 @@ pycistarget_parameters:
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 rcistarget_parameters:
     databases:
-        hg38_500bp_up_100bp_down_v10clust: "/home/stoll/work/enrichment_analysis/resources/cistarget/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather"
-    motifAnnot: "/home/stoll/work/enrichment_analysis/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+        hg38_500bp_up_100bp_down_v10clust: "path/to/database.genes_vs_motifs.rankings.feather"
+    motifAnnot: "path/to/motif2tf_file.tbl"
     motifAnnot_highConfCat: ["directAnnotation", "inferredBy_Orthology"]
     motifAnnot_lowConfCat: ["inferredBy_MotifSimilarity", "inferredBy_MotifSimilarity_n_Orthology"]
     nesThreshold: 3
