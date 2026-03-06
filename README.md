@@ -120,8 +120,9 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
         - effect-size is presented by the x-axis position
         - overlap is presented by the dot size
     - group summary/overview
-        - the union of the top `{top_terms_n}` most significant terms per query, method, and database within a group is determined. 
-        - their effect-size (effect) and statistical significance (adjp) are visualized as hierarchically clustered heatmaps, with statistical significance denoted by `\*` (PDF).
+        - two plots: 
+            - top terms: the union of the top `{top_terms_n}` most significant terms per query, method, and database within a group is determined. 
+            - specific terms: the union of statistically significant terms with the lowest average significance across all other groups is determined. This plot is empty if no statistically significant terms are found.
         - a hierarchically clustered bubble plot encoding both effect-size (color) and significance (size) is provided, with statistical significance denoted by `\*` (PNG).
         - all summary visualizations are configured to cap the values (`{adjp_cap}`/`{or_cap}`/`{nes_cap}`) to avoid shifts in the coloring scheme caused by outliers.
 - **results** (`{result_path}/enrichment_analysis`)
@@ -131,9 +132,7 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
         - enrichment dot plot (PNG): `{query}\_{database}.{png}`
     - `{group}/{method}/{database}/` containing
         - aggregated result table (CSV): `{group}\_{database}\_all.csv`
-        - filtered aggregated result table (CSV): `{group}\_{database}\_sig.csv`
-        - hierarchically clustered heatmaps visualizing statistical significance and effect-sizes of the top `{top_terms_n}` terms (PDF): `{group}\_{database}\_{adjp|effect}\_heatmap.pdf`
-        - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary.{png}`
+        - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.
 
 Note:
 - Despite usage of the correct parameter, **rGREAT** was not using the provided cores during testing. Nevertheless, it is still provided as parameter.
