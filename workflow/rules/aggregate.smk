@@ -5,7 +5,6 @@ rule aggregate:
         enrichment_results = get_group_paths,
     output:
         results_all = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_all.csv'),
-        results_sig = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_sig.csv'),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
@@ -21,8 +20,9 @@ rule visualize:
     input:
         results_all = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_all.csv'),
     output:
-        summary_plot = report(os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary.png'),
-                             caption="../report/summary_plot.rst", 
+        summary_plot_topTerms = report(
+                             os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary_topTerms.png'),
+                             caption="../report/summary_plot_topTerms.rst", 
                              category="{}_{}".format(config["project_name"], module_name),
                              subcategory="{group}",
                                labels={
@@ -30,8 +30,16 @@ rule visualize:
                                   "type": "summary plot",
                                   "misc": "{db}",
                               }),
-        adjp_hm = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_adjp_heatmap.pdf'),
-        effect_hm = os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_effect_heatmap.pdf'),
+        summary_plot_specificTerms = report(
+                             os.path.join(result_path,'{group}','{tool}','{db}','{group}_{db}_summary_specificTerms.png'),
+                             caption="../report/summary_plot_specificTerms.rst", 
+                             category="{}_{}".format(config["project_name"], module_name),
+                             subcategory="{group}",
+                               labels={
+                                  "name": "{tool}",
+                                  "type": "summary plot",
+                                  "misc": "{db}",
+                              }),
     params:
         utils_path = workflow.source_path("../scripts/utils.R")
     threads: config.get("threads", 1)
