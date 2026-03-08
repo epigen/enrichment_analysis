@@ -35,10 +35,26 @@ effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else s
 adjp_th <- as.numeric(snakemake@config[["adjp_th"]][[tool]])
 cluster_flag <- as.logical(as.numeric(snakemake@config[["cluster_summary"]]))
 
+make_message_plot <- function(path, msg){
+    center_msg <- paste0(msg, "\n", tool, " | ", database, " | ", group)
+    p <- ggplot() +
+        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
+        theme_void() +
+        theme(plot.background = element_rect(fill = "white", color = NA))
+
+    ggsave_new(
+        filename = tools::file_path_sans_ext(basename(path)),
+        results_path = dirname(path),
+        plot = p,
+        width = 6,
+        height = 3
+    )
+}
+
 # stop early if results are empty
 if(file.size(results_all_path) == 0L){
-    file.create(plot_path_topTerms)
-    file.create(plot_path_specificTerms)
+    make_message_plot(plot_path_topTerms, "No results found\naggregated result file is empty")
+    make_message_plot(plot_path_specificTerms, "No results found\naggregated result file is empty")
     quit(save = "no", status = 0)
 }
 
@@ -47,15 +63,44 @@ results_all <- data.frame(fread(file.path(results_all_path), header=TRUE))
 
 # stop early if results consist of only one query
 if(length(unique(results_all$name))==1){
-    file.create(plot_path_topTerms)
-    file.create(plot_path_specificTerms)
+    single_query <- unique(results_all$name)[1]
+    single_query_msg <- paste0("Only one query, so no group plot for ", single_query)
+    make_message_plot(plot_path_topTerms, single_query_msg)
+    make_message_plot(plot_path_specificTerms, single_query_msg)
     quit(save = "no", status = 0)
 }
 
 # remove empty terms
 results_all <- results_all[results_all[[term_col]]!="",]
 
+make_no_sig_plot <- function(path, type){
+    comparator <- if (tool=="pycisTarget" | tool=="RcisTarget") ">=" else "<="
+    msg <- paste0(
+        "No significant matches found\n",
+        "threshold: ", adjp_col, " ", comparator, " ", adjp_th
+    )
+
+    center_msg <- paste0(msg, "\n", tool, " | ", database, " | ", group)
+    p <- ggplot() +
+        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
+        theme_void() +
+        theme(plot.background = element_rect(fill = "white", color = NA))
+
+    ggsave_new(
+        filename = paste0(group,'_',database,'_summary_', type),
+        results_path = dirname(path),
+        plot = p,
+        width = 6,
+        height = 3
+    )
+}
+
 make_summary_plot <- function(type = "topTerms"){
+    format_term_labels <- function(x){
+        x_short <- ifelse(nchar(x) > 72, paste0(substr(x, 1, 69), "..."), x)
+        gsub("(.{1,30})(\\s|\\.|$|_)", "\\1\n", x_short)
+    }
+
     # determine terms to plot
     top_terms <- c()
     if (type == "topTerms"){
@@ -110,7 +155,7 @@ make_summary_plot <- function(type = "topTerms"){
             top_terms <- unique(c(top_terms, tmp_terms))
         }
         if (length(top_terms) == 0){
-            file.create(plot_path_specificTerms)
+            make_no_sig_plot(plot_path_specificTerms, type)
             return()
         }
     } else {
@@ -210,19 +255,33 @@ make_summary_plot <- function(type = "topTerms"){
 
     # plot
     enr_plot <- ggplot(plot_df, aes(x=feature_set, y=terms, fill=effect, size=adjp))+ 
-            geom_point(shape=21, stroke=0.25) +
-            geom_point(data = adjp_star_df, aes(x=feature_set, y=terms), shape=8, size=0.5, color = "black", alpha = 0.5) +
-            scale_fill_gradient2(midpoint=0, low="royalblue4", mid="white", high="firebrick2", space ="Lab", name = if (tool=="preranked_GSEApy" | tool=="pycisTarget" | tool=="RcisTarget") effect_col else paste0("log2(",effect_col,")")) +
-            scale_y_discrete(label=addline_format) + 
-            scale_size_continuous(range = c(1,5), name = if (tool=="pycisTarget" | tool=="RcisTarget") adjp_col else paste("-log10(",adjp_col,")")) +
-            ggtitle(paste(tool, database, group, sep='\n')) +
+            geom_point(shape=21, stroke=0.25, color = "grey22", alpha = 0.95) +
+            geom_point(data = adjp_star_df, aes(x=feature_set, y=terms), shape=8, size=0.8, color = "black", alpha = 0.7) +
+            scale_fill_gradient2(midpoint=0, low="#2563EB", mid="#F8FAFC", high="#DC2626", space ="Lab", name = if (tool=="preranked_GSEApy" | tool=="pycisTarget" | tool=="RcisTarget") effect_col else paste0("log2(",effect_col,")")) +
+            scale_y_discrete(labels = format_term_labels) + 
+            scale_size_continuous(range = c(1.5,6.2), name = if (tool=="pycisTarget" | tool=="RcisTarget") adjp_col else paste("-log10(",adjp_col,")")) +
+            labs(title = paste(tool, database, sep = " | "), subtitle = group) +
             clean_theme() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust=1),
                   axis.title.x=element_blank(),
-                  axis.title.y=element_blank()) + guides(size = guide_legend(reverse=TRUE))
+                  axis.title.y=element_blank(),
+                  axis.text = element_text(size = 7.5, color = "grey12"),
+                  plot.title = element_text(size = 10, face = "bold", lineheight = 1.1, hjust = 0.5),
+                  plot.subtitle = element_text(size = 9, hjust = 0.5),
+                  panel.grid.major = element_line(color = "grey92", linewidth = 0.25),
+                  panel.grid.minor = element_blank(),
+                  legend.title = element_text(size = 8),
+                  legend.text = element_text(size = 7),
+                  legend.background = element_rect(fill = "white", color = NA),
+                  legend.position = "right",
+                  plot.margin = margin(7, 12, 7, 12)) +
+            guides(
+                size = guide_legend(reverse = TRUE),
+                fill = guide_colorbar(barheight = grid::unit(35, "pt"))
+            )
 
-    width <- 0.15 * dim(adjp_df)[2] + 3
-    height <- 0.2 * dim(adjp_df)[1] + 2
+    width <- max(7, 0.55 * dim(adjp_df)[2] + 5.5)
+    height <- max(4.5, 0.34 * dim(adjp_df)[1] + 2.4)
 
     # save plot
     if (type == "topTerms"){
