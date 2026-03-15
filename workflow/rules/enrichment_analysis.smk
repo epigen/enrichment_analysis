@@ -111,6 +111,8 @@ rule process_results_pycisTarget:
         motif_hdf5 = os.path.join(result_path,'{region_set}','pycisTarget','{database}','motif_enrichment_cistarget_{region_set}.hdf5'),
     output:
         motif_csv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.csv'),
+        hits_csv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.motif_hits.csv'),
+        cistrome_csv = os.path.join(result_path,'{region_set}','pycisTarget','{database}','{region_set}_{database}.cistromes.csv'),
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),
