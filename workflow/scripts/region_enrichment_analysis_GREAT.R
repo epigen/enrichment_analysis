@@ -12,11 +12,9 @@ annot_terms_with_features <- function(res, df) {
 
   needs_annotation <- rep(TRUE, nrow(df))
   if ("p_adjust" %in% names(df)) {
-    needs_annotation <- needs_annotation & (is.na(df$p_adjust) | df$p_adjust <= 0.1)
+    needs_annotation <- needs_annotation & (is.na(df$p_adjust) | df$p_adjust <= snakemake@config[["adjp_th"]][["GREAT"]])
   }
-  if ("p_adjust_hyper" %in% names(df)) {
-    needs_annotation <- needs_annotation & (is.na(df$p_adjust_hyper) | df$p_adjust_hyper <= 0.1)
-  }
+  
 
   term_ids <- unique(df$id[needs_annotation])
   annotations <- setNames(vector("list", length(term_ids)), term_ids)
@@ -25,7 +23,7 @@ annot_terms_with_features <- function(res, df) {
     gr <- getRegionGeneAssociations(res, term_id = term)
     annotations[[term]] <- list(
       regions = paste(
-        paste0(seqnames(gr), ":", start(gr), "-", end(gr)),
+        paste0(seqnames(gr), ":", pmax(0L, start(gr) - 1L), "-", end(gr)),
         collapse = ","
       ),
       annotated_genes = paste(unique(unlist(gr$annotated_genes)), collapse = ",")

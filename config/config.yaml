@@ -136,7 +136,7 @@ column_names:
 adjp_th:
     ORA_GSEApy: 0.05
     preranked_GSEApy: 0.05
-    GREAT: 0.01
+    GREAT: 0.5
     LOLA: 0.01
     pycisTarget: 5 # keep results greater(!) than provided threshold
     RcisTarget: 5 # keep results greater(!) than provided threshold

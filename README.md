@@ -110,6 +110,7 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
     - cisTarget databases for [pycisTarget](https://pycistarget.readthedocs.io/en/latest/) and [RcisTarget](https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html)
       - downloaded from the [cisTarget resources](https://resources.aertslab.org/cistarget/)
       - custom databases using these [instructions](https://github.com/aertslab/create_cisTarget_databases)
+
 - **group aggregation** of results per method and database
     - results of all queries belonging to the same group are aggregated per method (e.g., ORA_GSEApy) and database (e.g., GO_Biological_Process_2021) by concatenation and saved as a long-format table (CSV).
     - a filtered version taking the union of all statistically significant (i.e., adjusted p-value <`{adjp_th}`) terms per query is also saved as a long-format table (CSV).
