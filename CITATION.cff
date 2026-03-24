@@ -14,6 +14,17 @@ authors:
     family-names: Reichl
     orcid: 'https://orcid.org/0000-0001-8555-7198'
     affiliation: CeMM Research Center for Molecular Medicine
+  - given-names: Martin
+    family-names: Stoll
+    orcid: 'https://orcid.org/0009-0006-7160-2326'
+    affiliation: CeMM Research Center for Molecular Medicine
+  - given-names: Raphael
+    family-names: Bednarsky
+    orcid: 'https://orcid.org/0009-0005-0404-3424'
+    affiliation: CeMM Research Center for Molecular Medicine
+  - given-names: Fangwen
+    family-names: Zhao
+    affiliation: CeMM Research Center for Molecular Medicine
   - given-names: Daria
     family-names: Romanovskaia
     orcid: 'https://orcid.org/0000-0003-2831-0919'

@@ -22,6 +22,9 @@ A [Snakemake 8](https://snakemake.readthedocs.io/en/stable/) workflow for enrich
 
 # 🖋️ Authors
 - [Stephan Reichl](https://github.com/sreichl)
+- [Martin Stoll](https://github.com/martin5555555555)
+- [Raphael Bednarsky](https://github.com/bednarsky)
+- [Fangwen Zhao](https://github.com/fwzhao)
 - [Daria Romanovskaia](https://github.com/dariarom94)
 - [Rob ter Horst](https://github.com/rubbert)
 - [Christoph Bock](https://github.com/chrbock)
