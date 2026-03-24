@@ -128,7 +128,7 @@ rule gene_ORA_GSEApy:
     input:
         query_genes=get_gene_path,
         background_genes=get_background_gene_path,
-        database = os.path.join("resources", config["project_name"], module_name, "{db}.gmt"),
+        database = lambda w: database_dict[w.db],
     output:
         result_file = os.path.join(result_path,'{gene_set}','ORA_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:
@@ -147,7 +147,7 @@ rule gene_ORA_GSEApy:
 rule gene_preranked_GSEApy:
     input:
         query_genes=get_rnk_path,
-        database = os.path.join("resources", config["project_name"], module_name, "{db}.gmt"),
+        database = lambda w: database_dict[w.db],
     output:
         result_file = os.path.join(result_path,'{gene_set}','preranked_GSEApy','{db}','{gene_set}_{db}.csv'),
     params:

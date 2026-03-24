@@ -256,6 +256,7 @@ Follow these steps to run the complete analysis:
   - [Combine all text files within a specified folder into one JSON to be used as database.](./helpers/txts_to_json_database.py)
   - [Generate a file listing CSV of the current folder as basis for the annotation file.](./helpers/feature_list_to_csv.sh)
   - [Convert feature lists to BED files for genomic region enrichment analysis.](./helpers/features_to_bed.py)
+   - [Example of rules to download the common databases](./helpers/data_download_rules_example.md)
 - Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
