@@ -28,7 +28,6 @@ A [Snakemake 8](https://snakemake.readthedocs.io/en/stable/) workflow for enrich
 - [Daria Romanovskaia](https://github.com/dariarom94)
 - [Rob ter Horst](https://github.com/rubbert)
 - [Christoph Bock](https://github.com/chrbock)
-
 # 💿 Software
 This project wouldn't be possible without the following software and their dependencies:
 
@@ -76,7 +75,7 @@ The results of all queries belonging to the same analysis [group] were aggregate
 **Visualization**
 All analysis results were visualized in the same way.
 
-For each query, method and database combination an enrichment dot plot was used to visualize the most important results.  The top [top_n] terms were ranked (along the y-axis) by the mean rank of statistical significance ([p_value]), effect-size ([effect_size]), and overlap ([overlap]) with the goal to make the results more balanced and interpretable. The significance (adjusted p-value) is denoted by the dot color, effect-size by the x-axis position, and overlap by the dot size.
+For each query, method and database combination an enrichment dot plot was used to visualize the most important results.  The top [top_n] terms were ranked (along the y-axis) by the mean rank of statistical significance ([p_value]), effect-size ([effect_size]), and overlap ([overlap]) with the goal to make the results more balanced and interpretable. The significance (adjusted p-value) is denoted by the dot color, effect-size by the x-axis position, and overlap by the dot size. Note that in any output file in this module, the regions are indexed with the [BED indexing convention](https://en.wikipedia.org/wiki/BED), i.e the start is 0-based and inclusive while the end is exclusive.
 
 The aggregated results per analysis [group], method and database combination were visualized using hierarchically clustered heatmaps and bubble plots. The union of the top [top_terms_n] most significant terms per query were determined and their effect-size and significance were visualized as hierarchically clustered heatmaps, and statistical significance ([adj_pvalue] < [adjp_th]) was denoted by \*. Furthermore, a hierarchically clustered bubble plot encoding both effect-size (color) and statistical significance (size) is provided, with statistical significance denoted by \*. All summary visualizations’ values were capped by [adjp_cap]/[or_cap]/[nes_cap] to avoid shifts in the coloring scheme caused by outliers.
 
@@ -113,6 +112,7 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
     - cisTarget databases for [pycisTarget](https://pycistarget.readthedocs.io/en/latest/) and [RcisTarget](https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html)
       - downloaded from the [cisTarget resources](https://resources.aertslab.org/cistarget/)
       - custom databases using these [instructions](https://github.com/aertslab/create_cisTarget_databases)
+
 - **group aggregation** of results per method and database
     - results of all queries belonging to the same group are aggregated per method (e.g., ORA_GSEApy) and database (e.g., GO_Biological_Process_2021) by concatenation and saved as a long-format table (CSV).
     - a filtered version taking the union of all statistically significant (i.e., adjusted p-value <`{adjp_th}`) terms per query is also saved as a long-format table (CSV).
@@ -130,9 +130,39 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
         - all summary visualizations are configured to cap the values (`{adjp_cap}`/`{or_cap}`/`{nes_cap}`) to avoid shifts in the coloring scheme caused by outliers.
 - **results** (`{result_path}/enrichment_analysis`)
     - the result directory contains a folder for each region/gene set `{query}` and `{group}`
-    - `{query}/{method}/{database}/` containing:
-        - result table (CSV): `{query}\_{database}.csv`
-        - enrichment dot plot (PNG): `{query}\_{database}.{png}`
+    - method-specific query outputs
+        - **LOLA**: `{query}/LOLA/{database}/{query}_{database}.csv`
+            - contains the region-set enrichment statistics returned by LOLA for the selected database
+            - the matching plot is stored as `{query}/LOLA/{database}/{query}_{database}.png`
+        - **GREAT enrichment**: `{query}/GREAT/{database}/{query}_{database}.csv`
+            - contains the GREAT enrichment results for the selected GMT database
+            - in addition to the standard GREAT statistics, the workflow adds two extra columns:
+                - `regions`: the associated query regions for a term, written in BED-like coordinate form
+                - `annotated_genes`: the genes associated to those regions for that term
+            - these two columns are filled for near-significant terms, so that interesting hits can be traced back directly to the supporting regions and genes
+            - the matching plot is stored as `{query}/GREAT/{database}/{query}_{database}.png`
+        - **GREAT gene annotation**: additional files are written in `{query}/GREAT/`
+            - `genes.txt`: the set of genes associated to the query regions by GREAT
+            - `region_gene_associations.csv`: the explicit region-to-gene assignment table produced by the GREAT association step
+            - `region_gene_associations.pdf`: visualization of the region-gene associations
+            - these files complement the GREAT enrichment CSV: the enrichment table shows which gene sets are significant, while `genes.txt` and `region_gene_associations.csv` give the broader region-to-gene mapping used downstream
+        - **pycisTarget summary**: `{query}/pycisTarget/{database}/{query}_{database}.csv`
+            - contains the main motif enrichment summary extracted from the pycisTarget HDF5 result object
+            - the matching plot is stored as `{query}/pycisTarget/{database}/{query}_{database}.png`
+        - **pycisTarget detailed retrieval**: additional files are written in `{query}/pycisTarget/{database}/`
+            - `{query}_{database}.motif_hits.csv`: detailed motif-hit table extracted from the HDF5 result object; it reports which query regions are linked to the enriched motifs.
+            - `{query}_{database}.cistromes.csv`: TF-associated cistrome table extracted from the HDF5 pycisTarget result. Each row links a TF-associated cistrome to a database region and the overlapping query region. It represents region-level matches for TFs supported by the enrichment results.
+            - `motif_enrichment_cistarget_{query}.hdf5`: the full pycisTarget result object
+            - `motif_enrichment_cistarget_{query}.html`: the interactive pycisTarget HTML report
+        - **ORA_GSEApy**: `{query}/ORA_GSEApy/{database}/{query}_{database}.csv`
+            - contains over-representation results for the gene set represented by `{query}`
+            - the matching plot is stored as `{query}/ORA_GSEApy/{database}/{query}_{database}.png`
+        - **preranked_GSEApy**: `{query}/preranked_GSEApy/{database}/{query}_{database}.csv`
+            - contains preranked GSEA results for the ranked gene set represented by `{query}`
+            - the matching plot is stored as `{query}/preranked_GSEApy/{database}/{query}_{database}.png`
+        - **RcisTarget**: `{query}/RcisTarget/{database}/{query}_{database}.csv`
+            - contains the gene-based motif enrichment table returned by RcisTarget, including enriched motifs, TF annotations and enriched genes
+            - the matching plot is stored as `{query}/RcisTarget/{database}/{query}_{database}.png`
     - `{group}/{method}/{database}/` containing
         - aggregated result table (CSV): `{group}\_{database}\_all.csv`
         - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.
@@ -258,6 +288,7 @@ Follow these steps to run the complete analysis:
   - [Combine all text files within a specified folder into one JSON to be used as database.](./helpers/txts_to_json_database.py)
   - [Generate a file listing CSV of the current folder as basis for the annotation file.](./helpers/feature_list_to_csv.sh)
   - [Convert feature lists to BED files for genomic region enrichment analysis.](./helpers/features_to_bed.py)
+   - [Example of rules to download the common databases](./helpers/data_download_rules_example.md)
 - Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.

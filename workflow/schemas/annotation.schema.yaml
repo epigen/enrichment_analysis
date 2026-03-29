@@ -1,0 +1,57 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+description: Row schema for enrichment_analysis annotation tables.
+type: object
+additionalProperties: false
+required:
+  - name
+  - features_path
+  - background_name
+  - background_path
+  - group
+properties:
+  name:
+    type: string
+    minLength: 1
+    pattern: "^[A-Za-z0-9._-]+$"
+  features_path:
+    type: string
+    minLength: 1
+    pattern: "^.+\\.(bed|txt|csv)$"
+  background_name:
+    type: string
+  background_path:
+    type: string
+  group:
+    type: string
+    minLength: 1
+allOf:
+  - if:
+      properties:
+        features_path:
+          pattern: "^.+\\.bed$"
+    then:
+      properties:
+        background_name:
+          minLength: 1
+        background_path:
+          pattern: "^.+\\.bed$"
+  - if:
+      properties:
+        features_path:
+          pattern: "^.+\\.txt$"
+    then:
+      properties:
+        background_name:
+          minLength: 1
+        background_path:
+          pattern: "^.+\\.txt$"
+  - if:
+      properties:
+        features_path:
+          pattern: "^.+\\.csv$"
+    then:
+      properties:
+        background_name:
+          maxLength: 0
+        background_path:
+          maxLength: 0
