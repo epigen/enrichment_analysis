@@ -1,0 +1,283 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+description: Schema for enrichment_analysis module configuration.
+type: object
+additionalProperties: false
+required:
+  - mem
+  - threads
+  - annotation
+  - result_path
+  - project_name
+  - genome
+  - local_databases
+  - lola_databases
+  - great_parameters
+  - pycistarget_parameters
+  - rcistarget_parameters
+  - column_names
+  - adjp_th
+  - top_terms_n
+  - adjp_cap
+  - or_cap
+  - nes_cap
+  - cluster_summary
+properties:
+  mem:
+    type: integer
+    minimum: 1
+     
+  threads:
+    type: integer
+    minimum: 1
+  annotation:
+    type: string
+    minLength: 1
+  result_path:
+    type: string
+    minLength: 1
+  project_name:
+    type: string
+    minLength: 1
+  genome:
+    type: string
+    enum:
+      - hg19
+      - hg38
+      - mm9
+      - mm10
+      - mm11
+  local_databases:
+    $ref: "#/$defs/database_mapping"
+  lola_databases:
+    $ref: "#/$defs/database_mapping"
+  great_parameters:
+    type: object
+    additionalProperties: false
+    required:
+      - min_gene_set_size
+      - mode
+      - basal_upstream
+      - basal_downstream
+      - extension
+    properties:
+      min_gene_set_size:
+        type: integer
+        minimum: 0
+      mode:
+        type: string
+        enum:
+          - basalPlusExt
+          - twoClosest
+          - oneClosest
+      basal_upstream:
+        type: integer
+        minimum: 0
+      basal_downstream:
+        type: integer
+        minimum: 0
+      extension:
+        type: integer
+        minimum: 0
+  pycistarget_parameters:
+    type: object
+    additionalProperties: false
+    required:
+      - databases
+      - path_to_motif_annotations
+      - temp_dir
+      - fraction_overlap_w_cistarget_database
+      - auc_threshold
+      - nes_threshold
+      - rank_threshold
+      - annotation_version
+      - annotations_to_use
+      - motif_similarity_fdr
+      - orthologous_identity_threshold
+    properties:
+      databases:
+        $ref: "#/$defs/database_mapping"
+      path_to_motif_annotations:
+        type: string
+        minLength: 1
+      temp_dir:
+        type: string
+        minLength: 1
+      fraction_overlap_w_cistarget_database:
+        type: number
+        minimum: 0
+        maximum: 1
+      auc_threshold:
+        type: number
+        minimum: 0
+        maximum: 1
+      nes_threshold:
+        type: number
+        minimum: 0
+      rank_threshold:
+        type: number
+        minimum: 0
+        maximum: 1
+      annotation_version:
+        type: string
+        minLength: 1
+      annotations_to_use:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 1
+      motif_similarity_fdr:
+        type: number
+        minimum: 0
+        maximum: 1
+      orthologous_identity_threshold:
+        type: number
+        minimum: 0
+        maximum: 1
+  rcistarget_parameters:
+    type: object
+    additionalProperties: false
+    required:
+      - databases
+      - motifAnnot
+      - motifAnnot_highConfCat
+      - motifAnnot_lowConfCat
+      - nesThreshold
+      - aucMaxRank_factor
+      - geneErnMethod
+      - geneErnMaxRank
+    properties:
+      databases:
+        $ref: "#/$defs/database_mapping"
+      motifAnnot:
+        type: string
+        minLength: 1
+      motifAnnot_highConfCat:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 1
+      motifAnnot_lowConfCat:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 1
+      nesThreshold:
+        type: number
+        minimum: 0
+      aucMaxRank_factor:
+        type: number
+        exclusiveMinimum: 0
+      geneErnMethod:
+        type: string
+        enum:
+          - aprox
+          - icistarget
+          - exact
+      geneErnMaxRank:
+        type: integer
+        minimum: 1
+  column_names:
+    type: object
+    additionalProperties: false
+    required:
+      - ORA_GSEApy
+      - preranked_GSEApy
+      - GREAT
+      - LOLA
+      - pycisTarget
+      - RcisTarget
+    properties:
+      ORA_GSEApy:
+        $ref: "#/$defs/tool_column_names"
+      preranked_GSEApy:
+        $ref: "#/$defs/tool_column_names"
+      GREAT:
+        $ref: "#/$defs/tool_column_names"
+      LOLA:
+        $ref: "#/$defs/tool_column_names"
+      pycisTarget:
+        $ref: "#/$defs/tool_column_names"
+      RcisTarget:
+        $ref: "#/$defs/tool_column_names"
+  adjp_th:
+    type: object
+    additionalProperties: false
+    required:
+      - ORA_GSEApy
+      - preranked_GSEApy
+      - GREAT
+      - LOLA
+      - pycisTarget
+      - RcisTarget
+    properties:
+      ORA_GSEApy:
+        type: number
+        minimum: 0
+      preranked_GSEApy:
+        type: number
+        minimum: 0
+      GREAT:
+        type: number
+        minimum: 0
+      LOLA:
+        type: number
+        minimum: 0
+      pycisTarget:
+        type: number
+        minimum: 0
+      RcisTarget:
+        type: number
+        minimum: 0
+  top_terms_n:
+    type: integer
+    minimum: 1
+  adjp_cap:
+    type: number
+    minimum: 0
+  or_cap:
+    type: number
+    minimum: 0
+  nes_cap:
+    type: number
+    minimum: 0
+  cluster_summary:
+    type: integer
+    enum: [0, 1]
+$defs:
+  database_mapping:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      type: string
+  tool_column_names:
+    type: object
+    additionalProperties: false
+    required:
+      - top_n
+      - p_value
+      - adj_pvalue
+      - effect_size
+      - overlap
+      - term
+    properties:
+      top_n:
+        type: integer
+        minimum: 1
+      p_value:
+        type: string
+        minLength: 1
+      adj_pvalue:
+        type: string
+        minLength: 1
+      effect_size:
+        type: string
+        minLength: 1
+      overlap:
+        type: string
+        minLength: 1
+      term:
+        type: string
+        minLength: 1

@@ -23,10 +23,15 @@ report: "report/workflow.rst"
 
 ##### load config and annotation #####
 configfile: os.path.join("config","config.yaml")
+validate(config, os.path.join("schemas", "config.schema.yaml"))
 
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
 annot = pd.read_csv(config["annotation"], index_col='name')
+
+annot = pd.read_csv(config["annotation"])
+validate(annot, os.path.join("schemas", "annotation.schema.yaml"))
+annot = annot.set_index("name")
 
 # gene sets for ORA
 genes = annot.loc[annot['features_path'].str.endswith('.txt'),:]
@@ -76,6 +81,8 @@ rule all:
         expand(os.path.join(result_path, '{background_region_set}', 'GREAT','genes.txt'), background_region_set=background_regions_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.motif_hits.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
+        expand(os.path.join(result_path, '{region_set}', 'pycisTarget','{db}','{region_set}_{db}.cistromes.csv'), region_set=regions_dict.keys(), db=pycistarget_db_dict.keys()),
         # gene enrichment analyses for mapped region - ORA_GSEApy
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.csv'), region_set=regions_dict.keys(), db=database_dict.keys()),
         expand(os.path.join(result_path, '{region_set}', 'ORA_GSEApy','{db}','{region_set}_{db}.png'), region_set=regions_dict.keys(), db=database_dict.keys()),

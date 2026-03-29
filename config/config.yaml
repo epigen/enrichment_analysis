@@ -1,6 +1,6 @@
 
 ##### RESOURCES #####
-mem: '16000'
+mem: 16000
 threads: 1
 
 ##### GENERAL #####
