@@ -11,4 +11,15 @@ You need one configuration file and one annotation file to run the complete work
     - background_path: path to the background/universe gene/region-set as .txt/.bed file (only required for region- and gene-sets, leave empty for gene-score tables)
     - group: enrichment results are aggregated and visualized per analysis and database based on this group variable (e.g., gene/region-sets resulting from the same analysis)
 
+For **region-set inputs** (`features_path` or `background_path` ending in `.bed`),the workflow expects **standard BED coordinates**.
+- **BED is 0-based, start-inclusive, end-exclusive**.
+- In interval notation this is **`[start, end)`**.
+- This means:
+    - the first base of a chromosome is `0`
+    - a region with `start=0` and `end=100` spans exactly 100 bases: positions `0` to `99`
+
+Practical BED input requirements:
+
+- Use at least the first **3 BED columns**: `chrom`, `start`, `end`.
+
 Set workflow-specific `resources` or command line arguments (CLI) in the workflow profile `workflow/profiles/default.config.yaml`, which supersedes global Snakemake profiles.

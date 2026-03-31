@@ -40,12 +40,6 @@ properties:
     minLength: 1
   genome:
     type: string
-    enum:
-      - hg19
-      - hg38
-      - mm9
-      - mm10
-      - mm11
   local_databases:
     $ref: "#/$defs/database_mapping"
   lola_databases:
