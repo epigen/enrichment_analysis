@@ -23,7 +23,7 @@ annot_terms_with_features <- function(res, df) {
     gr <- getRegionGeneAssociations(res, term_id = term)
     annotations[[term]] <- list(
       regions = paste(
-        paste0(seqnames(gr), ":", pmax(0L, start(gr) - 1L), "-", end(gr)), # output the file in a bed convention format (open start, closed end)
+        paste0(seqnames(gr), ":", pmax(0L, start(gr) - 1L), "-", end(gr)), # export in BED-style coordinates: 0-based, start-inclusive, end-exclusive
         collapse = ","
       ),
       annotated_genes = paste(unique(unlist(gr$annotated_genes)), collapse = ",")

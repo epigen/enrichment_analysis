@@ -75,7 +75,7 @@ The results of all queries belonging to the same analysis [group] were aggregate
 **Visualization**
 All analysis results were visualized in the same way.
 
-For each query, method and database combination an enrichment dot plot was used to visualize the most important results.  The top [top_n] terms were ranked (along the y-axis) by the mean rank of statistical significance ([p_value]), effect-size ([effect_size]), and overlap ([overlap]) with the goal to make the results more balanced and interpretable. The significance (adjusted p-value) is denoted by the dot color, effect-size by the x-axis position, and overlap by the dot size. Note that in any output file in this module, the regions are indexed with the [BED indexing convention](https://en.wikipedia.org/wiki/BED), i.e the start is 0-based and inclusive while the end is exclusive.
+For each query, method and database combination an enrichment dot plot was used to visualize the most important results.  The top [top_n] terms were ranked (along the y-axis) by the mean rank of statistical significance ([p_value]), effect-size ([effect_size]), and overlap ([overlap]) with the goal to make the results more balanced and interpretable. The significance (adjusted p-value) is denoted by the dot color, effect-size by the x-axis position, and overlap by the dot size. Note that in any output file in this module, the regions are indexed with the [BED indexing convention](https://en.wikipedia.org/wiki/BED), i.e the start is 0-based and inclusive while the end is exclusive ([`start`, `end`), a region with `start=0` and `end=100` spans exactly 100 bases: positions `0` to `99`).
 
 The aggregated results per analysis [group], method and database combination were visualized using hierarchically clustered heatmaps and bubble plots. The union of the top [top_terms_n] most significant terms per query were determined and their effect-size and significance were visualized as hierarchically clustered heatmaps, and statistical significance ([adj_pvalue] < [adjp_th]) was denoted by \*. Furthermore, a hierarchically clustered bubble plot encoding both effect-size (color) and statistical significance (size) is provided, with statistical significance denoted by \*. All summary visualizations’ values were capped by [adjp_cap]/[or_cap]/[nes_cap] to avoid shifts in the coloring scheme caused by outliers.
 
@@ -129,11 +129,14 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
         - a hierarchically clustered bubble plot encoding both effect-size (color) and significance (size) is provided, with statistical significance denoted by `\*` (PNG).
         - all summary visualizations are configured to cap the values (`{adjp_cap}`/`{or_cap}`/`{nes_cap}`) to avoid shifts in the coloring scheme caused by outliers.
 - **results** (`{result_path}/enrichment_analysis`)
-    - the result directory contains a folder for each region/gene set `{query}` and `{group}`
-    - method-specific query outputs
-        - **LOLA**: `{query}/LOLA/{database}/{query}_{database}.csv`
-            - contains the region-set enrichment statistics returned by LOLA for the selected database
-            - the matching plot is stored as `{query}/LOLA/{database}/{query}_{database}.png`
+- the result directory contains a folder for each region/gene set `{query}` and `{group}`
+    - `{query}/{method}/{database}/` containing:
+        - result table (CSV): `{query}\_{database}.csv`
+        - enrichment dot plot (PNG): `{query}\_{database}.{png}`
+    - `{group}/{method}/{database}/` containing
+        - aggregated result table (CSV): `{group}\_{database}\_all.csv`
+        - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.   
+     - Additional method-specific outputs are provided :
         - **GREAT enrichment**: `{query}/GREAT/{database}/{query}_{database}.csv`
             - contains the GREAT enrichment results for the selected GMT database
             - in addition to the standard GREAT statistics, the workflow adds two extra columns:
@@ -146,26 +149,12 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
             - `region_gene_associations.csv`: the explicit region-to-gene assignment table produced by the GREAT association step
             - `region_gene_associations.pdf`: visualization of the region-gene associations
             - these files complement the GREAT enrichment CSV: the enrichment table shows which gene sets are significant, while `genes.txt` and `region_gene_associations.csv` give the broader region-to-gene mapping used downstream
-        - **pycisTarget summary**: `{query}/pycisTarget/{database}/{query}_{database}.csv`
-            - contains the main motif enrichment summary extracted from the pycisTarget HDF5 result object
-            - the matching plot is stored as `{query}/pycisTarget/{database}/{query}_{database}.png`
         - **pycisTarget detailed retrieval**: additional files are written in `{query}/pycisTarget/{database}/`
             - `{query}_{database}.motif_hits.csv`: detailed motif-hit table extracted from the HDF5 result object; it reports which query regions are linked to the enriched motifs.
             - `{query}_{database}.cistromes.csv`: TF-associated cistrome table extracted from the HDF5 pycisTarget result. Each row links a TF-associated cistrome to a database region and the overlapping query region. It represents region-level matches for TFs supported by the enrichment results.
             - `motif_enrichment_cistarget_{query}.hdf5`: the full pycisTarget result object
             - `motif_enrichment_cistarget_{query}.html`: the interactive pycisTarget HTML report
-        - **ORA_GSEApy**: `{query}/ORA_GSEApy/{database}/{query}_{database}.csv`
-            - contains over-representation results for the gene set represented by `{query}`
-            - the matching plot is stored as `{query}/ORA_GSEApy/{database}/{query}_{database}.png`
-        - **preranked_GSEApy**: `{query}/preranked_GSEApy/{database}/{query}_{database}.csv`
-            - contains preranked GSEA results for the ranked gene set represented by `{query}`
-            - the matching plot is stored as `{query}/preranked_GSEApy/{database}/{query}_{database}.png`
-        - **RcisTarget**: `{query}/RcisTarget/{database}/{query}_{database}.csv`
-            - contains the gene-based motif enrichment table returned by RcisTarget, including enriched motifs, TF annotations and enriched genes
-            - the matching plot is stored as `{query}/RcisTarget/{database}/{query}_{database}.png`
-    - `{group}/{method}/{database}/` containing
-        - aggregated result table (CSV): `{group}\_{database}\_all.csv`
-        - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.
+   
 
 Note:
 - Despite usage of the correct parameter, **rGREAT** was not using the provided cores during testing. Nevertheless, it is still provided as parameter.
@@ -188,7 +177,7 @@ Here are some tips for the usage of this workflow:
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
 # 🧬 How to convert feature lists to BED files
-This enrichment analysis workflow requires **genomic regions** to be in the standard **`BED`** format (`chromosome`, `start`, `end`, `name`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
+This enrichment analysis workflow requires **genomic regions** to be in standard **`BED`** format. At minimum, provide the first 3 BED columns: `chromosome`, `start`, `end`. A 4th column such as `name` is optional but often useful. BED uses **0-based, start-inclusive, end-exclusive** coordinates (`[start, end)`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
 
 We provide a Python helper script, [`features_to_bed.py`](./helpers/features_to_bed.py), and a Snakemake rule to automate this crucial step. Simply adapt them to your setup. Both take two files as input:
 1.  Your list of significant feature IDs (e.g., `features.txt`).
