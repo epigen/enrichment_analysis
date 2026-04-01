@@ -129,37 +129,34 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
         - a hierarchically clustered bubble plot encoding both effect-size (color) and significance (size) is provided, with statistical significance denoted by `\*` (PNG).
         - all summary visualizations are configured to cap the values (`{adjp_cap}`/`{or_cap}`/`{nes_cap}`) to avoid shifts in the coloring scheme caused by outliers.
 - **results** (`{result_path}/enrichment_analysis`)
-- the result directory contains a folder for each region/gene set `{query}` and `{group}`
+- the result directory contains a folder for each genomic-region/gene set `{query}` and `{group}`
     - `{query}/{method}/{database}/` containing:
         - result table (CSV): `{query}\_{database}.csv`
         - enrichment dot plot (PNG): `{query}\_{database}.{png}`
     - `{group}/{method}/{database}/` containing
         - aggregated result table (CSV): `{group}\_{database}\_all.csv`
-        - hierarchically clustered bubble plot visualizing statistical significance and effect-sizes simultaneously (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.   
+        - hierarchically clustered bubble plots simultaneously visualizing statistical significance and effect-sizes (PNG):  `{group}\_{database}\_summary_{topTerms|specificTerms}.{png}`. In case of only one query gene/region set, this plot is empty.   
      - Additional method-specific outputs are provided :
-        - **GREAT enrichment**: `{query}/GREAT/{database}/{query}_{database}.csv`
-            - contains the GREAT enrichment results for the selected GMT database
-            - in addition to the standard GREAT statistics, the workflow adds two extra columns:
+        - **GREAT genomic-region enrichment**:
+            - in addition to the standard GREAT statistics, the workflow adds two extra columns to the result table:
                 - `regions`: the associated query regions for a term, written in BED-like coordinate form
                 - `annotated_genes`: the genes associated to those regions for that term
-            - these two columns are filled for near-significant terms, so that interesting hits can be traced back directly to the supporting regions and genes
-            - the matching plot is stored as `{query}/GREAT/{database}/{query}_{database}.png`
-        - **GREAT gene annotation**: additional files are written in `{query}/GREAT/`
-            - `genes.txt`: the set of genes associated to the query regions by GREAT
-            - `region_gene_associations.csv`: the explicit region-to-gene assignment table produced by the GREAT association step
-            - `region_gene_associations.pdf`: visualization of the region-gene associations
-            - these files complement the GREAT enrichment CSV: the enrichment table shows which gene sets are significant, while `genes.txt` and `region_gene_associations.csv` give the broader region-to-gene mapping used downstream
-        - **pycisTarget detailed retrieval**: additional files are written in `{query}/pycisTarget/{database}/`
+            - these two columns are filled for significant terms (according to configured adjusted p-value threshold), so that interesting hits can be traced back directly to the supporting regions and genes
+            - additional results from the region-gene association provided by GREAT:
+                - `genes.txt`: list of genes associated with the query regions
+                - `region_gene_associations.csv`: region-to-gene assignment table
+                - `region_gene_associations.pdf`: visualization of the region-gene associations
+                - these files complement GREAT's main result table by detailing the region-to-gene mapping, which is also used downstream
+        - **pycisTarget genomic-region enrichment**: additional results
             - `{query}_{database}.motif_hits.csv`: detailed motif-hit table extracted from the HDF5 result object; it reports which query regions are linked to the enriched motifs.
             - `{query}_{database}.cistromes.csv`: TF-associated cistrome table extracted from the HDF5 pycisTarget result. Each row links a TF-associated cistrome to a database region and the overlapping query region. It represents region-level matches for TFs supported by the enrichment results.
             - `motif_enrichment_cistarget_{query}.hdf5`: the full pycisTarget result object
             - `motif_enrichment_cistarget_{query}.html`: the interactive pycisTarget HTML report
-   
 
 Note:
 - Despite usage of the correct parameter, **rGREAT** was not using the provided cores during testing. Nevertheless, it is still provided as parameter.
 - **(r)GREAT** performs [two statistical test](https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655456/Statistics) (binomial and hypergeometric), results of both are reported and should be considered. Which results are used for the visualization can be configured in `column_names:GREAT`.
-- **pycisTarget** for region set enrichment does not use the provided background regions. In case this is desired (e.g., conensus regions or TF ChIP-seq data) follow the [instructions for custom cisTarget databases](https://github.com/aertslab/create_cisTarget_databases) using your own regions and use them as database.
+- **pycisTarget** for region set enrichment does not use the provided background regions. In case this is desired (e.g., consensus regions or TF ChIP-seq data) follow the [instructions for custom cisTarget databases](https://github.com/aertslab/create_cisTarget_databases) using your own regions and use them as database.
 
 # 🛠️ Usage
 Here are some tips for the usage of this workflow:
@@ -277,7 +274,7 @@ Follow these steps to run the complete analysis:
   - [Combine all text files within a specified folder into one JSON to be used as database.](./helpers/txts_to_json_database.py)
   - [Generate a file listing CSV of the current folder as basis for the annotation file.](./helpers/feature_list_to_csv.sh)
   - [Convert feature lists to BED files for genomic region enrichment analysis.](./helpers/features_to_bed.py)
-   - [Example of rules to download the common databases](./helpers/data_download_rules_example.md)
+  - [Snakemake rule templates for automated database downloads](./helpers/database_download_rules.md)
 - Recommended compatible [MrBiomics](https://github.com/epigen/MrBiomics) modules for upstream processing and analyses:
     - [ATAC-seq Processing](https://github.com/epigen/atacseq_pipeline) to quantify chromatin accessibility.
     - [scRNA-seq Data Processing & Visualization](https://github.com/epigen/scrnaseq_processing_seurat) for processing (multimodal) single-cell transcriptome data.
@@ -294,8 +291,8 @@ Follow these steps to run the complete analysis:
       - [custom LOLA database instructions](https://databio.org/regiondb#:~:text=Build%20your%20own%20custom%20database)
     - [cisTarget resources](https://resources.aertslab.org/cistarget/)
       - [custom cistarget database instructions](https://github.com/aertslab/create_cisTarget_databases)
-    - [Enrichr gene set databases](https://maayanlab.cloud/Enrichr/#libraries)
-    - [The Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/)
+    - [Enrichr](https://maayanlab.cloud/Enrichr/#libraries) for gene sets
+    - [The Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/) for gene sets
 
 # 📑 Publications
 The following publications successfully used this module for their analyses.
