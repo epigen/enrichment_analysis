@@ -17,7 +17,7 @@ We are leveraging Snakemake's capability to automatically recognize when a requi
 > [!IMPORTANT] 
 > Make sure the output path in the configuration file matches the composed output path of the corresponding download rule.
 
-## Single file downloads (ORA GSEA, preranked GSEA, GREAT, cisTarget)
+## Single file downloads (for ORA GSEA, preranked GSEA, GREAT, cisTarget)
 
 The simplest and most robust approach for single file resources (like GMTs for over-representation analysis, or `.tbl` and `.feather` files for cisTarget) is to explicitly map the desired local filename to its direct download URL in a Python dictionary. 
 
@@ -66,7 +66,7 @@ pycistarget_parameters:
         hg38_screen_v10clust: "resources/enrichment_analysis/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
 ```
 
-## Custom JSON databases from gene lists
+## Custom JSON databases from gene lists (for ORA GSEA, preranked GSEA, GREAT)
 
 Oftentimes, you have specific lists of genes derived from orthogonal analyses or literature that do not exist in public resources like Enrichr. You can build custom databases from simple text files, actively converting them into a `.json` database. The `enrichment_analysis` module natively consumes these `.json` databases and effortlessly converts them to `.gmt`.
 
@@ -139,7 +139,7 @@ local_databases:
     Super: "resources/custom_databases/Super.json"
 ```
 
-## Directory downloads (LOLA)
+## Directory downloads (for LOLA)
 
 LOLA databases are used for genomic region set enrichment analysis. Unlike standard single file databases, LOLA requires an extracted directory structure that contains the indexed genomes (e.g. `resources/LOLACore/hg38`). 
 
