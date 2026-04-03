@@ -28,6 +28,22 @@ do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size,
               units = "mm")
 }
 
+make_message_plot <- function(path, msg, tool, database, feature_set){
+    center_msg <- paste0(msg, "\n", tool, " | ", database, " | ", feature_set)
+    p <- ggplot() +
+        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
+        theme_void() +
+        theme(plot.background = element_rect(fill = "white", color = NA))
+
+    ggsave_new(
+        filename = tools::file_path_sans_ext(basename(path)),
+        results_path = dirname(path),
+        plot = p,
+        width = 6,
+        height = 3
+    )
+}
+
 # configs
 
 # input
@@ -53,7 +69,13 @@ term_col <- plot_cols[["term"]]
 if (file.size(enrichment_result_path) != 0L){
     enrichment_result <- data.frame(fread(file.path(enrichment_result_path), header=TRUE))
 }else{
-    file.create(enrichment_plot_path)
+    make_message_plot(enrichment_plot_path, "No results found\nenrichment result file is empty", tool, database, feature_set)
+    quit(save = "no", status = 0)
+}
+
+# stop early for header-only or empty result tables
+if (nrow(enrichment_result) == 0L){
+    make_message_plot(enrichment_plot_path, "No results found\nenrichment result has no rows", tool, database, feature_set)
     quit(save = "no", status = 0)
 }
 

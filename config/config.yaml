@@ -1,12 +1,12 @@
 
 ##### RESOURCES #####
-mem: 16000
+mem: 32000
 threads: 1
 
 ##### GENERAL #####
-annotation: /path/to/enrichment_analysis_annotation.csv
-result_path: /path/to/results/
-project_name: MyProject
+annotation: test/config/corces_minimal_enrichment_analysis_annotation.csv
+result_path: test/results
+project_name: corces_minimal
 
 # genome
 # human 'hg19' or 'hg38' 
@@ -20,18 +20,17 @@ genome: 'hg38'
 #     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 #     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
-# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
+# Test-ready local database fixture.
 local_databases:
-    MSigDB_H_C2_CGP: "path/to/a/GMT_db.gmt"
+    Azimuth_2023: "resources/enrichment_analysis/Azimuth_2023.gmt"
 
 ## LOLA compatible region set databases
 # loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
 # download from the docs or create your own: https://databio.org/regiondb
 # pre-cached .RData files are supported by simpleCache
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
-# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 lola_databases:
-    LOLACore: "path/to/LOLACore/hg38"
+    LOLACore: "resources/LOLACore/hg38"
 
 ##### TOOLS #####
 
@@ -53,12 +52,11 @@ great_parameters:
 # resources: https://resources.aertslab.org/cistarget/
 # instructions for custom cisTarget databases using your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
 # instructions for hg19 database here: https://github.com/aertslab/pycistarget/issues/37
-# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 pycistarget_parameters:
     databases:
-        hg38_screen_v10clust: "path/to/database.regions_vs_motifs.rankings.feather"
-    path_to_motif_annotations: "path/to/motif2tf_file.tbl"
-    temp_dir: "path/to/tmp_dir" # should have space available
+        hg38_screen_v10clust: "test/resources/pycistarget_toy/toy_600regions.regions_vs_motifs.rankings.feather"
+    path_to_motif_annotations: "resources/enrichment_analysis/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+    temp_dir: "/tmp" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
     auc_threshold: 0.005 # default 0.005
     nes_threshold: 3 # default 3
@@ -71,17 +69,16 @@ pycistarget_parameters:
 ### RcisTarget - gene based Transcription Factor Binding Site (TFBS) motif enrichment analysis
 # https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html
 # resources: https://resources.aertslab.org/cistarget/
-# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 rcistarget_parameters:
     databases:
-        hg38_500bp_up_100bp_down_v10clust: "path/to/database.genes_vs_motifs.rankings.feather"
-    motifAnnot: "path/to/motif2tf_file.tbl"
+        hg38_500bp_up_100bp_down_v10clust: "test/resources/rcistarget_toy/toy_10genes.genes_vs_motifs.rankings.feather"
+    motifAnnot: "test/resources/rcistarget_toy/toy_10genes.motif_annotations.tbl"
     motifAnnot_highConfCat: ["directAnnotation", "inferredBy_Orthology"]
     motifAnnot_lowConfCat: ["inferredBy_MotifSimilarity", "inferredBy_MotifSimilarity_n_Orthology"]
     nesThreshold: 3
     aucMaxRank_factor: 0.05 # used for aucMaxRank = aucMaxRank_factor * ncol(motifRankings)
     geneErnMethod: "aprox" # alternatively, exact but more computationally intense: "icistarget"
-    geneErnMaxRank: 5000
+    geneErnMaxRank: 10
 
 ### Enrichment plot
 
