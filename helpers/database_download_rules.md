@@ -45,7 +45,7 @@ rule download_enrichment_analysis_resources:
     resources:
         mem_mb=1000
     conda:
-        "../../workflow/envs/wget.yaml"
+        "../envs/wget.yaml" # make sure to copy this to your workflow/envs folder
     log:
         "logs/wget/download_enrichment_analysis_resource_{resource}.log"
     shell:
@@ -164,7 +164,7 @@ rule download_lola_database:
     resources:
         mem_mb=2000
     conda:
-        "../../workflow/envs/wget.yaml"
+        "../envs/wget.yaml" # make sure to copy this to your workflow/envs folder
     log:
         "logs/wget/download_lola_database.log"
     shell:
