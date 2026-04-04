@@ -1,0 +1,212 @@
+species	cellType	tissue	antibody	treatment	filename
+Human	abl	prostate	AR	DHT(4hr)	Human_abl_AR_DHT-4hr_Brown.bed
+Human	LnCaP	prostate	AR	DHT(4hr)	Human_LnCaP_AR_DHT-4hr_Brown.bed
+Human	MCF-7	breast	c_MYC	E2(2hr)	Human_MCF-7_c_MYC_E2-2hr_White.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_White.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Brown.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Carroll.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Chinnaiyan.bed
+Human	MCF-7	breast	ESR1	17b-E2(1hr)	Human_MCF-7_ESR1_17b-E2-1hr_Stunnenberg.bed
+Human	MCF-7	breast	ESR1	Tam	Human_MCF-7_ESR1_Tam_Stunnenberg.bed
+Human	MCF-7	breast	ESR1	Fulv	Human_MCF-7_ESR1_Fulv_Stunnenberg.bed
+Human	MDA-MB-231 Cells	breast	ESR1	E2(45min)	Human_MDA-MB-231-Cells_ESR1_E2-45min_Katzenellenbogen.bed
+Human	MDA-MB-231 Cells	breast	ESR1, DBDmut	E2(45min)	Human_MDA-MB-231-Cells_ESR1,-DBDmut_E2-45min_Katzenellenbogen.bed
+Human	U2OS cells	osteosarcoma	ESR2	No treatment	Human_U2OS-cells_ESR2_No-treatment_Leitman.bed
+Human	U2OS cells	osteosarcoma	ESR2	E2(18hr)	Human_U2OS-cells_ESR2_E2-18hr_Leitman.bed
+Human	MCF-7	breast	FoxA1	No treatment	Human_MCF-7_FoxA1_No-treatment_White.bed
+Human	MCF-7	breast	FoxA1	No treatment	Human_MCF-7_FoxA1_No-treatment_Brown.bed
+Human	MCF-7	breast	FoxA1	E2(45min)	Human_MCF-7_FoxA1_E2-45min_Brown.bed
+Human	MCF-7	breast	FoxA1	E2(45min)	Human_MCF-7_FoxA1_No-treatment_Brown_2.bed
+Human	MCF-7	breast	GATA3	No treatment	Human_MCF-7_GATA3_No-treatment_White.bed
+Human	MCF-7	breast	PolII	No treatment	Human_MCF-7_PolII_No-treatment_Brown.bed
+Human	MCF-7	breast	PolII	No treatment	Human_MCF-7_PolII_No-treatment_Stunnenberg.bed
+Human	MCF-7	breast	PolII	17b-E2(1hr)	Human_MCF-7_PolII_17b-E2-1hr_Stunnenberg.bed
+Human	MCF-7	breast	PolII	Tam	Human_MCF-7_PolII_Tam_Stunnenberg.bed
+Human	MCF-7	breast	PolII	Fulv	Human_MCF-7_PolII_Fulv_Stunnenberg.bed
+Human	MCF-7	breast	RARA	AM580(1hr)	Human_MCF-7_RARA_AM580-1hr_White.bed
+Human	MCF-7	breast	RARG	CD437(1hr)	Human_MCF-7_RARG_CD437-1hr_White.bed
+Human	T47D	breast	PGR	E2(45min)	Human_T47D_PGR_E2-45min_Brown.bed
+Human	HepG2 liver cells	liver	HNF4A	No treatment	Human_HepG2-liver-cells_HNF4A_No-treatment_Wadelius.bed
+Human	HepG2 liver cells	liver	FoxA2	No treatment	Human_HepG2-liver-cells_FoxA2_No-treatment_Wadelius.bed
+Human	HepG2 liver cells	liver	GABP	No treatment	Human_HepG2-liver-cells_GABP_No-treatment_Wadelius.bed
+Mouse	liver cells	liver	HNF4A	No treatment	Mouse_liver-cells_HNF4A_No-treatment_Hoodless.bed
+Mouse	liver cells	liver	FoxA2	No treatment	Mouse_liver-cells_FoxA2_No-treatment_Hoodless.bed
+Mouse	islet cells	islet	FoxA2	No treatment	Mouse_islet-cells_FoxA2_No-treatment_Hoodless.bed
+Mouse	islet cells	islet	PDX1	No treatment	Mouse_islet-cells_PDX1_No-treatment_Hoodless.bed
+Mouse	liver cells	liver	CEBPa	No treatment	Mouse_liver-cells_CEBPa_No-treatment_Odom.bed
+Mouse	liver cells	liver	HNF4A	No treatment	Mouse_liver-cells_HNF4A_No-treatment_Odom.bed
+Human	normal liver cells	liver	CEBPa	No treatment	Human_normal-liver-cells_CEBPa_No-treatment_Odom.bed
+Human	normal liver cells	liver	HNF4A	No treatment	Human_normal-liver-cells_HNF4A_No-treatment_Odom.bed
+Human	A594 cells	lung 	NR3C1	DEX(1hr)	Human_A594--cells_NR3C1_DEX-1hr_Myers.bed
+Human	A594 cells	lung 	NR3C1	EtOH(1hr)	Human_A594--cells_NR3C1_EtOH-1hr_Myers.bed
+Human	A594 cells	lung 	PolII	DEX(1hr)	Human_A594--cells_PolII_DEX-1hr_Myers.bed
+Human	A594 cells	lung 	PolII	EtOH(1hr)	Human_A594--cells_PolII_EtOH-1hr_Myers.bed
+Human	A594 cells	lung 	PolIIser2	DEX(1hr)	Human_A594--cells_PolIIser2_DEX-1hr_Myers.bed
+Human	A594 cells	lung 	PolIIser2	EtOH(1hr)	Human_A594--cells_PolIIser2_EtOH-1hr_Myers.bed
+Mouse	3T3-L1 cells	pre-adipocytes	NR3C1	IBMX-DX-Insulin(6hr)	Mouse_3T3-L1-cells_NR3C1_IBMX-DX-Insulin-6hr_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	CEBPb	IBMX-DX-Insulin(0hr)	Mouse_3T3-L1-cells_CEBPb_IBMX-DX-Insulin-0hr_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	CEBPb	IBMX-DX-Insulin(6hr)	Mouse_3T3-L1-cells_CEBPb_IBMX-DX-Insulin-6hr_Lazar.bed
+Mouse	3T3-L1 adipocytes	adipocytes	CEBP	No treatment	Mouse_3T3-L1-adipocytes_CEBP_No-treatment_Lazar.bed
+Mouse	3T3-L1 adipocytes	adipocytes	PPARG	No treatment	Mouse_3T3-L1-adipocytes_PPARG_No-treatment_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day0)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day0_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day1)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day1_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day2)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day2_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day3)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day3_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day4)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day4_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PPARG	IBMX-DX-Insulin(day6)	Mouse_3T3-L1-cells_PPARG_IBMX-DX-Insulin-day6_Stunnenberg.bed
+Mouse	3T3-L1 adipocytes	adipocytes	PPARG	No treatment	Mouse_3T3-L1-adipocytes_PPARG_No-treatment_Lazar.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	PPARG	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_PPARG_No-treatment_Lazar.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	PU.1	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_PU.1_No-treatment_Lazar.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	CEBPb	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_CEBPb_No-treatment_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day0)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day0_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day1)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day1_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day2)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day2_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day3)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day3_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day4)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day4_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	RXR	IBMX-DX-Insulin(day6)	Mouse_3T3-L1-cells_RXR_IBMX-DX-Insulin-day6_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day0)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day0_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day1)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day1_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day2)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day2_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day3)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day3_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day4)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day4_Stunnenberg.bed
+Mouse	3T3-L1 cells	pre-adipocytes	PolII	IBMX-DX-Insulin(day6)	Mouse_3T3-L1-cells_PolII_IBMX-DX-Insulin-day6_Stunnenberg.bed
+Mouse	RAW264.7 macrophages	hematopoietic stem cell	NR1H2	GW3965(1hr)	Mouse_RAW264.7-macrophages_NR1H2_GW3965-1hr_Glass.bed
+Mouse	bone marrow-derived macrophages	hematopoietic stem cell	PU1	No treatment	Mouse_bone-marrow-derived-macrophages_PU1_No-treatment_Glass.bed
+Mouse	LXRa/b-/- bone marrow-derived macrophages	hematopoietic stem cell	PU1	No treatment	Mouse_LXRa,b-,--bone-marrow-derived-macrophages_PU1_No-treatment_Glass.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	PU1	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_PU1_No-treatment_Glass.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	CEBPa	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_CEBPa_No-treatment_Glass.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	CEBPb	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_CEBPb_No-treatment_Glass.bed
+Mouse	B cell	hematopoietic stem cell	PU1	No treatment	Mouse_B-cell_PU1_No-treatment_Glass.bed
+Mouse	B cell	hematopoietic stem cell	Oct2	No treatment	Mouse_B-cell_Oct2_No-treatment_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	PU1	Tamoxifen(0hr)	Mouse_PUER-cells_PU1_Tamoxifen-0hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	PU1	Tamoxifen(1hr)	Mouse_PUER-cells_PU1_Tamoxifen-1hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	PU1	Tamoxifen(6hr)	Mouse_PUER-cells_PU1_Tamoxifen-6hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	PU1	Tamoxifen(24hr)	Mouse_PUER-cells_PU1_Tamoxifen-24hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	PU1	Tamoxifen(48hr)	Mouse_PUER-cells_PU1_Tamoxifen-48hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	CEBPb	Tamoxifen(0hr)	Mouse_PUER-cells_CEBPb_Tamoxifen-0hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	CEBPb	Tamoxifen(1hr)	Mouse_PUER-cells_CEBPb_Tamoxifen-1hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	CEBPb	Tamoxifen(6hr)	Mouse_PUER-cells_CEBPb_Tamoxifen-6hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	CEBPb	Tamoxifen(24hr)	Mouse_PUER-cells_CEBPb_Tamoxifen-24hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	CEBPb	Tamoxifen(48hr)	Mouse_PUER-cells_CEBPb_Tamoxifen-48hr_Glass.bed
+Mouse	PU.1-/- myloid cell	hematopoietic stem cell	PU1	No treatment	Mouse_PU.1-,--myloid-cell_PU1_No-treatment_Glass.bed
+Mouse	E2A-/- pre-pro-B cell	hematopoietic stem cell	PU1	No treatment	Mouse_E2A-,--pre-pro-B-cell_PU1_No-treatment_Glass.bed
+Mouse	EBF-/- pre-pro-B cell	hematopoietic stem cell	PU1	No treatment	Mouse_EBF-,--pre-pro-B-cell_PU1_No-treatment_Glass.bed
+Mouse	RAG1-/- pro-B cell	hematopoietic stem cell	PU1	No treatment	Mouse_RAG1-,--pro-B-cell_PU1_No-treatment_Glass.bed
+Mouse	E2A-/- pre-pro-B cell, bHLH-ER transgenes	hematopoietic stem cell	PU1	Tamoxifen(6hr)	Mouse_E2A-,--pre-pro-B-cell,-bHLH-ER-transgenes_PU1_Tamoxifen-6hr_Glass.bed
+Mouse	E2A-/- pre-pro-B cell, E2A-ER transgenes	hematopoietic stem cell	PU1	Tamoxifen(6hr)	Mouse_E2A-,--pre-pro-B-cell,-E2A-ER-transgenes_PU1_Tamoxifen-6hr_Glass.bed
+Human	NB4 cells	hematopoietic stem cell	PML	No treatment	Human_NB4-cells_PML_No-treatment_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	PML	ATRA(24hr)	Human_NB4-cells_PML_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	RXR	No treatment(Antibody RXR _sc774)	Human_NB4-cells_RXR_No-treatment-Antibody-RXR-_sc774_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	RXR	ATRA(24hr)	Human_NB4-cells_RXR_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	RARA	No treatment(Antibody RAR _A704)	Human_NB4-cells_RARA_No-treatment-Antibody-RAR-_A704_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	RARA	ATRA(24hr)	Human_NB4-cells_RARA_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	PolII	No treatment	Human_NB4-cells_PolII_No-treatment_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	PolII	ATRA(24hr)	Human_NB4-cells_PolII_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	PolII	ATRA(48hr)	Human_NB4-cells_PolII_ATRA-48hr_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	PML	No treatment	Human_APL164-cells_PML_No-treatment_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	RXR	No treatment	Human_APL164-cells_RXR_No-treatment_Stunnenberg.bed
+Human	APL74 cells	hematopoietic stem cell	PML	No treatment	Human_APL74-cells_PML_No-treatment_Stunnenberg.bed
+Human	APL74 cells	hematopoietic stem cell	RXR	No treatment	Human_APL74-cells_RXR_No-treatment_Stunnenberg.bed
+Human	MR4 cells	hematopoietic stem cell	PML	No treatment	Human_MR4-cells_PML_No-treatment_Stunnenberg.bed
+Human	MR4 cells	hematopoietic stem cell	PML	ATRA(24hr)	Human_MR4-cells_PML_ATRA-24hr_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	PML	No treatment	Human_UPR9-cells_PML_No-treatment_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	PML	Zinc(5hr)	Human_UPR9-cells_PML_Zinc-5hr_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	RARA	No treatment	Human_UPR9-cells_RARA_No-treatment_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	RARA	Zinc(5hr)	Human_UPR9-cells_RARA_Zinc-5hr_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	RXR	No treatment	Human_UPR9-cells_RXR_No-treatment_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	RXR	Zinc(5hr)	Human_UPR9-cells_RXR_Zinc-5hr_Stunnenberg.bed
+Human	VCaP	prostate	Polll	EtOH(16hr)	Human_VCaP_Polll_EtOH-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	Polll	R1881(16hr)	Human_VCaP_Polll_R1881-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	Polll	regular medium	Human_VCaP_Polll_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	FoxA1	regular medium	Human_VCaP_FoxA1_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	AR	No treatment	Human_VCaP_AR_No-treatment_Chinnaiyan.bed
+Human	VCaP	prostate	ERG	No treatment	Human_VCaP_ERG_No-treatment_Chinnaiyan.bed
+Human	VCaP	prostate	AR	siERG	Human_VCaP_AR_siERG_Chinnaiyan.bed
+Human	VCaP	prostate	ERG	siERG	Human_VCaP_ERG_siERG_Chinnaiyan.bed
+Human	VCaP	prostate	AR	EtOH(16hr)	Human_VCaP_AR_EtOH-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	AR	R1881(16hr)	Human_VCaP_AR_R1881-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	ERG+AR	regular medium	Human_VCaP_ERG+AR_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	PolII	EtOH(16hr)	Human_LnCaP_PolII_EtOH-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	PolII	R1881(16hr)	Human_LnCaP_PolII_R1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	FoxA1	regular medium	Human_LnCaP_FoxA1_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	AR	10nmR1881(16hr)	Human_LnCaP_AR_10nmR1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	AR	1nmR1881(16hr)	Human_LnCaP_AR_1nmR1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	AR	EtOH(16hr)	Human_LnCaP_AR_EtOH-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	AR	R1881(16hr)	Human_LnCaP_AR_R1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	ERG	No treatment	Human_LnCaP_ERG_No-treatment_Chinnaiyan.bed
+Human	RWPE	prostate	ERG	ERG overexpression	Human_RWPE_ERG_ERG-overexpression_Chinnaiyan.bed
+Human	RWPE	prostate	ERG	GUS overexpression	Human_RWPE_ERG_GUS-overexpression_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	AR	No treatment	Human_metastatic-prostate-cancer-tissue_AR_No-treatment_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	ERG	No treatment	Human_metastatic-prostate-cancer-tissue_ERG_No-treatment_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	PolII	No treatment	Human_metastatic-prostate-cancer-tissue_PolII_No-treatment_Chinnaiyan.bed
+Human	22RV1	prostate	AR	No treatment	Human_22RV1_AR_No-treatment_Chinnaiyan.bed
+Human	PR9 cells	hematopoietic stem cell	RARA	ZnSO4(4hr)	Human_PR9-cells_RARA_ZnSO4-4hr_Zhang.bed
+Human	MCF-7	breast	STAG1	E2(45min)	Human_MCF-7_STAG1_E2-45min_Odom.bed
+Human	MCF-7	breast	STAG1	No treatment	Human_MCF-7_STAG1_No-treatment_Odom.bed
+Human	MCF-7	breast	RAD21	E2(45min)	Human_MCF-7_RAD21_E2-45min_Odom.bed
+Human	MCF-7	breast	RAD21	No treatment	Human_MCF-7_RAD21_No-treatment_Odom.bed
+Human	MCF-7	breast	CTCF	E2(45min)	Human_MCF-7_CTCF_E2-45min_Odom.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Odom.bed
+Human	MCF-7	breast	ESR1	No treatment	Human_MCF-7_ESR1_No-treatment_Odom.bed
+Human	MCF-7	breast	STAG1	CTCF knock out	Human_MCF-7_STAG1_CTCF-knock-out_Odom.bed
+Human	MCF-7	breast	STAG1	mock	Human_MCF-7_STAG1_mock_Odom.bed
+Human	MCF-7	breast	RAD21	CTCF knock out	Human_MCF-7_RAD21_CTCF-knock-out_Odom.bed
+Human	MCF-7	breast	RAD21	mock	Human_MCF-7_RAD21_mock_Odom.bed
+Human	HepG2 liver cells	liver	HNF4A	No treatment	Human_HepG2-liver-cells_HNF4A_No-treatment_Odom.bed
+Human	HepG2 liver cells	liver	STAG1	No treatment	Human_HepG2-liver-cells_STAG1_No-treatment_Odom.bed
+Human	HepG2 liver cells	liver	RAD21	No treatment	Human_HepG2-liver-cells_RAD21_No-treatment_Odom.bed
+Human	HepG2 liver cells	liver	CTCF	No treatment	Human_HepG2-liver-cells_CTCF_No-treatment_Odom.bed
+Human	HepG2 liver cells	liver	CEBPa	No treatment	Human_HepG2-liver-cells_CEBPa_No-treatment_Odom.bed
+Human	lymphoblastoid(GM10855)	hematopoietic stem cell	VDR	No treatment	Human_lymphoblastoid-GM10855_VDR_No-treatment_Knight.bed
+Human	lymphoblastoid(GM10855)	hematopoietic stem cell	VDR	calcitriol(36hr)	Human_lymphoblastoid-GM10855_VDR_calcitriol-36hr_Knight.bed
+Human	lymphoblastoid(GM10861)	hematopoietic stem cell	VDR	No treatment	Human_lymphoblastoid-GM10861_VDR_No-treatment_Knight.bed
+Human	lymphoblastoid(GM10861)	hematopoietic stem cell	VDR	calcitriol(36hr)	Human_lymphoblastoid-GM10861_VDR_calcitriol-36hr_Knight.bed
+Mouse	E14 ES cell	ES cell	ESRRB	No treatment	Mouse_E14-ES-cell_ESRRB_No-treatment_Ng.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Weisz.bed
+Human	MCF-7	breast	PolII	E2(6hr)	Human_MCF-7_PolII_E2-6hr_Jin.bed
+Human	MCF-7	breast	ESR1	E2(6hr)	Human_MCF-7_ESR1_E2-6hr_Jin.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Hurtado.bed
+Human	MCF-7	breast	ESR1	Tam(45min)	Human_MCF-7_ESR1_Tam-45min_Hurtado.bed
+Human	MCF-7	breast	CTCF	No treatment	Human_MCF-7_CTCF_No-treatment_Hurtado.bed
+Human	MCF-7	breast	CTCF	E2(45min)	Human_MCF-7_CTCF_E2-45min_Hurtado.bed
+Human	MCF-7	breast	CTCF	Tam(45min)	Human_MCF-7_CTCF_Tam-45min_Hurtado.bed
+Human	MCF-7	breast	ESR1	full media	Human_MCF-7_ESR1_full-media_Hurtado.bed
+Human	T47D	breast	ESR1	full media	Human_T47D_ESR1_full-media_Hurtado.bed
+Mouse	HBG3	ES cell	RAR	RA(day2)	Mouse_HBG3_RAR_RA-day2_Gifford.bed
+Mouse	HBG4	ES cell	RAR	RA(day2+8hr)	Mouse_HBG4_RAR_RA-day2+8hr_Gifford.bed
+Mouse	HBG5	ES cell	PolIIser2	RA(day2+8hr)	Mouse_HBG5_PolIIser2_RA-day2+8hr_Gifford.bed
+Human	MCF-7	breast	ESR1	EtOH(6hr)	Human_MCF-7_ESR1_EtOH-6hr_Barton.bed
+Human	MCF-7	breast	ESR1	E2(6hr)	Human_MCF-7_ESR1_E2-6hr_Barton.bed
+Human	MCF-7	breast	TRIM24	EtOH(6hr)	Human_MCF-7_TRIM24_EtOH-6hr_Barton.bed
+Human	MCF-7	breast	TRIM24	E2(6hr)	Human_MCF-7_TRIM24_E2-6hr_Barton.bed
+Human	Caco-2(proliferating)	intestine	CDX2	No treatment	Human_Caco-2-proliferating_CDX2_No-treatment_Shivdasani.bed
+Human	Caco-2(differentiated)	intestine	CDX2	No treatment	Human_Caco-2-differentiated_CDX2_No-treatment_Shivdasani.bed
+Human	Caco-2(proliferating)	intestine	GATA6	No treatment	Human_Caco-2-proliferating_GATA6_No-treatment_Shivdasani.bed
+Human	Caco-2(differentiated)	intestine	GATA6	No treatment	Human_Caco-2-differentiated_GATA6_No-treatment_Shivdasani.bed
+Human	Caco-2(proliferating)	intestine	HNF4A	No treatment	Human_Caco-2-proliferating_HNF4A_No-treatment_Shivdasani.bed
+Human	Caco-2(differentiated)	intestine	HNF4A	No treatment	Human_Caco-2-differentiated_HNF4A_No-treatment_Shivdasani.bed
+Human	MCF-7	breast	ESR1	EtOH(45min)	Human_MCF-7_ESR1_EtOH-45min_Liu.bed
+Human	MCF-7	breast	ESR1	E2(45min)	Human_MCF-7_ESR1_E2-45min_Liu.bed
+Human	T47D	breast	ESR1	EtOH(45min)	Human_T47D_ESR1_EtOH-45min_Liu.bed
+Human	T47D	breast	ESR1	E2(45min)	Human_T47D_ESR1_E2-45min_Liu.bed
+Human	Ishikawa	uterus	ESR1	EtOH(45min)	Human_Ishikawa_ESR1_EtOH-45min_Liu.bed
+Human	Ishikawa	uterus	ESR1	E2(45min)	Human_Ishikawa_ESR1_E2-45min_Liu.bed
+Human	ECC-1	uterus	ESR1	EtOH(45min)	Human_ECC-1_ESR1_EtOH-45min_Liu.bed
+Human	ECC-1	uterus	ESR1	E2(45min)	Human_ECC-1_ESR1_E2-45min_Liu.bed
+Human	MCF-7	breast	PolII	E2(3hr)	Human_MCF-7_PolII_E2-3hr_Liu.bed
+Human	MCF-7	breast	PolII	DMSO(3hr)	Human_MCF-7_PolII_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	FoxA1	E2(45min-3hr)	Human_MCF-7_FoxA1_E2-45min-3hr_Liu.bed
+Human	MCF-7	breast	FoxA1	DMSO(45min-3hr)	Human_MCF-7_FoxA1_DMSO-45min-3hr_Liu.bed
+Human	MCF-7	breast	c-Fos	E2(45min-3hr)	Human_MCF-7_c-Fos_E2-45min-3hr_Liu.bed
+Human	MCF-7	breast	c-Fos	DMSO(45min-3hr)	Human_MCF-7_c-Fos_DMSO-45min-3hr_Liu.bed
+Human	MCF-7	breast	c-Jun	E2(45min-3hr)	Human_MCF-7_c-Jun_E2-45min-3hr_Liu.bed
+Human	MCF-7	breast	c-Jun	DMSO(45min-3hr)	Human_MCF-7_c-Jun_DMSO-45min-3hr_Liu.bed
+Human	T47D	breast	FoxA1	E2(45min-3hr)	Human_T47D_FoxA1_E2-45min-3hr_Liu.bed
+Human	T47D	breast	FoxA1	DMSO(45min-3hr)	Human_T47D_FoxA1_DMSO-45min-3hr_Liu.bed
+Human	MCF-7	breast	PolII	E2(45min)	Human_MCF-7_PolII_E2-45min_Ruan.bed
+Human	MCF-7	breast	SRC-3	E2(1hr)	Human_MCF-7_SRC-3_E2-1hr_OMalley.bed
+Human	MCF-7	breast	SRC-3	No treatment	Human_MCF-7_SRC-3_No-treatment_OMalley.bed
+Human	MCF-7	breast	PolII	E2(1hr)	Human_MCF-7_PolII_E2-1hr_OMalley.bed
+Human	MCF-7	breast	PolII	No treatment	Human_MCF-7_PolII_No-treatment_OMalley.bed
+Mouse	liver cells	liver	NR1H4	No treatment	Mouse_liver-cells_NR1H4_No-treatment_Osborne.bed
+Mouse	E14 ES cell	ES cell	NR5A2	No treatment	Mouse_E14-ES-cell_NR5A2_No-treatment_Ng.bed

@@ -1,0 +1,3 @@
+collector	date	source	description
+Nathan	2016-04-27	ENCODE	Encode ChromHMM and Segway combined segmentation
+ns5bc	2017-09-14	/h4/t1/resources/regions/LOLACore/hg19/encode_segmentation	Converted via liftOver from hg19 to hg38 (mapped: 11057103, unmapped: 10506). Only chr+start+end maintained

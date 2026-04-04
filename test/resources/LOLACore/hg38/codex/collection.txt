@@ -1,0 +1,3 @@
+collector	date	source	description
+Nathan	2015-04-15	Provided by Rebecca Hannah, from http://codex.stemcells.cam.ac.uk/	A comprehensive and functional compendium of Next Generation Sequencing experiments
+fhalbritter	2015-09-14	/data/groups/lab_bock/shared/resources/regions/LOLACore//hg19/codex	Converted via liftOver from hg19 to hg38 (mapped: 2387785, unmapped: 3344). Only chr+start+end maintained

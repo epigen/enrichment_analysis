@@ -1,0 +1,43 @@
+filename,cellType,description,dataSource
+Gm12878_CTCF.bed,GM12878,CTCF Segments,ENCODE segmentation
+Gm12878_E.bed,GM12878,Enhancers Segments,ENCODE segmentation
+Gm12878_PF.bed,GM12878,Promoter Flank Segments,ENCODE segmentation
+Gm12878_R.bed,GM12878,Repressed Segments,ENCODE segmentation
+Gm12878_T.bed,GM12878,Transcribed Segments,ENCODE segmentation
+Gm12878_TSS.bed,GM12878,TSS Segments,ENCODE segmentation
+Gm12878_WE.bed,GM12878,Weak Enhancer Segments,ENCODE segmentation
+H1hesc_CTCF.bed,H1hesc,CTCF Segments,ENCODE segmentation
+H1hesc_E.bed,H1hesc,Enhancers Segments,ENCODE segmentation
+H1hesc_PF.bed,H1hesc,Promoter Flank Segments,ENCODE segmentation
+H1hesc_R.bed,H1hesc,Repressed Segments,ENCODE segmentation
+H1hesc_T.bed,H1hesc,Transcribed Segments,ENCODE segmentation
+H1hesc_TSS.bed,H1hesc,TSS Segments,ENCODE segmentation
+H1hesc_WE.bed,H1hesc,Weak Enhancer Segments,ENCODE segmentation
+Helas3_CTCF.bed,HeLa-S3,CTCF Segments,ENCODE segmentation
+Helas3_E.bed,HeLa-S3,Enhancers Segments,ENCODE segmentation
+Helas3_PF.bed,HeLa-S3,Promoter Flank Segments,ENCODE segmentation
+Helas3_R.bed,HeLa-S3,Repressed Segments,ENCODE segmentation
+Helas3_T.bed,HeLa-S3,Transcribed Segments,ENCODE segmentation
+Helas3_TSS.bed,HeLa-S3,TSS Segments,ENCODE segmentation
+Helas3_WE.bed,HeLa-S3,Weak Enhancer Segments,ENCODE segmentation
+Hepg2_CTCF.bed,Hepg2,CTCF Segments,ENCODE segmentation
+Hepg2_E.bed,Hepg2,Enhancers Segments,ENCODE segmentation
+Hepg2_PF.bed,Hepg2,Promoter Flank Segments,ENCODE segmentation
+Hepg2_R.bed,Hepg2,Repressed Segments,ENCODE segmentation
+Hepg2_T.bed,Hepg2,Transcribed Segments,ENCODE segmentation
+Hepg2_TSS.bed,Hepg2,TSS Segments,ENCODE segmentation
+Hepg2_WE.bed,Hepg2,Weak Enhancer Segments,ENCODE segmentation
+Huvec_CTCF.bed,Huvec,CTCF Segments,ENCODE segmentation
+Huvec_E.bed,Huvec,Enhancers Segments,ENCODE segmentation
+Huvec_PF.bed,Huvec,Promoter Flank Segments,ENCODE segmentation
+Huvec_R.bed,Huvec,Repressed Segments,ENCODE segmentation
+Huvec_T.bed,Huvec,Transcribed Segments,ENCODE segmentation
+Huvec_TSS.bed,Huvec,TSS Segments,ENCODE segmentation
+Huvec_WE.bed,Huvec,Weak Enhancer Segments,ENCODE segmentation
+K562_CTCF.bed,K562,CTCF Segments,ENCODE segmentation
+K562_E.bed,K562,Enhancers Segments,ENCODE segmentation
+K562_PF.bed,K562,Promoter Flank Segments,ENCODE segmentation
+K562_R.bed,K562,Repressed Segments,ENCODE segmentation
+K562_T.bed,K562,Transcribed Segments,ENCODE segmentation
+K562_TSS.bed,K562,TSS Segments,ENCODE segmentation
+K562_WE.bed,K562,Weak Enhancer Segments,ENCODE segmentation

@@ -1,0 +1,3 @@
+collector	date	source	description
+Nathan	2015-01-03	Sheffield et al. (2013)	Downloaded from dnase.genome.duke.edu
+fhalbritter	2015-09-14	/data/groups/lab_bock/shared/resources/regions/LOLACore//hg19/sheffield_dnase	Converted via liftOver from hg19 to hg38 (mapped: 2888031, unmapped: 1548). Only chr+start+end maintained

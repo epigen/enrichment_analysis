@@ -1,0 +1,14 @@
+filename	size
+coriellDelDup.bed	864
+cpgIslandExt.bed	28633
+evoCpg.bed	129241
+genomicSuperDups.bed	49852
+laminB1.bed	2859551
+laminB1Lads.bed	1296
+microsat.bed	41258
+nestedRepeats.bed	574736
+numtSAssembled.bed	78
+rmsk.bed	5291824
+simpleRepeat.bed	958537
+switchDbTss.bed	131751
+vistaEnhancers.bed	1339

@@ -1,0 +1,3 @@
+collector	date	source	description
+Nathan	2015-01-01	Cistrome	Downloaded from http://cistrome.org/NR_Cistrome/Epigenome.html. (Scripts in my shared directory.)
+fhalbritter	2015-09-14	/data/groups/lab_bock/shared/resources/regions/LOLACore//hg19/cistrome_epigenome	Converted via liftOver from hg19 to hg38 (mapped: 2931336, unmapped: 12302). Only chr+start+end maintained

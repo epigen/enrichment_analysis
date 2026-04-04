@@ -22,7 +22,7 @@ genome: 'hg38'
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
 # Test-ready local database fixture.
 local_databases:
-    Azimuth_2023: "resources/enrichment_analysis/Azimuth_2023.gmt"
+    Azimuth_2023: "test/resources/enrichment_analysis/Azimuth_2023.json"
 
 ## LOLA compatible region set databases
 # loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
@@ -30,7 +30,7 @@ local_databases:
 # pre-cached .RData files are supported by simpleCache
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
 lola_databases:
-    LOLACore: "resources/LOLACore/hg38"
+    LOLACore: "test/resources/LOLACore/hg38"
 
 ##### TOOLS #####
 
@@ -55,7 +55,7 @@ great_parameters:
 pycistarget_parameters:
     databases:
         hg38_screen_v10clust: "test/resources/pycistarget_toy/toy_600regions.regions_vs_motifs.rankings.feather"
-    path_to_motif_annotations: "resources/enrichment_analysis/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+    path_to_motif_annotations: "test/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
     temp_dir: "/tmp" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
     auc_threshold: 0.005 # default 0.005

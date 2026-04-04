@@ -1,0 +1,95 @@
+species	cellType	tissue	antibody	treatment	filename
+Human	LnCaP	prostate	H3K4me2	vehicle	Human_LnCaP_H3K4me2_vehicle_Brown.bed
+Human	LnCaP	prostate	H3K4me2	DHT(4hr)	Human_LnCaP_H3K4me2_DHT-4hr_Brown.bed
+Human	LnCaP	prostate	H3K4me2	DHT(16hr)	Human_LnCaP_H3K4me2_DHT-16hr_Brown.bed
+Human	LnCaP	prostate	H3K4me3	Vehicle	Human_LnCaP_H3K4me3_Vehicle_Brown.bed
+Human	LnCaP	prostate	H3K4me3	DHT(4hr)	Human_LnCaP_H3K4me3_DHT-4hr_Brown.bed
+Human	MCF-7	breast	H3K4me1	No treatment	Human_MCF-7_H3K4me1_No-treatment_Brown.bed
+Human	MCF-7	breast	H3R17me2	No treatment	Human_MCF-7_H3R17me2_No-treatment_Brown.bed
+Human	MCF-7	breast	H3R17me2	E2(45min)	Human_MCF-7_H3R17me2_E2-45min_Brown.bed
+Human	MCF-7	breast	H3K9ac	No treatment	Human_MCF-7_H3K9ac_No-treatment_Brown.bed
+Mouse	bone marrow-derived macrophages	hematopoietic stem cell	H3K4me1	No treatment	Mouse_bone-marrow-derived-macrophages_H3K4me1_No-treatment_Glass.bed
+Mouse	LXRa/b-/- bone marrow-derived macrophages	hematopoietic stem cell	H3K4me1	No treatment	Mouse_LXRa,b-,--bone-marrow-derived-macrophages_H3K4me1_No-treatment_Glass.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	H3K4me1	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_H3K4me1_No-treatment_Glass.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	H3K4me3	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_H3K4me3_No-treatment_Glass.bed
+Mouse	B cell	hematopoietic stem cell	H3K4me1	No treatment	Mouse_B-cell_H3K4me1_No-treatment_Glass.bed
+Mouse	B cell	hematopoietic stem cell	H3K4me3	No treatment	Mouse_B-cell_H3K4me3_No-treatment_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	H3K4me1	Tamoxifen(0hr)	Mouse_PUER-cells_H3K4me1_Tamoxifen-0hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	H3K4me1	Tamoxifen(1hr)	Mouse_PUER-cells_H3K4me1_Tamoxifen-1hr_Glass.bed
+Mouse	PUER cells	hematopoietic stem cell	H3K4me1	Tamoxifen(24hr)	Mouse_PUER-cells_H3K4me1_Tamoxifen-24hr_Glass.bed
+Mouse	PU.1-/- myloid cell	hematopoietic stem cell	H3K4me1	No treatment	Mouse_PU.1-,--myloid-cell_H3K4me1_No-treatment_Glass.bed
+Human	NB4 cells	hematopoietic stem cell	H3K9K14ac	No treatment	Human_NB4-cells_H3K9K14ac_No-treatment_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	H3K9K14ac	ATRA(24hr)	Human_NB4-cells_H3K9K14ac_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	H3K27me3	No treatment	Human_NB4-cells_H3K27me3_No-treatment_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	H3K27me3	ATRA(24hr)	Human_NB4-cells_H3K27me3_ATRA-24hr_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	H3K9me3	No treatment	Human_NB4-cells_H3K9me3_No-treatment_Stunnenberg.bed
+Human	NB4 cells	hematopoietic stem cell	H3K9me3	ATRA(24hr)	Human_NB4-cells_H3K9me3_ATRA-24hr_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	H3K9K14ac	No treatment	Human_APL164-cells_H3K9K14ac_No-treatment_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	H3K27me3	No treatment	Human_APL164-cells_H3K27me3_No-treatment_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	H3K9K14ac	ATRA(48hr)	Human_APL164-cells_H3K9K14ac_ATRA-48hr_Stunnenberg.bed
+Human	APL164 cells	hematopoietic stem cell	H3K27me3	ATRA(48hr)	Human_APL164-cells_H3K27me3_ATRA-48hr_Stunnenberg.bed
+Human	MR4 cells	hematopoietic stem cell	H3K9me3	No treatment	Human_MR4-cells_H3K9me3_No-treatment_Stunnenberg.bed
+Human	MR4 cells	hematopoietic stem cell	H3K9K14ac	ATRA(24hr)	Human_MR4-cells_H3K9K14ac_ATRA-24hr_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	H3K9K14ac	Zinc(5hr)	Human_UPR9-cells_H3K9K14ac_Zinc-5hr_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	H3K9K14ac	No treatment	Human_UPR9-cells_H3K9K14ac_No-treatment_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	H3K27me3	No treatment	Human_UPR9-cells_H3K27me3_No-treatment_Stunnenberg.bed
+Human	UPR9 cells	hematopoietic stem cell	H3K27me3	Zinc(5hr)	Human_UPR9-cells_H3K27me3_Zinc-5hr_Stunnenberg.bed
+Human	VCaP	prostate	H3K9me3	EtOH(16hr)	Human_VCaP_H3K9me3_EtOH-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K9me3	R1881(16hr)	Human_VCaP_H3K9me3_R1881-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K4me3	EtOH(16hr)	Human_VCaP_H3K4me3_EtOH-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K4me3	R1881(16hr)	Human_VCaP_H3K4me3_R1881-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K27me3	EtOH(16hr)	Human_VCaP_H3K27me3_EtOH-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K27me3	R1881(16hr)	Human_VCaP_H3K27me3_R1881-16hr_Chinnaiyan.bed
+Human	VCaP	prostate	H3K9me3	regular medium	Human_VCaP_H3K9me3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	H3K4me3	regular medium	Human_VCaP_H3K4me3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	H3K27me3	regular medium	Human_VCaP_H3K27me3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	Pan-H3	regular medium	Human_VCaP_Pan-H3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	H3K36me3	regular medium	Human_VCaP_H3K36me3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	Ace_H3	regular medium	Human_VCaP_Ace_H3_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	H3K4me1	regular medium	Human_VCaP_H3K4me1_regular-medium_Chinnaiyan.bed
+Human	VCaP	prostate	H3K4me2	regular medium	Human_VCaP_H3K4me2_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K9me3	EtOH(16hr)	Human_LnCaP_H3K9me3_EtOH-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K9me3	R1881(16hr)	Human_LnCaP_H3K9me3_R1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K27me3	EtOH(16hr)	Human_LnCaP_H3K27me3_EtOH-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K27me3	R1881(16hr)	Human_LnCaP_H3K27me3_R1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K4me3	EtOH(16hr)	Human_LnCaP_H3K4me3_EtOH-16hr_Chinnaiyan.bed
+Human	CS57.LnCaP	prostate	H3K4me3	EtOH(16hr)	Human_CS57.LnCaP_H3K4me3_EtOH-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K4me3	R1881(16hr)	Human_LnCaP_H3K4me3_R1881-16hr_Chinnaiyan.bed
+Human	CS58.LnCaP	prostate	H3K4me3	R1881(16hr)	Human_CS58.LnCaP_H3K4me3_R1881-16hr_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K9me3	regular medium	Human_LnCaP_H3K9me3_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K4me3	regular medium	Human_LnCaP_H3K4me3_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K36me3	regular medium	Human_LnCaP_H3K36me3_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	Ace_H3	regular medium	Human_LnCaP_Ace_H3_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K4me1	regular medium	Human_LnCaP_H3K4me1_regular-medium_Chinnaiyan.bed
+Human	LnCaP	prostate	H3K4me2	regular medium	Human_LnCaP_H3K4me2_regular-medium_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	H3K4me3	No treatment	Human_metastatic-prostate-cancer-tissue_H3K4me3_No-treatment_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	H3K9me3	No treatment	Human_metastatic-prostate-cancer-tissue_H3K9me3_No-treatment_Chinnaiyan.bed
+Human	metastatic prostate cancer tissue	prostate	H3K27me3	No treatment	Human_metastatic-prostate-cancer-tissue_H3K27me3_No-treatment_Chinnaiyan.bed
+Mouse	3T3-L1 adipocytes	adipocytes	H3K9ac	No treatment	Mouse_3T3-L1-adipocytes_H3K9ac_No-treatment_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	H3K9ac	IBMX-DX-Insulin(0hr)	Mouse_3T3-L1-cells_H3K9ac_IBMX-DX-Insulin-0hr_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	H3K9ac	IBMX-DX-Insulin(24hr)	Mouse_3T3-L1-cells_H3K9ac_IBMX-DX-Insulin-24hr_Lazar.bed
+Mouse	3T3-L1 cells	pre-adipocytes	H3K9ac	IBMX-DX-Insulin(240hr)	Mouse_3T3-L1-cells_H3K9ac_IBMX-DX-Insulin-240hr_Lazar.bed
+Mouse	liver cells	liver	H3K4me1	No treatment	Mouse_liver-cells_H3K4me1_No-treatment_Hoodless.bed
+Mouse	islet cells	islet	H3K4me1	No treatment	Mouse_islet-cells_H3K4me1_No-treatment_Hoodless.bed
+Mouse	liver cells	liver	H3K4me3	No treatment	Mouse_liver-cells_H3K4me3_No-treatment_Hoodless.bed
+Mouse	islet cells	islet	H3K4me3	No treatment	Mouse_islet-cells_H3K4me3_No-treatment_Hoodless.bed
+Mouse	thioglycollate-elicited peritoneal macrophages	hematopoietic stem cell	H3K9ac	No treatment	Mouse_thioglycollate-elicited-peritoneal-macrophages_H3K9ac_No-treatment_Lazar.bed
+Human	MCF-7	breast	H3K4me2	EtOH(6hr)	Human_MCF-7_H3K4me2_EtOH-6hr_Barton.bed
+Human	MCF-7	breast	H3K4me2	E2(6hr)	Human_MCF-7_H3K4me2_E2-6hr_Barton.bed
+Human	Caco-2(proliferating)	intestine	H3K4me2	No treatment	Human_Caco-2-proliferating_H3K4me2_No-treatment_Shivdasani.bed
+Human	Caco-2(differentiated)	intestine	H3K4me2	No treatment	Human_Caco-2-differentiated_H3K4me2_No-treatment_Shivdasani.bed
+Human	MCF-7	breast	H3K27me3	E2(3hr)	Human_MCF-7_H3K27me3_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K27me3	DMSO(3hr)	Human_MCF-7_H3K27me3_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	H3K9me3	E2(3hr)	Human_MCF-7_H3K9me3_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K9me3	DMSO(3hr)	Human_MCF-7_H3K9me3_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	H3K4me1	E2(3hr)	Human_MCF-7_H3K4me1_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K4me1	DMSO(3hr)	Human_MCF-7_H3K4me1_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	H3K4me3	E2(3hr)	Human_MCF-7_H3K4me3_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K4me3	DMSO(3hr)	Human_MCF-7_H3K4me3_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	H3K9ac	E2(3hr)	Human_MCF-7_H3K9ac_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K9ac	DMSO(3hr)	Human_MCF-7_H3K9ac_DMSO-3hr_Liu.bed
+Human	MCF-7	breast	H3K14ac	E2(3hr)	Human_MCF-7_H3K14ac_E2-3hr_Liu.bed
+Human	MCF-7	breast	H3K14ac	DMSO(3hr)	Human_MCF-7_H3K14ac_DMSO-3hr_Liu.bed
+Human	T47D	breast	H3K4me1	E2(45min-3hr)	Human_T47D_H3K4me1_E2-45min-3hr_Liu.bed
+Human	T47D	breast	H3K4me1	DMSO(45min-3hr)	Human_T47D_H3K4me1_DMSO-45min-3hr_Liu.bed
+Human	MCF-7	breast	H3K4me3	E2(45min)	Human_MCF-7_H3K4me3_E2-45min_Ruan.bed

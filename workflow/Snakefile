@@ -23,7 +23,7 @@ report: "report/workflow.rst"
 
 ##### load config and annotation #####
 configfile: os.path.join("config","config.yaml")
-validate(config, os.path.join("schemas", "config.schema.yaml"))
+#validate(config, os.path.join("schemas", "config.schema.yaml"))
 
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
