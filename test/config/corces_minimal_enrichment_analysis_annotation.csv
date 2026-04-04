@@ -1,0 +1,7 @@
+name,features_path,background_name,background_path,group
+Bcell_regions,test/data/CorcesATAC/Bcell_up_features.bed,all_regions,test/data/CorcesATAC/ALL_features.bed,corcesatac_regions
+Ery_regions,test/data/CorcesATAC/Ery_up_features.bed,all_regions,test/data/CorcesATAC/ALL_features.bed,corcesatac_regions
+Bcell_geneSet,test/data/CorcesRNA/Bcell_up_features_annot.txt,CorcesRNA_all_features,test/data/CorcesRNA/ALL_features_annot.txt,corcesrna_gene_sets
+Ery_geneSet,test/data/CorcesRNA/Ery_up_features_annot.txt,CorcesRNA_all_features,test/data/CorcesRNA/ALL_features_annot.txt,corcesrna_gene_sets
+Bcell_ranked,test/data/CorcesRNA/Bcell_featureScores_annot.csv,"","",corcesrna_preranked
+Ery_ranked,test/data/CorcesRNA/Ery_featureScores_annot.csv,"","",corcesrna_preranked
