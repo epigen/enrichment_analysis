@@ -13,7 +13,7 @@ We are leveraging Snakemake's capability to automatically recognize when a requi
     - We recommend a dedicated Snakefile for resources e.g. `workflow/rules/resources.smk`
 3. Adapt the templates to your needs, specifically choose meaningful output paths and filenames
 4. Put that exact output path into the corresponding configuration file of your enrichment analysis (see example below)
-
+5. Copy the `helpers/wget.yaml` file in the activated workflow envs `workflow/envs/`. This ensures that wget will be accessible to download the resources.
 > [!IMPORTANT] 
 > Make sure the output path in the configuration file matches the composed output path of the corresponding download rule.
 
@@ -40,15 +40,19 @@ rule download_enrichment_analysis_resources:
     output:
         "resources/enrichment_analysis/{resource}"
     params:
-        url=lambda wildcards: enrichment_analysis_resource_urls[wildcards.resource],
-        extra="--file-allocation none --retry-wait 5 --console-log-level warn --log-level notice"
-    threads: 4
+        url=lambda wildcards: enrichment_analysis_resource_urls[wildcards.resource]
+    threads: 1
     resources:
         mem_mb=1000
+    conda:
+        "../../workflow/envs/wget.yaml"
     log:
-        "logs/aria2c/download_enrichment_analysis_resource_{resource}.log"
-    wrapper:
-        "v7.5.0/utils/aria2c"
+        "logs/wget/download_enrichment_analysis_resource_{resource}.log"
+    shell:
+        """
+        wget -c -O {output} '{params.url}' > {log} 2>&1
+        """
+
 ```
 
 ### Corresponding configuration example
@@ -160,7 +164,7 @@ rule download_lola_database:
     resources:
         mem_mb=2000
     conda:
-        "../envs/wget.yaml" # make sure to copy this to your workflow/envs folder
+        "../../workflow/envs/wget.yaml"
     log:
         "logs/wget/download_lola_database.log"
     shell:
