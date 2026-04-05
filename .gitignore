@@ -6,6 +6,17 @@ test/*
 !test/config/
 !test/config/corces_minimal_enrichment_analysis_annotation.csv
 !test/config/corces_minimal_enrichment_analysis_config.yaml
+!test/data/
+!test/data/CorcesATAC/
+!test/data/CorcesATAC/ALL_features.bed
+!test/data/CorcesATAC/Bcell_up_features.bed
+!test/data/CorcesATAC/Ery_up_features.bed
+!test/data/CorcesRNA/
+!test/data/CorcesRNA/ALL_features_annot.txt
+!test/data/CorcesRNA/Bcell_up_features_annot.txt
+!test/data/CorcesRNA/Ery_up_features_annot.txt
+!test/data/CorcesRNA/Bcell_featureScores_annot.csv
+!test/data/CorcesRNA/Ery_featureScores_annot.csv
 !test/resources/
 !test/resources/enrichment_analysis/
 !test/resources/enrichment_analysis/Azimuth_2023.gmt

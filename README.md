@@ -173,6 +173,20 @@ Here are some tips for the usage of this workflow:
 # ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
+# 🧪 Test
+This repository ships with a small integration-style test setup under [test](/home/stoll/work/enrichment_analysis/test). It is meant to exercise the normal input classes of the workflow (`.bed`, `.txt`, `.csv`), the main analysis branches, and the summary/reporting outputs with compact local fixtures that are suitable for CI.
+
+For the exact test inputs, resources, provenance, and expected behavior, see [test/TESTING.md](/home/stoll/work/enrichment_analysis/test/TESTING.md).
+
+When adapting this test to a different dataset or fixture set, the main files that typically need to be reparameterized are:
+- [config/config.yaml](/home/stoll/work/enrichment_analysis/config/config.yaml)
+  - update the local databases, cisTarget resources, LOLA database paths, genome, and general workflow parameters
+- [test/config/corces_minimal_enrichment_analysis_annotation.csv](/home/stoll/work/enrichment_analysis/test/config/corces_minimal_enrichment_analysis_annotation.csv)
+  - update the query feature files, background files, and group assignments
+- [test/resources](/home/stoll/work/enrichment_analysis/test/resources)
+  - replace or extend the local test databases and motif resources if you want to validate a different test scenario
+  - for download and placement rules for the supported resource types, see [helpers/database_download_rules.md](/home/stoll/work/enrichment_analysis/helpers/database_download_rules.md)
+
 # 🧬 How to convert feature lists to BED files
 This enrichment analysis workflow requires **genomic regions** to be in standard **`BED`** format. At minimum, provide the first 3 BED columns: `chromosome`, `start`, `end`. A 4th column such as `name` is optional but often useful. BED uses **0-based, start-inclusive, end-exclusive** coordinates (`[start, end)`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
 

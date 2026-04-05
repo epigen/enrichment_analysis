@@ -4,7 +4,7 @@ mem: 32000
 threads: 1
 
 ##### GENERAL #####
-annotation: test/config/corces_minimal_enrichment_analysis_annotation.csv
+annotation: config/annotation.csv
 result_path: test/results
 project_name: corces_minimal
 
@@ -23,7 +23,7 @@ genome: 'hg38'
 # Test-ready local database fixture.
 local_databases:
     Azimuth_2023: "test/resources/enrichment_analysis/Azimuth_2023.json"
-
+    Reactome: "/home/stoll/work/enrichment_analysis/test/resources/enrichment_analysis/ReactomePathways.gmt"
 ## LOLA compatible region set databases
 # loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
 # download from the docs or create your own: https://databio.org/regiondb
@@ -72,7 +72,7 @@ pycistarget_parameters:
 rcistarget_parameters:
     databases:
         hg38_500bp_up_100bp_down_v10clust: "test/resources/rcistarget_toy/toy_10genes.genes_vs_motifs.rankings.feather"
-    motifAnnot: "test/resources/rcistarget_toy/toy_10genes.motif_annotations.tbl"
+    motifAnnot: "test/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
     motifAnnot_highConfCat: ["directAnnotation", "inferredBy_Orthology"]
     motifAnnot_lowConfCat: ["inferredBy_MotifSimilarity", "inferredBy_MotifSimilarity_n_Orthology"]
     nesThreshold: 3
