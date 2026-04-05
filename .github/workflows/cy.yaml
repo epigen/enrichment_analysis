@@ -58,6 +58,18 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Cache Snakemake and Conda artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .snakemake/conda
+            .snakemake/conda-archive
+            ~/.conda/pkgs
+            ~/miniconda3/pkgs
+          key: ${{ runner.os }}-snakemake-8.25.3-${{ hashFiles('workflow/envs/*.yaml', 'config/config.yaml', 'test/config/*.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-snakemake-8.25.3-
+
       - name: Run workflow on example data
         uses: snakemake/snakemake-github-action@v2
         with:
@@ -67,6 +79,5 @@ jobs:
           args: >-
             --cores all
             --sdm conda
-            --conda-cleanup-pkgs cache
             --show-failed-logs
           show-disk-usage-on-error: true
