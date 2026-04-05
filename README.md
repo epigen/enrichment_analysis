@@ -187,6 +187,8 @@ When adapting this test to a different dataset or fixture set, the main files th
   - replace or extend the local test databases and motif resources if you want to validate a different test scenario
   - for download and placement rules for the supported resource types, see [helpers/database_download_rules.md](/home/stoll/work/enrichment_analysis/helpers/database_download_rules.md)
 
+The `test/resources` folder is only the location of the bundled CI test fixtures. In normal usage, your databases and external resources can live anywhere you want, as long as the paths in your config file point to them correctly.
+
 # 🧬 How to convert feature lists to BED files
 This enrichment analysis workflow requires **genomic regions** to be in standard **`BED`** format. At minimum, provide the first 3 BED columns: `chromosome`, `start`, `end`. A 4th column such as `name` is optional but often useful. BED uses **0-based, start-inclusive, end-exclusive** coordinates (`[start, end)`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
 

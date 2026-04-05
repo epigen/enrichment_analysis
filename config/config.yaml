@@ -20,7 +20,7 @@ genome: 'hg38'
 #     MSigDB (http://www.gsea-msigdb.org/gsea/msigdb)
 #     Enrichr (https://maayanlab.cloud/Enrichr/#libraries)
 # JSON example content: { "MyDB_Term1": ["geneA","geneB","geneC"],"MyDB_Term2": ["geneX","geneY","geneZ"]}
-# Test-ready local database fixture.
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 local_databases:
     Azimuth_2023: "test/resources/enrichment_analysis/Azimuth_2023.json"
     Reactome: "/home/stoll/work/enrichment_analysis/test/resources/enrichment_analysis/ReactomePathways.gmt"
@@ -29,6 +29,7 @@ local_databases:
 # download from the docs or create your own: https://databio.org/regiondb
 # pre-cached .RData files are supported by simpleCache
 # provide the exact path to the folder containing the collections e.g., "resources/LOLACore/hg38"
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 lola_databases:
     LOLACore: "test/resources/LOLACore/hg38"
 
@@ -52,6 +53,7 @@ great_parameters:
 # resources: https://resources.aertslab.org/cistarget/
 # instructions for custom cisTarget databases using your own regions (e.g., conensus regions or TF ChIP-seq data): https://github.com/aertslab/create_cisTarget_databases
 # instructions for hg19 database here: https://github.com/aertslab/pycistarget/issues/37
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 pycistarget_parameters:
     databases:
         hg38_screen_v10clust: "test/resources/pycistarget_toy/toy_600regions.regions_vs_motifs.rankings.feather"
@@ -69,6 +71,7 @@ pycistarget_parameters:
 ### RcisTarget - gene based Transcription Factor Binding Site (TFBS) motif enrichment analysis
 # https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html
 # resources: https://resources.aertslab.org/cistarget/
+# to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 rcistarget_parameters:
     databases:
         hg38_500bp_up_100bp_down_v10clust: "test/resources/rcistarget_toy/toy_10genes.genes_vs_motifs.rankings.feather"
@@ -78,7 +81,7 @@ rcistarget_parameters:
     nesThreshold: 3
     aucMaxRank_factor: 0.05 # used for aucMaxRank = aucMaxRank_factor * ncol(motifRankings)
     geneErnMethod: "aprox" # alternatively, exact but more computationally intense: "icistarget"
-    geneErnMaxRank: 10
+    geneErnMaxRank: 10 #only set to 10 for quick testing purposes, typical range is 5000 (max rank of genes that rcistarget will consider)
 
 ### Enrichment plot
 
