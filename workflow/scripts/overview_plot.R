@@ -34,27 +34,12 @@ adjp_cap <- snakemake@config[["adjp_cap"]]
 effect_cap <- if (tool=="preranked_GSEApy") snakemake@config[["nes_cap"]] else snakemake@config[["or_cap"]]
 adjp_th <- as.numeric(snakemake@config[["adjp_th"]][[tool]])
 cluster_flag <- as.logical(as.numeric(snakemake@config[["cluster_summary"]]))
-
-make_message_plot <- function(path, msg){
-    center_msg <- paste0(msg, "\n", tool, " | ", database, " | ", group)
-    p <- ggplot() +
-        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
-        theme_void() +
-        theme(plot.background = element_rect(fill = "white", color = NA))
-
-    ggsave_new(
-        filename = tools::file_path_sans_ext(basename(path)),
-        results_path = dirname(path),
-        plot = p,
-        width = 6,
-        height = 3
-    )
-}
+plot_context <- paste(tool, database, group, sep = " | ")
 
 # stop early if results are empty
 if(file.size(results_all_path) == 0L){
-    make_message_plot(plot_path_topTerms, "No results found\naggregated result file is empty")
-    make_message_plot(plot_path_specificTerms, "No results found\naggregated result file is empty")
+    make_message_plot(plot_path_topTerms, "No results found\naggregated result file is empty", plot_context)
+    make_message_plot(plot_path_specificTerms, "No results found\naggregated result file is empty", plot_context)
     quit(save = "no", status = 0)
 }
 
@@ -65,8 +50,8 @@ results_all <- data.frame(fread(file.path(results_all_path), header=TRUE))
 if(length(unique(results_all$name))==1){
     single_query <- unique(results_all$name)[1]
     single_query_msg <- paste0("Only one query, so no group plot for ", single_query)
-    make_message_plot(plot_path_topTerms, single_query_msg)
-    make_message_plot(plot_path_specificTerms, single_query_msg)
+    make_message_plot(plot_path_topTerms, single_query_msg, plot_context)
+    make_message_plot(plot_path_specificTerms, single_query_msg, plot_context)
     quit(save = "no", status = 0)
 }
 
@@ -80,19 +65,7 @@ make_no_sig_plot <- function(path, type){
         "threshold: ", adjp_col, " ", comparator, " ", adjp_th
     )
 
-    center_msg <- paste0(msg, "\n", tool, " | ", database, " | ", group)
-    p <- ggplot() +
-        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
-        theme_void() +
-        theme(plot.background = element_rect(fill = "white", color = NA))
-
-    ggsave_new(
-        filename = paste0(group,'_',database,'_summary_', type),
-        results_path = dirname(path),
-        plot = p,
-        width = 6,
-        height = 3
-    )
+    make_message_plot(path, msg, plot_context, filename = paste0(group,'_',database,'_summary_', type))
 }
 
 make_summary_plot <- function(type = "topTerms"){
