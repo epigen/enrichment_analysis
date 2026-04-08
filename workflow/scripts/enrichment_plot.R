@@ -11,6 +11,8 @@ source(snakemake@params[["utils_path"]])
 
 # draw enrichment plot
 do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size, path, filename, top_n){
+    plot_height <- max(80, 10 * top_n)
+
     enr_p <- ggplot(plot_data, aes_string(x=x, y=y, size=size, color=colorBy))  +
         geom_point() +
         scale_color_continuous(low="red", high="blue", name = colorBy, guide=guide_colorbar(reverse=TRUE)) +
@@ -24,7 +26,7 @@ do_enrichment_plot <- function(plot_data, title, x, y, size, colorBy, font.size,
            results_path=path, 
            plot=enr_p, 
            width=200, 
-           height=10*top_n,
+           height=plot_height,
               units = "mm")
 }
 
@@ -40,6 +42,7 @@ enrichment_plot_path <- snakemake@output[["enrichment_plot"]]
 tool <- snakemake@wildcards[["tool"]]
 database <- snakemake@wildcards[["db"]]
 feature_set <- snakemake@wildcards[["feature_set"]] 
+plot_context <- paste(tool, database, feature_set, sep = " | ")
 plot_cols <- snakemake@config[["column_names"]][[tool]]
 
 top_n <- plot_cols[["top_n"]]
@@ -53,7 +56,13 @@ term_col <- plot_cols[["term"]]
 if (file.size(enrichment_result_path) != 0L){
     enrichment_result <- data.frame(fread(file.path(enrichment_result_path), header=TRUE))
 }else{
-    file.create(enrichment_plot_path)
+    make_message_plot(enrichment_plot_path, "No results found\nenrichment result file is empty", plot_context)
+    quit(save = "no", status = 0)
+}
+
+# stop early for header-only or empty result tables
+if (nrow(enrichment_result) == 0L){
+    make_message_plot(enrichment_plot_path, "No results found\nenrichment result has no rows", plot_context)
     quit(save = "no", status = 0)
 }
 

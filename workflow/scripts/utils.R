@@ -28,6 +28,22 @@ ggsave_new <- function(filename, results_path, plot, width=5, height=5, units="i
     }
 }
 
+make_message_plot <- function(path, msg, context, filename = tools::file_path_sans_ext(basename(path))){
+    center_msg <- paste0(msg, "\n", context)
+    p <- ggplot() +
+        annotate("label", x = 0.5, y = 0.5, label = center_msg, size = 3.4, hjust = 0.5, vjust = 0.5, label.size = 0.15, fill = "grey98", color = "grey20") +
+        theme_void() +
+        theme(plot.background = element_rect(fill = "white", color = NA))
+
+    ggsave_new(
+        filename = filename,
+        results_path = dirname(path),
+        plot = p,
+        width = 6,
+        height = 3
+    )
+}
+
 # plot functions
 
 # add new lines in text of plots

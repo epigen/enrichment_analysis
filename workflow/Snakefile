@@ -27,9 +27,7 @@ validate(config, os.path.join("schemas", "config.schema.yaml"))
 
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
-annot = pd.read_csv(config["annotation"], index_col='name')
-
-annot = pd.read_csv(config["annotation"])
+annot = pd.read_csv(config["annotation"], keep_default_na=False)
 validate(annot, os.path.join("schemas", "annotation.schema.yaml"))
 annot = annot.set_index("name")
 
