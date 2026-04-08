@@ -215,7 +215,7 @@ Explore detailed examples showcasing module usage in our comprehensive end-to-en
 - [scRNA-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scRNA%E2%80%90seq-Analysis-Recipe)
 - [scCRISPR-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scCRISPR%E2%80%90seq-Analysis-Recipe)
 
-Furthermore, we provide a minimal example that leverage all the functionalities and types of outputs of this workflow.. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), restores compact test data and resources from [test/compressed_resources](test/compressed_resources), and downloads LOLACore during setup. More information on the test at [test/TESTING.md](test/TESTING.md).
+Furthermore, we provide a minimal example that leverage all the functionalities and types of outputs of this workflow. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), and restores compact test data and resources from [test/compressed_resources](test/compressed_resources). More information on the test at [test/TESTING.md](test/TESTING.md). Run this test to confirm that your setup is working, and to get familiar with the workflow outputs!
 
 Follow these steps to run the complete analysis:
 1. Restore the minimal test data and resources
