@@ -1,3 +1,0 @@
-collector	date	source	description
-Nathan	2015-04-01	UCSC Genome Browser	Selected bed tracks from the UCSC database.
-fhalbritter	2015-09-14	/data/groups/lab_bock/shared/resources/regions/LOLACore//hg19/ucsc_features	Converted via liftOver from hg19 to hg38 (mapped: 10068960, unmapped: 27974). Only chr+start+end maintained

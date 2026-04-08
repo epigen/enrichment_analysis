@@ -58,6 +58,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Restore test data and resources
+        run: bash test/setup_test_resources.sh
+
       - name: Run workflow on example data
         uses: snakemake/snakemake-github-action@v2
         with:

@@ -173,22 +173,6 @@ Here are some tips for the usage of this workflow:
 # ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)
 
-# 🧪 Test
-This repository ships with a small integration-style test setup under [test](/home/stoll/work/enrichment_analysis/test). It is meant to exercise the normal input classes of the workflow (`.bed`, `.txt`, `.csv`), the main analysis branches, and the summary/reporting outputs with compact local fixtures that are suitable for CI.
-
-For the exact test inputs, resources, provenance, and expected behavior, see [test/TESTING.md](/home/stoll/work/enrichment_analysis/test/TESTING.md).
-
-When adapting this test to a different dataset or fixture set, the main files that typically need to be reparameterized are:
-- [config/config.yaml](/home/stoll/work/enrichment_analysis/config/config.yaml)
-  - update the local databases, cisTarget resources, LOLA database paths, genome, and general workflow parameters
-- [test/config/corces_minimal_enrichment_analysis_annotation.csv](/home/stoll/work/enrichment_analysis/test/config/corces_minimal_enrichment_analysis_annotation.csv)
-  - update the query feature files, background files, and group assignments
-- [test/resources](/home/stoll/work/enrichment_analysis/test/resources)
-  - replace or extend the local test databases and motif resources if you want to validate a different test scenario
-  - for download and placement rules for the supported resource types, see [helpers/database_download_rules.md](/home/stoll/work/enrichment_analysis/helpers/database_download_rules.md)
-
-The `test/resources` folder is only the location of the bundled CI test fixtures. In normal usage, your databases and external resources can live anywhere you want, as long as the paths in your config file point to them correctly.
-
 # 🧬 How to convert feature lists to BED files
 This enrichment analysis workflow requires **genomic regions** to be in standard **`BED`** format. At minimum, provide the first 3 BED columns: `chromosome`, `start`, `end`. A 4th column such as `name` is optional but often useful. BED uses **0-based, start-inclusive, end-exclusive** coordinates (`[start, end)`). However, upstream differential analysis workflows (e.g., using `limma`) often produce a simple text file containing only a list of significant feature IDs (e.g., `peak_1024`, `peak_5531`). To use these results, you must first convert this list of IDs into a valid `BED` file by mapping each ID to its genomic coordinates.
 
@@ -222,6 +206,7 @@ rule convert_features2bed:
         bed_df.to_csv(output.features_bed, sep="\t", header=False, index=False)
 ```
 
+
 # 📖 Examples
 Explore detailed examples showcasing module usage in our comprehensive end-to-end [MrBiomics Recipes](https://github.com/epigen/MrBiomics?tab=readme-ov-file#-recipes), including data, configuration, annotation and results:
 - [ATAC-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/ATAC%E2%80%90seq-Analysis-Recipe)
@@ -230,55 +215,27 @@ Explore detailed examples showcasing module usage in our comprehensive end-to-en
 - [scRNA-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scRNA%E2%80%90seq-Analysis-Recipe)
 - [scCRISPR-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scCRISPR%E2%80%90seq-Analysis-Recipe)
 
-Furthermore, we provide four example queries across all tools with four different databases:
-- three are region sets from a [LOLA Vignette](http://code.databio.org/LOLA/articles/usingLOLACore.html). Download the example data by following the instructions below.
-- one is a preranked gene-score set derived from the GDS289 [fgsea R package example data](https://github.com/ctlab/fgsea/blob/master/inst/extdata/GDS289.tsv) (`score=-log10(p-value) * sign(LFC)`).
-- the total runtime was ~23 minutes on an HPC with 1 core and 32GB RAM per job.
-- note: we are using a hg38 database for pycistarget, because the respective hg19 database is not compatible with the current pycisTarget version (https://github.com/aertslab/pycistarget/issues/37).
+Furthermore, we provide a minimal example that leverage all the functionalities and types of outputs of this workflow.. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), restores compact test data and resources from [test/compressed_resources](test/compressed_resources), and downloads LOLACore during setup. More information on the test at [test/TESTING.md](test/TESTING.md).
 
 Follow these steps to run the complete analysis:
-1. Download all necessary data (query and resources)
+1. Restore the minimal test data and resources
     ```sh
-    # change working directory to the cloned worklfow/module enrichment_analysis
+    # enter enrichment_analysis directory
     cd enrichment_analysis
-
-    # download and extract the region set test data
-    wget -c http://cloud.databio.org.s3.amazonaws.com/vignettes/lola_vignette_data_150505.tgz -O - | tar -xz -C test/data/
-
-    # create and enter resources folder
-    mkdir resources
-    cd resources
-
-    # download LOLACore databases and move to the correct location
-    wget http://big.databio.org/regiondb/LOLACoreCaches_180412.tgz
-    tar -xzvf LOLACoreCaches_180412.tgz
-    mv nm/t1/resources/regions/LOLACore/ .
-    rm -rf nm
-
-    # download a local database
-    wget https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c2.cgp.v2023.2.Hs.symbols.gmt
-
-    # download cisTarget resources
-    mkdir cistarget
-    cd cistarget
-    wget https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/refseq_r80/mc_v10_clust/gene_based/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather
-    wget https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/screen/mc_v10_clust/region_based/hg38_screen_v10_clust.regions_vs_motifs.rankings.feather
-    wget https://resources.aertslab.org/cistarget/motif2tf/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
-
-    # change your working directory back to the root of the module
-    cd ../../
+    # extract the input data and libraries
+    bash test/setup_test_resources.sh
     ```
-2. activate your conda Snakemake environment, run a dry-run (-n flag), run the workflow and generate the report using the provided configuration
+2. Activate your conda Snakemake environment, run a dry-run (-n flag), run the workflow and generate the report using the provided configuration
     ```sh
     conda activate snakemake
     # dry-run
-    snakemake -p --use-conda --configfile test/config/example_enrichment_analysis_config.yaml -n
+    snakemake -p --use-conda -n
     # real run
-    snakemake -p --use-conda --configfile test/config/example_enrichment_analysis_config.yaml
+    snakemake -p --use-conda --cores=1
     # report
-    snakemake --report test/report.html --configfile test/config/example_enrichment_analysis_config.yaml
+    snakemake --report test/report.html
     ```
-
+One one core, this should run in about 20 minutes.
 # 🔗 Links
 - [GitHub Repository](https://github.com/epigen/enrichment_analysis/)
 - [GitHub Page](https://epigen.github.io/enrichment_analysis/)

@@ -6,7 +6,7 @@ threads: 1
 ##### GENERAL #####
 annotation: config/annotation.csv
 result_path: test/results
-project_name: corces_minimal
+project_name: Corces_CellTypes
 
 # genome
 # human 'hg19' or 'hg38' 
@@ -23,7 +23,7 @@ genome: 'hg38'
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 local_databases:
     Azimuth_2023: "test/resources/enrichment_analysis/Azimuth_2023.json"
-    Reactome: "/home/stoll/work/enrichment_analysis/test/resources/enrichment_analysis/ReactomePathways.gmt"
+    Reactome: "test/resources/enrichment_analysis/ReactomePathways.gmt"
 ## LOLA compatible region set databases
 # loaded using loadRegionDB() (https://code.databio.org/LOLA/reference/loadRegionDB.html)
 # download from the docs or create your own: https://databio.org/regiondb
@@ -56,8 +56,8 @@ great_parameters:
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 pycistarget_parameters:
     databases:
-        hg38_screen_v10clust: "test/resources/pycistarget_toy/toy_600regions.regions_vs_motifs.rankings.feather"
-    path_to_motif_annotations: "test/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+        hg38_screen_v10clust: "test/resources/enrichment_analysis/600regions_test.regions_vs_motifs.rankings.feather" # TEST FILE : should be replaced by real feather for analysis
+    path_to_motif_annotations: "test/resources/enrichment_analysis/89_motifs_test.tbl" # TEST FILE : should be replaced by real feather for analysis
     temp_dir: "/tmp" # should have space available
     fraction_overlap_w_cistarget_database: 0.4 # default 0.4
     auc_threshold: 0.005 # default 0.005
@@ -74,14 +74,14 @@ pycistarget_parameters:
 # to skip you have to(!) leave one database entry with an empty path i.e., dummy_db: ""
 rcistarget_parameters:
     databases:
-        hg38_500bp_up_100bp_down_v10clust: "test/resources/rcistarget_toy/toy_10genes.genes_vs_motifs.rankings.feather"
-    motifAnnot: "test/resources/cistarget/motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
+        hg38_500bp_up_100bp_down_v10clust: "test/resources/enrichment_analysis/5000genes_test.genes_vs_motifs.rankings.feather" # TEST FILE : should be replaced by real feather for analysis
+    motifAnnot: "test/resources/enrichment_analysis/89_motifs_test.tbl" # TEST FILE : should be replaced by real feather for analysis
     motifAnnot_highConfCat: ["directAnnotation", "inferredBy_Orthology"]
     motifAnnot_lowConfCat: ["inferredBy_MotifSimilarity", "inferredBy_MotifSimilarity_n_Orthology"]
     nesThreshold: 3
     aucMaxRank_factor: 0.05 # used for aucMaxRank = aucMaxRank_factor * ncol(motifRankings)
     geneErnMethod: "aprox" # alternatively, exact but more computationally intense: "icistarget"
-    geneErnMaxRank: 10 #only set to 10 for quick testing purposes, typical range is 5000 (max rank of genes that rcistarget will consider)
+    geneErnMaxRank: 5000
 
 ### Enrichment plot
 

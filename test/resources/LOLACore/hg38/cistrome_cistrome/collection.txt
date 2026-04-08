@@ -1,3 +1,0 @@
-collector	date	source	description
-Nathan	2015-01-01	Cistrome	Downloaded from http://cistrome.org/NR_Cistrome/Cistrome.html. (Scripts in my shared directory)
-fhalbritter	2015-09-14	/data/groups/lab_bock/shared/resources/regions/LOLACore//hg19/cistrome_cistrome	Converted via liftOver from hg19 to hg38 (mapped: 3783214, unmapped: 13900). Only chr+start+end maintained
