@@ -206,7 +206,6 @@ rule convert_features2bed:
         bed_df.to_csv(output.features_bed, sep="\t", header=False, index=False)
 ```
 
-
 # 📖 Examples
 Explore detailed examples showcasing module usage in our comprehensive end-to-end [MrBiomics Recipes](https://github.com/epigen/MrBiomics?tab=readme-ov-file#-recipes), including data, configuration, annotation and results:
 - [ATAC-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/ATAC%E2%80%90seq-Analysis-Recipe)
@@ -215,7 +214,7 @@ Explore detailed examples showcasing module usage in our comprehensive end-to-en
 - [scRNA-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scRNA%E2%80%90seq-Analysis-Recipe)
 - [scCRISPR-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scCRISPR%E2%80%90seq-Analysis-Recipe)
 
-Furthermore, we provide a minimal example that leverage all the functionalities and types of outputs of this workflow. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), and restores compact test data and resources from [test/compressed_resources](test/compressed_resources). More information on the test at [test/TESTING.md](test/TESTING.md). Run this test to confirm that your setup is working, and to get familiar with the workflow outputs!
+Additionally, we provide a minimal example that tests all features of this workflow. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), and restores test data and resources from [test/compressed_resources](test/compressed_resources) and the web. More information about the test can be found here [test/TESTING.md](test/TESTING.md). Run this test to confirm that your setup is working, and to get familiar with the workflow's features.
 
 Follow these steps to run the complete analysis:
 1. Restore the minimal test data and resources
@@ -235,7 +234,8 @@ Follow these steps to run the complete analysis:
     # report
     snakemake --report test/report.html
     ```
-One one core, this should run in about 20 minutes.
+With one core this should finish within ~20 minutes.
+
 # 🔗 Links
 - [GitHub Repository](https://github.com/epigen/enrichment_analysis/)
 - [GitHub Page](https://epigen.github.io/enrichment_analysis/)
