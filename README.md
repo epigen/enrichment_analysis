@@ -214,7 +214,9 @@ Explore detailed examples showcasing module usage in our comprehensive end-to-en
 - [scRNA-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scRNA%E2%80%90seq-Analysis-Recipe)
 - [scCRISPR-seq Analysis Recipe](https://github.com/epigen/MrBiomics/wiki/scCRISPR%E2%80%90seq-Analysis-Recipe)
 
-Additionally, we provide a minimal example that tests all features of this workflow. The example uses the default [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), and restores test data and resources from [test/compressed_resources](test/compressed_resources) and the web. More information about the test can be found here [test/TESTING.md](test/TESTING.md). Run this test to confirm that your setup is working, and to get familiar with the workflow's features.
+Additionally, we provide a **minimal example** that tests all features of this workflow using intermediate results from the MrBiomics [ATAC-seq](https://github.com/epigen/MrBiomics/wiki/ATAC%E2%80%90seq-Analysis-Recipe) and [RNA-seq](https://github.com/epigen/MrBiomics/wiki/RNA%E2%80%90seq-Analysis-Recipe) [recipes](https://github.com/epigen/MrBiomics?tab=readme-ov-file#-recipes). Briefly, the input data consist of 4 feature sets (2 genomic region sets, 2 ranked gene lists) of B cell and erythroid cell-specific transcriptional/epigenetic differences, compared to all other hematopoietic cell types, within the [Corces et al. (2016)](https://www.nature.com/articles/ng.3646) dataset, determined using our [dea_limma](https://github.com/epigen/dea_limma) module.
+
+The example is configured using [config/config.yaml](config/config.yaml) and [config/annotation.csv](config/annotation.csv), and restores test data and resources from [test/compressed_resources](test/compressed_resources) and the web. Run this test to confirm that your setup is working, and to get familiar with the workflow's features.
 
 Follow these steps to run the complete analysis:
 1. Restore the minimal test data and resources
@@ -224,7 +226,7 @@ Follow these steps to run the complete analysis:
     # extract the input data and libraries
     bash test/setup_test_resources.sh
     ```
-2. Activate your conda Snakemake environment, run a dry-run (-n flag), run the workflow and generate the report using the provided configuration
+2. Activate your conda Snakemake environment, run a dry-run, run the workflow and generate the report
     ```sh
     conda activate snakemake
     # dry-run
@@ -235,6 +237,9 @@ Follow these steps to run the complete analysis:
     snakemake --report test/report.html
     ```
 With one core this should finish within ~20 minutes.
+
+> [!IMPORTANT]
+> The 3 cisTarget resource files used in the test are synthetic. They were created to test all features, but they are not biologically meaningful and **must not be used for real analyses**.
 
 # 🔗 Links
 - [GitHub Repository](https://github.com/epigen/enrichment_analysis/)
