@@ -2,7 +2,12 @@ resources/*
 logs/*
 report.zip
 report/*
-test/*
+test/**
+!test/
+!test/setup_test_resources.sh
+!test/compressed_resources/
+!test/compressed_resources/*.tar.gz
+
 .snakemake/*
 .ipynb_checkpoints/*
 *.ipynb_checkpoints*
