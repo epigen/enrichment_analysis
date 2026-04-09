@@ -1,39 +1,13 @@
 # Test Workflow
 
-## CI Setup
-
-The test job in [.github/workflows/cy.yaml](../.github/workflows/cy.yaml) first runs:
-
-```bash
-bash test/setup_test_resources.sh
-```
-
-That script restores:
-
-- [test/data/](data/) from [test/compressed_resources/test_data.tar.gz](compressed_resources/test_data.tar.gz)
-- [test/resources/enrichment_analysis](resources/enrichment_analysis) from [test/compressed_resources/test_resources.tar.gz](compressed_resources/test_resources.tar.gz)
-- [test/resources/LOLACore](resources/LOLACore) by downloading `LOLACoreCaches_180412.tgz` online.
-
-After setup, CI runs the workflow through `snakemake/snakemake-github-action` using:
-
-```bash
-bash test/setup_test_resources.sh
-snakemake --snakefile workflow/Snakefile --cores all --sdm conda --show-failed-logs
-```
-
-The active config and annotation are:
-
-- [config/config.yaml](../config/config.yaml)
-- [config/annotation.csv](../config/annotation.csv)
-
 ## Input Test Data
 
-The test data are derived from MrBiomics intermediate outputs of an analysis based on the hematopoietic dataset from [Corces et al. (2016)](https://www.nature.com/articles/ng.3646). Refer to the MrBiomics [ATAC-seq recipe](../../MrBiomics.wiki/ATAC‐seq-Analysis-Recipe.md) and [RNA-seq recipe](../../MrBiomics.wiki/RNA‐seq-Analysis-Recipe.md) for more context. The dataset provides ATAC-seq and RNA-seq data for several hematopoietic cell lines. We focus only on B cells and erythroid cells here to make the test minimal. The input data are separated in two groups (see [config/annotation.csv](../config/annotation.csv)):
+The test data are derived from MrBiomics intermediate outputs of an analysis based on the hematopoietic dataset from [Corces et al. (2016)](https://www.nature.com/articles/ng.3646). Refer to the MrBiomics [ATAC-seq recipe](../../MrBiomics.wiki/ATAC‐seq-Analysis-Recipe.md) and [RNA-seq recipe](../../MrBiomics.wiki/RNA‐seq-Analysis-Recipe.md) for more context. The dataset provides ATAC-seq and RNA-seq data for several hematopoietic cell types. We focus only on B cells and erythroid cells here to make the test minimal. The input data are separated in two groups (see [config/annotation.csv](../config/annotation.csv)):
 
-- `ATAC`: ATAC-seq reads were processed into a consensus-region count matrix, differential accessibility was called with `dea_limma`, and regions with increased accessibility in the selected lineage were exported as BED files for region enrichment.
-- `RNA`: RNA-seq reads were processed into a gene count matrix, differential expression was called with `dea_limma`, and selected feature-score tables were kept as ranked gene-list inputs.
+- `ATAC`: ATAC-seq reads were processed into a consensus-region count matrix, differential accessibility was tested with `dea_limma`, and regions with increased accessibility in the selected lineage were exported as BED files for region enrichment.
+- `RNA`: RNA-seq reads were processed into a gene count matrix, differential expression was tested with `dea_limma`, and selected feature-score tables were kept as ranked gene-list inputs.
 
-The active annotation defines four feature sets: `Bcell_open_regions`, `Ery_open_regions`, `Bcell_ranked`, and `Ery_ranked`.
+The annotation file defines four feature sets: `Bcell_open_regions`, `Ery_open_regions`, `Bcell_ranked`, and `Ery_ranked`.
 
 ## Test Resources
 
