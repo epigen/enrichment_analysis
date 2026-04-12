@@ -25,6 +25,8 @@ report: "report/workflow.rst"
 configfile: os.path.join("config","config.yaml")
 validate(config, os.path.join("schemas", "config.schema.yaml"))
 
+containerized: "docker://ghcr.io/epigen/enrichment_analysis:latest"
+
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
 annot = pd.read_csv(config["annotation"], keep_default_na=False)
