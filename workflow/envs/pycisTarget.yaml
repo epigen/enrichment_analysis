@@ -7,9 +7,6 @@ dependencies:
   - python=3.9.19
   - attrs=23.2.0
   - pytables
-  - git
-  - gcc
-  - gxx
   - pip=24.0
   - pip:
       - tables==3.9.2
