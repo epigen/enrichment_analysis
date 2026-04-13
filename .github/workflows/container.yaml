@@ -23,6 +23,10 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Restore test data and resources
+        shell: bash
+        run: bash test/setup_test_resources.sh
+
       - name: Generate Snakemake Dockerfile
         uses: snakemake/snakemake-github-action@v2
         with:
@@ -61,6 +65,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          provenance: false
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
