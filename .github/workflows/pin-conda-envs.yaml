@@ -1,0 +1,65 @@
+name: Pin Conda Environments
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: pin-conda-envs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  pin-linux-64:
+    name: Pin conda envs (linux-64)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Pin conda environments
+        uses: snakemake/snakedeploy-github-action@v1
+        with:
+          subcommand: pin-conda-envs
+          args: workflow/envs/*.yaml
+
+      - name: Commit updated pin files
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update linux-64 conda pins"
+          file_pattern: workflow/envs/*.linux-64.pin.txt
+
+  pin-osx-64:
+    name: Pin conda envs (osx-64)
+    runs-on: macos-26-intel
+    timeout-minutes: 90
+    needs: pin-linux-64 # run after the linux job to prevent merge conflicts
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Sync branch to latest remote state
+        run: |
+          git fetch origin "${GITHUB_REF_NAME}"
+          git checkout "${GITHUB_REF_NAME}"
+          git merge --ff-only "origin/${GITHUB_REF_NAME}"
+
+      - name: Pin conda environments
+        uses: snakemake/snakedeploy-github-action@v1
+        with:
+          subcommand: pin-conda-envs
+          args: workflow/envs/*.yaml
+
+      - name: Commit updated pin files
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "update osx-64 conda pins"
+          file_pattern: workflow/envs/*.osx-64.pin.txt
