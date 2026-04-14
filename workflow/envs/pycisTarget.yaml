@@ -6,10 +6,10 @@ channels:
 dependencies:
   - python=3.9.19
   - attrs=23.2.0
-  - pytables
-  - git
-  - gcc
-  - gxx
+  - pytables=3.9.2
+  - git=2.53.0
+  - gcc=15.2.0
+  - gxx=15.2.0
   - pip=24.0
   - pip:
       - tables==3.9.2
