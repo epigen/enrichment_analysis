@@ -47,32 +47,6 @@ jobs:
           branch: ${{ env.BRANCH_NAME }}
           create_branch: true
 
-  pin-osx-64:
-    name: Pin conda envs (osx-64)
-    runs-on: macos-26-intel
-    timeout-minutes: 90
-    needs: pin-linux-64 # run after the linux job to prevent merge conflicts
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          ref: ${{ env.BRANCH_NAME }}
-
-      - name: Pin conda environments
-        uses: snakemake/snakedeploy-github-action@v1
-        with:
-          subcommand: pin-conda-envs
-          args: workflow/envs/*.yaml
-
-      - name: Commit osx-64 pin updates
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "update osx-64 conda pins"
-          file_pattern: workflow/envs/*.osx-64.pin.txt
-          branch: ${{ env.BRANCH_NAME }}
-
       - name: Create or update pull request
         uses: peter-evans/create-pull-request@v8
         with:
