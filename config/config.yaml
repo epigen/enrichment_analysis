@@ -47,6 +47,7 @@ great_parameters:
     basal_upstream: 5000 # used in 'basalPlusExt' mode
     basal_downstream: 1000 # used in 'basalPlusExt' mode
     extension: 1000000
+    map_associated_regions: -1 # number of top significant terms to annotate with regions/genes; 0: none, -1: all. This is slow, creates large files, and can exceed Excel's 32,767 character cell limit.
 
 ### pycisTarget - region based Transcription Factor Binding Site (TFBS) motif enrichment analysis
 # https://pycistarget.readthedocs.io/en/latest/index.html

@@ -25,6 +25,15 @@ rule region_enrichment_analysis_GREAT:
         database = os.path.join("resources", config["project_name"], module_name, "{database}.gmt"),
     output:
         result = os.path.join(result_path,'{region_set}','GREAT','{database}','{region_set}_{database}.csv'),
+    params:
+        min_gene_set_size = config["great_parameters"]["min_gene_set_size"],
+        mode = config["great_parameters"]["mode"],
+        basal_upstream = config["great_parameters"]["basal_upstream"],
+        basal_downstream = config["great_parameters"]["basal_downstream"],
+        extension = config["great_parameters"]["extension"],
+        map_associated_regions = config["great_parameters"].get("map_associated_regions", 1),
+        adjp_col = config["column_names"]["GREAT"]["adj_pvalue"],
+        adjp_th = config["adjp_th"]["GREAT"],
     threads: config.get("threads", 1)
     resources:
         mem_mb=config.get("mem", "16000"),

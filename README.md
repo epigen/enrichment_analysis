@@ -141,7 +141,9 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
             - in addition to the standard GREAT statistics, the workflow adds two extra columns to the result table:
                 - `regions`: the associated query regions for a term, written in BED-like coordinate form
                 - `annotated_genes`: the genes associated to those regions for that term
-            - these two columns are filled for significant terms (according to configured adjusted p-value threshold), so that interesting hits can be traced back directly to the supporting regions and genes
+            - `great_parameters:map_associated_regions` controls how many top significant terms (ranked by the configured adjusted p-value column) are annotated: `0` disables annotation, `-1` annotates all significant terms, and the default `1` annotates only the top term
+            - warning: this annotation can take a lot of time, greatly increase individual GREAT result file size, and break Excel usage because cells can exceed Excel's 32,767 character limit
+            - GREAT group-level aggregated result tables do not contain `regions` or `annotated_genes`; configure annotation and inspect the individual query result table when those details are needed
             - additional results from the region-gene association provided by GREAT:
                 - `genes.txt`: list of genes associated with the query regions
                 - `region_gene_associations.csv`: region-to-gene assignment table
