@@ -19,5 +19,3 @@ For **region-set inputs** (`features_path` or `background_path` ending in `.bed`
 - additionally, the workflow requires at least the first **3 BED columns**: `chrom`, `start`, `end`.
 
 Set workflow-specific `resources` or command line arguments (CLI) in the workflow profile `workflow/profiles/default.config.yaml`, which supersedes global Snakemake profiles.
-
-GREAT region/gene annotation is controlled by `great_parameters:map_associated_regions`. The default `1` annotates only the top significant term; `0` disables annotation and `-1` restores the previous behavior of annotating all significant terms. This can take a lot of time, greatly increase file size, and break Excel usage because cells can exceed Excel's 32,767 character limit.
