@@ -148,7 +148,7 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
 
 
         
-    - GREAT group-level aggregated result tables do not contain `regions` or `annotated_genes`; configure annotation and inspect the individual query result table when those details are needed
+        
             - additional results from the region-gene association provided by GREAT:
                 - `genes.txt`: list of genes associated with the query regions
                 - `region_gene_associations.csv`: region-to-gene assignment table
