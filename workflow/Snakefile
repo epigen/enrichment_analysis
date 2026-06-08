@@ -25,7 +25,7 @@ report: "report/workflow.rst"
 configfile: os.path.join("config","config.yaml")
 validate(config, os.path.join("schemas", "config.schema.yaml"))
 
-containerized: "docker://ghcr.io/epigen/enrichment_analysis:latest"
+containerized: "docker://ghcr.io/epigen/enrichment_analysis:v3.0.0"
 
 ### get annotations 
 ### for three data types: query genes, query regions and background regions (to be converted to genes)
