@@ -143,9 +143,9 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
                 - `annotated_genes`: the genes associated to those regions for that term
              - `great_parameters:map_associated_regions` controls how many top significant terms (ranked by the configured adjusted p-value column) are annotated.
             Supported values:
-                * 0: do not annotate GREAT terms with associated regions/genes
-                *  positive integer, for example 5: annotate that many top significant terms ranked by the configured adjusted p-value column
-                * 1: annotate all significant terms, restoring the previous behavior
+                - 0: do not annotate GREAT terms with associated regions/genes
+                -  positive integer, for example 5: annotate that many top significant terms ranked by the configured adjusted p-value column
+                - -1: annotate all significant terms, restoring the previous behavior
 
 
                 **⚠️ Warning**
