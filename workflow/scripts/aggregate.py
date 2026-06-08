@@ -45,6 +45,8 @@ if len(results_list)==0:
         
 # concatenate all results into one results dataframe
 result_df = pd.concat(results_list, axis=0)
+if tool == "GREAT":
+    result_df = result_df.drop(columns=["regions", "annotated_genes"], errors="ignore")
 
 # save all enirchment results
 result_df.to_csv(results_all_path)

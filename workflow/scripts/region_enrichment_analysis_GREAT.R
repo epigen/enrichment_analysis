@@ -10,9 +10,18 @@ annot_terms_with_features <- function(res, df) {
   regions <- vector("character", nrow(df))
   genes <- vector("character", nrow(df))
 
-  needs_annotation <- rep(TRUE, nrow(df))
-  if ("p_adjust" %in% names(df)) {
-    needs_annotation <- needs_annotation & (is.na(df$p_adjust) | df$p_adjust <= snakemake@config[["adjp_th"]][["GREAT"]])
+  map_associated_regions <- as.integer(snakemake@params[["map_associated_regions"]])
+  adjp_col <- snakemake@params[["adjp_col"]]
+  adjp_th <- as.numeric(snakemake@params[["adjp_th"]])
+  needs_annotation <- rep(FALSE, nrow(df))
+  if (map_associated_regions != 0 && adjp_col %in% names(df)) {
+    significant <- which(!is.na(df[[adjp_col]]) & df[[adjp_col]] <= adjp_th)
+    if (map_associated_regions == -1) {
+      needs_annotation[significant] <- TRUE
+    } else if (map_associated_regions > 0 && length(significant) > 0) {
+      top_terms <- significant[order(df[[adjp_col]][significant])][seq_len(min(map_associated_regions, length(significant)))]
+      needs_annotation[top_terms] <- TRUE
+    }
   }
   
 
@@ -55,7 +64,6 @@ result_path <- snakemake@output[["result"]]
 
 # parameters
 genome <- snakemake@config[["genome"]]
-great_params <- snakemake@config[["great_parameters"]]
 cores_n <- snakemake@threads
 
 # set genome
@@ -85,11 +93,11 @@ res <- great(gr = regionSet_query,
       gene_sets = database,
       tss_source = genome, 
       biomart_dataset = NULL,
-      min_gene_set_size = great_params[["min_gene_set_size"]], #default: 5 
-      mode = great_params[["mode"]],
-      basal_upstream = great_params[["basal_upstream"]],
-      basal_downstream = great_params[["basal_downstream"]],
-      extension = great_params[["extension"]],
+      min_gene_set_size = snakemake@params[["min_gene_set_size"]], #default: 5
+      mode = snakemake@params[["mode"]],
+      basal_upstream = snakemake@params[["basal_upstream"]],
+      basal_downstream = snakemake@params[["basal_downstream"]],
+      extension = snakemake@params[["extension"]],
       extended_tss = NULL,
       background = regionSet_background, #default: NULL
       exclude = "gap",

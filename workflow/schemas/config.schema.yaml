@@ -72,6 +72,10 @@ properties:
       extension:
         type: integer
         minimum: 0
+      map_associated_regions:
+        type: integer
+        minimum: -1
+        default: 1
   pycistarget_parameters:
     type: object
     additionalProperties: false
