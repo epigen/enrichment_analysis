@@ -59,7 +59,7 @@ The outlined analyses were performed using the programming languages R (ver) [re
 
 **pycisTarget.** Genomic region set TFBS (Transcription Factor Binding Site) motif enrichment analysis was performed using pycisTarget (ver) [ref]. The following databases were queried [pycisTarget_databases].
 
-Furthermore, genomic regions (query- and background-sets) were mapped to genes using GREAT (without background) and then analyzed as gene sets as described below for a complementary and extended perspective.
+Furthermore, genomic regions (query- and background-sets) were mapped to genes using GREAT (without background) and then analyzed as gene sets as described below for a complementary perspective.
 
 **Gene set enrichment analyses (GSEA)**
 
@@ -70,7 +70,7 @@ Furthermore, genomic regions (query- and background-sets) were mapped to genes u
 **RcisTarget.** Gene set TFBS (Transcription Factor Binding Site) motif enrichment analysis was performed using RcisTarget (ver) [ref]. The following databases were queried [RcisTarget_databases].
 
 **Aggregation**
-The results of all queries belonging to the same analysis [group] were aggregated by method and database. Additionally, we filtered the results by retaining only the union of terms that were statistically significant (i.e. [adj_pvalue]<=[adjp_th]) in at least one query.
+The results of all queries belonging to the same analysis [group] were aggregated by method and database yielding one aggregated table that is the complete concatenation of every query's full result table.
 
 **Visualization**
 All analysis results were visualized in the same way.
@@ -83,18 +83,18 @@ The aggregated results per analysis [group], method and database combination wer
 
 
 # 🚀 Features
-The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representation analysis (ORA) & preranked GSEA) are used for various enrichment analyses. Databases to be queried can be configured (see `./config/config.yaml`). All approaches statistically correct their results using the provided background region/gene sets.
-- enrichment analysis methods
-    - **region set** (`\*.bed`)
+The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representation analysis (ORA) & preranked GSEA) are used for various enrichment analyses. Databases to be queried can be configured (see `./config/config.yaml`). All approaches statistically correct their results using the provided background region/gene sets and multiple testing correction.
+- enrichment analysis methods sorted by input data type and analysis method
+    - **genomic region set** (`\*.bed`)
         - [LOLA](http://bioconductor.org/packages/release/bioc/html/LOLA.html): Genomic Locus Overlap Enrichment Analysis is run locally using configured databases (`lola_databases`) taken from [LOLA Region Databases](https://databio.org/regiondb) or custom created using these [instructions](https://databio.org/regiondb#:~:text=Build%20your%20own%20custom%20database)
         - [GREAT](https://doi.org/10.1371/journal.pcbi.1010378) using [rGREAT](http://bioconductor.org/packages/release/bioc/html/rGREAT.html): Genomic Regions Enrichment of Annotations Tool runs locally using configured databases (`local_databases`), additional resources are downloaded automatically during the analysis.
         - [pycisTarget](https://pycistarget.readthedocs.io/en/latest/): Motif enrichment analysis in region sets to identify high confidence transcription factor (TF) cistromes is run locally using configured databases (`pycistarget_parameters:databases`) from the [cisTarget resources](https://resources.aertslab.org/cistarget/).
     - **gene set** (`\*.txt`) over-representation analysis (ORA_GSEApy)
         - [GSEApy](https://gseapy.readthedocs.io/en/latest/) enrich() function performs Fisher’s exact test (i.e., hypergeoemtric test) and is run locally using configured databases (`local_databases`).
         - [RcisTarget](https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html): Motif enrichment analysis in gene sets to identify high confidence transcription factor (TF) cistromes is run locally using configured databases (`Rcistarget_parameters:databases`) from the [cisTarget resources](https://resources.aertslab.org/cistarget/).
-    - **region-based gene set** (`\*.bed`) over-representation analysis (ORA_GSEApy) & TFBS motif enrichment analysis (RcisTarget)
+    - **genomic region-based gene set** (`\*.bed`) over-representation analysis (ORA_GSEApy) & TFBS motif enrichment analysis (RcisTarget)
         - region-gene associations for each query and background region set are obtained using (r)GREAT, without accounting for background for improved performance and more genes. Correction for background is anyway included in the gene-based analyses downstream.
-        - they are used for a complementary ORA using GSEApy and TFBS motif enrichment analysis using RcisTarget.
+        - they are used for a complementary ORA using GSEApy and TFBS motif enrichment analysis using RcisTarget, but do not replace the dedicated region-based analysis tools
         - thereby an additional enrichment perspective for region sets can be gained through association to genes by querying the same and/or more databases, that are not supported/provided by region-based tools.
     - **preranked gene set** (`\*.csv`) enrichment analysis (preranked_GSEApy)
         - [GSEApy](https://gseapy.readthedocs.io/en/latest/) prerank() function performs [preranked GSEA](https://doi.org/10.1073/pnas.0506580102) and is run locally using configured databases (`local_databases`).
@@ -112,10 +112,8 @@ The five tools LOLA, GREAT, pycisTarget, RcisTarget and GSEApy (over-representat
     - cisTarget databases for [pycisTarget](https://pycistarget.readthedocs.io/en/latest/) and [RcisTarget](https://www.bioconductor.org/packages/release/bioc/html/RcisTarget.html)
       - downloaded from the [cisTarget resources](https://resources.aertslab.org/cistarget/)
       - custom databases using these [instructions](https://github.com/aertslab/create_cisTarget_databases)
-
 - **group aggregation** of results per method and database
-    - results of all queries belonging to the same group are aggregated per method (e.g., ORA_GSEApy) and database (e.g., GO_Biological_Process_2021) by concatenation and saved as a long-format table (CSV).
-    - a filtered version taking the union of all statistically significant (i.e., adjusted p-value <`{adjp_th}`) terms per query is also saved as a long-format table (CSV).
+    - results of all queries belonging to the same group are aggregated per method (e.g., ORA_GSEApy) and database (e.g., GO_Biological_Process_2021) by concatenation and saved as a long-format table (CSV). We recommend this as the starting point for downstream analyses.
 - **visualization**
     - region/gene set specific enrichment dot plots are generated for each query, method and database combination
         - the top `{top_n}` terms are ranked (along the y-axis) by the mean rank of statistical significance (`{p_value}`), effect-size (`{efect_size}` e.g., log2(odds ratio) or normalized enrichemnt scores), and overlap (`{overlap}` e.g., coverage or support) with the goal to make the ranking more balanced and interpretable
@@ -173,14 +171,13 @@ Note:
 # 🛠️ Usage
 Here are some tips for the usage of this workflow:
 1. Download all relevant databases (see [Resources](#resources)).
-2. Configure the analysis using the configuration YAML and an annotation file (see [Configuration](#configuration))
-3. Run the analysis on every query gene/region set of interest (e.g., results of differential analyses) with the respective background genes/regions (e.g., all expressed genes or consensus regions).
+2. Configure the desired analyses based on input data type and question using the configuration YAML and an annotation file (see [Configuration](#configuration))
+3. Run the analysis for every query gene/region set of interest (e.g., results of differential analyses) with the respective background genes/regions (e.g., all expressed genes or consensus regions).
 4. generate the [Snakemake Report](https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html)
 5. look through the overview plots of your dedicated groups and queried databases in the report
-6. dig deeper by looking at the 
+6. dig deeper and investigate interesting hits further by looking at the 
     - aggregated result table underlying the summary/overview plot
     - enrichment plots for the individual query sets
-7. investigate interesting hits further by looking into the individual query result tables.
 
 # ⚙️ Configuration
 Detailed specifications can be found here [./config/README.md](./config/README.md)

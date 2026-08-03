@@ -19,11 +19,6 @@ group = snakemake.wildcards["group"]
 tool = snakemake.wildcards["tool"]
 db = snakemake.wildcards["db"]
 
-term_col = snakemake.config["column_names"][tool]["term"]
-adjp_col = snakemake.config["column_names"][tool]["adj_pvalue"]
-
-adjp_th = snakemake.config["adjp_th"][tool]
-
 dir_results = os.path.dirname(results_all_path)
 if not os.path.exists(dir_results):
     os.mkdir(dir_results)
